@@ -1,0 +1,54 @@
+/* Colore di sfondo di tutta l'applicazione (Azzurro chiarissimo) */
+.sfondo-principale {
+    /* Sfumatura diagonale dall'azzurro Nautilus al bianco */
+    -fx-background-color: linear-gradient(to bottom right, #C9E4FF, #FFFFFF);
+}
+
+/* La carta bianca al centro con l'ombra */
+.pannello-login {
+    -fx-background-color: white;
+    -fx-padding: 40;
+    -fx-background-radius: 15; /* Arrotonda gli angoli */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 5); /* Crea un'ombra leggera */
+}
+
+/* Il titolo grande */
+.titolo {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #005A9E; /* Blu scuro marino */
+}
+
+/* Sottotitolo grigio */
+.sottotitolo {
+    -fx-font-size: 14px;
+    -fx-text-fill: #7F8C8D;
+    -fx-padding: 0 0 20 0; /* Un po' di spazio sotto prima delle caselle */
+}
+
+/* Come devono essere le caselle di testo Email e Password */
+.campo-testo {
+    -fx-pref-height: 45px;
+    -fx-background-radius: 5;
+    -fx-border-color: #BDC3C7;
+    -fx-border-radius: 5;
+    -fx-padding: 5 10 5 10;
+    -fx-font-size: 14px;
+}
+
+/* Il Bottone Blu */
+.bottone-primario {
+    -fx-background-color: #0078D7;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-pref-height: 45px;
+    -fx-pref-width: 250px;
+    -fx-background-radius: 5;
+    -fx-cursor: hand; /* La manina del mouse */
+}
+
+/* Cosa succede se passo col mouse sul bottone? Si scurisce! */
+.bottone-primario:hover {
+    -fx-background-color: #005A9E;
+}
