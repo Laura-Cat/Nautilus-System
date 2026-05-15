@@ -5,8 +5,10 @@ import org.example.model.domain.Cliente;
 import org.example.model.domain.Lezione;
 import org.example.model.domain.TitoloAccesso;
 
-public class PrenotazioneNuotoLiberoStrategy implements StrategiaPrenotazione {
+import java.util.logging.Logger;
 
+public class PrenotazioneNuotoLiberoStrategy implements StrategiaPrenotazione {
+    private static final Logger logger = Logger.getLogger(PrenotazioneNuotoLiberoStrategy .class.getName());
     private static final int COSTO_NUOTO_LIBERO = 1;
 
     @Override
@@ -32,7 +34,7 @@ public class PrenotazioneNuotoLiberoStrategy implements StrategiaPrenotazione {
         lezione.setNumPostiPrenotati(lezione.getNumPostiPrenotati() + 1);
         titolo.registraAccesso(COSTO_NUOTO_LIBERO); // Scala 1 credito
 
-        System.out.println("Prenotazione per Nuoto Libero confermata con successo!");
+        logger.info("Prenotazione per Nuoto Libero confermata con successo!");
         return true;
     }
 }

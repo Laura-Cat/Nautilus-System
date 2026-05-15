@@ -1,12 +1,15 @@
 package org.example.controller.strategy;
 
+import org.example.controller.LoginController;
 import org.example.exception.CreditiInsufficientiException;
 import org.example.model.domain.Cliente;
 import org.example.model.domain.Lezione;
 import org.example.model.domain.TitoloAccesso;
 
-public class PrenotazioneCorsoStrategy implements StrategiaPrenotazione {
+import java.util.logging.Logger;
 
+public class PrenotazioneCorsoStrategy implements StrategiaPrenotazione {
+    private static final Logger logger = Logger.getLogger(PrenotazioneCorsoStrategy.class.getName());
     private static final int COSTO_CORSO = 3;
 
     @Override
@@ -28,7 +31,7 @@ public class PrenotazioneCorsoStrategy implements StrategiaPrenotazione {
         lezione.setNumPostiPrenotati(lezione.getNumPostiPrenotati() + 1);
         titolo.registraAccesso(COSTO_CORSO); // Paga subito!
 
-        System.out.println("Prenotazione al Corso confermata con successo!");
+        logger.info("Prenotazione al Corso confermata con successo!");
         return true;
     }
 }

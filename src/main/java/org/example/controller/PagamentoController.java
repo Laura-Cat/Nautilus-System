@@ -7,9 +7,10 @@ import org.example.model.domain.PacchettoCrediti;
 import org.example.model.domain.TitoloAccesso;
 
 import java.time.LocalDate;
+import java.util.logging.Logger;
 
 public class PagamentoController {
-
+    private static final Logger logger = Logger.getLogger(PagamentoController.class.getName());
     // ==========================================================
     // 1. ACQUISTO CREDITI
     // ==========================================================
@@ -24,7 +25,7 @@ public class PagamentoController {
             DAOFactory.getInstance().getTitoloAccessoDAO().aggiornaCrediti(crediti);
             // --------------------
 
-            System.out.println("Aggiunti " + creditiDaAggiungere + " crediti. Pagamento con " + metodoPagamento);
+            logger.info("Aggiunti " + creditiDaAggiungere + " crediti. Pagamento con " + metodoPagamento);
             return true;
         } else {
             System.err.println("Errore: Il cliente non possiede una tessera a crediti su cui fare la ricarica.");
@@ -49,7 +50,7 @@ public class PagamentoController {
             cliente.setTitoloAccesso(nuovoAbbonamento);
             DAOFactory.getInstance().getTitoloAccessoDAO().salvaNuovo(nuovoAbbonamento, cliente.getClienteID());
 
-            System.out.println("Acquisto completato! Nuovo Abbonamento mensile assegnato a " + cliente.getNome());
+            logger.info("Acquisto completato! Nuovo Abbonamento mensile assegnato a " + cliente.getNome());
             return true;
         }
         return false;
@@ -73,7 +74,7 @@ public class PagamentoController {
                 // 2. Salviamo nel database passandogli l'oggetto forzato (abbonamento)
                 DAOFactory.getInstance().getTitoloAccessoDAO().aggiornaRinnovo(abbonamento);
 
-                System.out.println("Abbonamento prolungato di " + mesiDaAggiungere + " mesi.");
+                logger.info("Abbonamento prolungato di " + mesiDaAggiungere + " mesi.");
                 return true;
             } else {
                 System.err.println("Errore: Transazione rifiutata.");
@@ -87,7 +88,7 @@ public class PagamentoController {
     }
 
     private boolean elaboraTransazione(String metodoPagamento, int importo) {
-        System.out.println("Contattando il sistema per il pagamento di " + importo + " euro tramite " + metodoPagamento + "...");
+        logger.info("Contattando il sistema per il pagamento di " + importo + " euro tramite " + metodoPagamento + "...");
         return true;
     }
 

@@ -10,9 +10,10 @@ import org.example.model.domain.User;
 import org.example.model.dto.LoginDTO;
 
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 public class LoginController {
-
+    private static final Logger logger = Logger.getLogger(LoginController.class.getName());
     private static  LoginController instance;
     private User utenteAttivo;
     private  LoginController() {
@@ -29,11 +30,11 @@ public class LoginController {
 
     // Metodi di business
     public Boolean autenticaUtente(LoginDTO credenziali) {
-        System.out.println("Cerco nel DB: Email=" + credenziali.email() + " | Pass=" + credenziali.password());
+        logger.info("Cerco nel DB: Email=" + credenziali.email() + " | Pass=" + credenziali.password());
         // Chiediamo alla Factory il DAO corretto in base alla configurazione
         LoginDAO dao = DAOFactory.getInstance().getLoginDAO();
         User utenteTrovato = dao.trovaPerCredenziali(credenziali.email(), credenziali.password());
-        System.out.println("Risultato dal DAO: " + utenteTrovato);
+        logger.info("Risultato dal DAO: " + utenteTrovato);
         if (utenteTrovato == null) {
             return false;
         }

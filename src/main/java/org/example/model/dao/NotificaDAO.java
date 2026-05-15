@@ -14,4 +14,6 @@ public interface NotificaDAO {
 
     // 3. Aggiorna il DB quando l'utente legge il messaggio
     void segnaComeLetta(Notifica notifica);
+
+    void aggiornaStato(Notifica notifica);
 }

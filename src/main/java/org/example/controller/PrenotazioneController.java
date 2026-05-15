@@ -10,9 +10,10 @@ import org.example.model.dao.PrenotazioneDAO;
 import org.example.model.domain.*;
 
 import java.time.LocalDate;
+import java.util.logging.Logger;
 
 public class PrenotazioneController {
-
+    private static final Logger logger = Logger.getLogger(PrenotazioneController.class.getName());
     private StrategiaPrenotazione strategiaCorrente;
 
     // ==========================================================
@@ -82,7 +83,7 @@ public class PrenotazioneController {
 
         if (accetta) {
             prenotazione.accettataDaIstruttore();
-            System.out.println("Sistema: L'istruttore ha accettato. Cliente pronto per pagare.");
+            logger.info("Sistema: L'istruttore ha accettato. Cliente pronto per pagare.");
 
             // Creiamo e inviamo la notifica al CLIENTE (Successo)
             String testoOk = "L'istruttore ha accettato la tua richiesta per la lezione del " + prenotazione.getLezionePrenotata().getData() + ". Puoi procedere al pagamento.";
@@ -94,7 +95,7 @@ public class PrenotazioneController {
             // Liberiamo il posto fisicamente nella lezione
             Lezione lezione = prenotazione.getLezionePrenotata();
             lezione.setNumPostiPrenotati(lezione.getNumPostiPrenotati() - 1);
-            System.out.println("Sistema: L'istruttore ha rifiutato. Posto liberato.");
+            logger.info("Sistema: L'istruttore ha rifiutato. Posto liberato.");
 
             // Creiamo e inviamo la notifica al CLIENTE (Rifiuto)
             String testoNo = "Ci dispiace, l'istruttore ha rifiutato la lezione privata per il " + prenotazione.getLezionePrenotata().getData() + ".";

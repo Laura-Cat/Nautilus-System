@@ -1,12 +1,14 @@
 package org.example.controller;
 
+import org.example.model.dao.NotificaDAO;
 import org.example.model.domain.Notifica;
 import org.example.model.domain.User;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class NotificaController {
-
+    private static final Logger logger = Logger.getLogger(NotificaController.class.getName());
     /**
      * Recupera tutte le notifiche non lette per un dato utente (Cliente o Istruttore).
      */
@@ -21,9 +23,9 @@ public class NotificaController {
     public void apriNotifica(Notifica notifica) {
         if (!notifica.isLetta()) {
             notifica.segnaComeLetta();
-            System.out.println("Notifica aperta e segnata come letta: " + notifica.getMessaggio());
+            logger.info("Notifica aperta e segnata come letta: " + notifica.getMessaggio());
 
-            // Qui in futuro aggiungeremo: notificaDAO.aggiornaStato(notifica);
+            NotificaDAO.aggiornaStato(notifica);
         }
     }
 

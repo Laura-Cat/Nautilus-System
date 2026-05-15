@@ -1,9 +1,10 @@
 package org.example.model.domain;
 
 import java.time.LocalDate;
+import java.util.logging.Logger;
 
 public class AbbonamentoPeriodico extends TitoloAccesso {
-
+    private static final Logger logger = Logger.getLogger(AbbonamentoPeriodico.class.getName());
     private LocalDate dataInizio;
     private LocalDate dataFine;
 
@@ -21,7 +22,7 @@ public class AbbonamentoPeriodico extends TitoloAccesso {
 
     @Override
     public void registraAccesso(int costoInCrediti) {
-        System.out.println("Accesso registrato tramite abbonamento illimitato.");
+        logger.info("Accesso registrato tramite abbonamento illimitato.");
     }
 
     public void rinnova(int mesiDaAggiungere) {

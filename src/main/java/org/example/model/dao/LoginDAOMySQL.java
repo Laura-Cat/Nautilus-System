@@ -45,6 +45,9 @@ public class LoginDAOMySQL implements LoginDAO {
                         case AMMINISTRAZIONE:
                             // utente = DAOFactory.getInstance().getAmministratoreDAO().trovaPerId(idUtente);
                             break;
+
+                        default:
+                            throw new IllegalArgumentException("Errore: Ruolo utente non riconosciuto (" + ruolo + ")");
                     }
                 }
             }
