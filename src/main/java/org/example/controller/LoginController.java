@@ -50,7 +50,7 @@ public class LoginController {
                 DBConnectionFactory.changeRole(Ruolo.AMMINISTRAZIONE);
             }
         } catch (SQLException e) {
-            System.err.println("Errore DB durante il cambio ruolo: " + e.getMessage());
+            logger.severe("Errore DB durante il cambio ruolo: " + e.getMessage());
             this.utenteAttivo = null;
             return false;
         }
@@ -64,7 +64,7 @@ public class LoginController {
         try {
             DBConnectionFactory.changeRole(Ruolo.LOGIN);
         } catch (SQLException e) {
-            System.err.println("Errore DB durante il logout: " + e.getMessage());
+            logger.severe("Errore DB durante il logout: " + e.getMessage());
         }
     }
 

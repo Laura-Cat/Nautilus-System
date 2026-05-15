@@ -4,9 +4,11 @@ import org.example.model.domain.Corso;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class CorsoDAOMySQL implements CorsoDAO {
 
+    private static final Logger logger = Logger.getLogger(CorsoDAOMySQL.class.getName());
     @Override
     public List<Corso> recuperaCorsiAttivi() {
         List<Corso> lista = new ArrayList<>();
@@ -28,7 +30,7 @@ public class CorsoDAOMySQL implements CorsoDAO {
                 lista.add(c);
             }
         } catch (SQLException e) {
-            System.err.println("Errore recupero corsi: " + e.getMessage());
+            logger.severe("Errore recupero corsi: " + e.getMessage());
         }
         return lista;
     }

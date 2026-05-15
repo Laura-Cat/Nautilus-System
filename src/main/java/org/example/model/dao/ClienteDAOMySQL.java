@@ -7,9 +7,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.logging.Logger;
 
 public class ClienteDAOMySQL implements ClienteDAO {
-
+    private static final Logger logger = Logger.getLogger(ClienteDAOMySQL.class.getName());
     @Override
     public Cliente trovaPerId(Integer id) {
         Cliente cliente = null;
@@ -43,7 +44,7 @@ public class ClienteDAOMySQL implements ClienteDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Errore nel recupero del cliente tramite ID: " + e.getMessage());
+            logger.severe("Errore nel recupero del cliente tramite ID: " + e.getMessage());
         }
 
         return cliente;

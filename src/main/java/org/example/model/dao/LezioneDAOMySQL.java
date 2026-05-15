@@ -5,9 +5,10 @@ import org.example.model.domain.TipoAttivita;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class LezioneDAOMySQL implements LezioneDAO {
-
+    private static final Logger logger = Logger.getLogger(LezioneDAOMySQL.class.getName());
     @Override
     public List<Lezione> trovaPerTipoEData(TipoAttivita tipo, java.time.LocalDate data) {
         List<Lezione> lista = new ArrayList<>();
@@ -33,7 +34,7 @@ public class LezioneDAOMySQL implements LezioneDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Errore recupero lezioni: " + e.getMessage());
+            logger.severe("Errore recupero lezioni: " + e.getMessage());
         }
         return lista;
     }
@@ -49,7 +50,7 @@ public class LezioneDAOMySQL implements LezioneDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            System.err.println("Errore aggiornamento posti lezione: " + e.getMessage());
+            logger.severe("Errore aggiornamento posti lezione: " + e.getMessage());
         }
     }
 
@@ -83,7 +84,7 @@ public class LezioneDAOMySQL implements LezioneDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Errore nel recupero della lezione tramite ID: " + e.getMessage());
+            logger.severe("Errore nel recupero della lezione tramite ID: " + e.getMessage());
         }
         return lezione;
     }

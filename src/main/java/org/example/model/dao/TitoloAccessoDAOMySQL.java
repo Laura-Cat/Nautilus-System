@@ -5,9 +5,10 @@ import org.example.model.domain.PacchettoCrediti;
 import org.example.model.domain.AbbonamentoPeriodico;
 
 import java.sql.*;
+import java.util.logging.Logger;
 
 public class TitoloAccessoDAOMySQL implements TitoloAccessoDAO {
-
+    private static final Logger logger = Logger.getLogger(TitoloAccessoDAOMySQL.class.getName());
     @Override
     public void salvaNuovo(TitoloAccesso titolo, Integer idCliente) {
         String query = "INSERT INTO titoli_accesso (id_cliente, tipo_titolo, crediti_rimanenti, data_inizio, data_fine) VALUES (?, ?, ?, ?, ?)";
@@ -42,7 +43,7 @@ public class TitoloAccessoDAOMySQL implements TitoloAccessoDAO {
             }
 
         } catch (SQLException e) {
-            System.err.println("Errore durante il salvataggio del titolo: " + e.getMessage());
+            logger.severe("Errore durante il salvataggio del titolo: " + e.getMessage());
         }
     }
 
@@ -59,7 +60,7 @@ public class TitoloAccessoDAOMySQL implements TitoloAccessoDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            System.err.println("Errore durante l'aggiornamento dei crediti: " + e.getMessage());
+            logger.severe("Errore durante l'aggiornamento dei crediti: " + e.getMessage());
         }
     }
 
@@ -76,7 +77,7 @@ public class TitoloAccessoDAOMySQL implements TitoloAccessoDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            System.err.println("Errore durante il rinnovo dell'abbonamento: " + e.getMessage());
+            logger.severe("Errore durante il rinnovo dell'abbonamento: " + e.getMessage());
         }
     }
 

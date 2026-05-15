@@ -1,6 +1,9 @@
 package org.example.model.domain;
 
+import java.util.logging.Logger;
+
 public class PacchettoCrediti  extends TitoloAccesso{
+    private static final Logger logger = Logger.getLogger(PacchettoCrediti.class.getName());
     private Integer creditiRimanenti;
 
     public PacchettoCrediti(Integer titoloID, Integer creditiTotali) {
@@ -15,7 +18,7 @@ public class PacchettoCrediti  extends TitoloAccesso{
             this.creditiRimanenti -= costoInCrediti;
         } else {
             // Opzionale: potresti lanciare un'eccezione se uno cerca di scalare senza crediti
-            System.err.println("Errore: Crediti insufficienti!");
+            logger.severe("Errore: Crediti insufficienti!");
         }
     }
 

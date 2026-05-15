@@ -7,9 +7,11 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class NotificaDAOMySQL implements NotificaDAO {
-
+    
+    private static final Logger logger = Logger.getLogger(NotificaDAOMySQL.class.getName());
     @Override
     public void inserisci(Notifica notifica, Integer idDestinatario) {
         // La query SQL nuda e cruda. I punti interrogativi (?) sono i parametri.
@@ -28,7 +30,7 @@ public class NotificaDAOMySQL implements NotificaDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            System.err.println("Errore durante l'inserimento della notifica nel DB: " + e.getMessage());
+            logger.severe("Errore durante l'inserimento della notifica nel DB: " + e.getMessage());
         }
     }
 
@@ -53,7 +55,7 @@ public class NotificaDAOMySQL implements NotificaDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Errore durante il recupero delle notifiche: " + e.getMessage());
+            logger.severe("Errore durante il recupero delle notifiche: " + e.getMessage());
         }
         return notifiche;
     }
@@ -70,7 +72,7 @@ public class NotificaDAOMySQL implements NotificaDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            System.err.println("Errore durante l'aggiornamento della notifica: " + e.getMessage());
+            logger.severe("Errore durante l'aggiornamento della notifica: " + e.getMessage());
         }
     }
 }

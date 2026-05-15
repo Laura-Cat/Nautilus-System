@@ -26,7 +26,7 @@ public class PrenotazioneNuotoLiberoStrategy implements StrategiaPrenotazione {
         // 2. Controllo Posti Fisici in Corsia
         // Se non c'è posto non è un "errore dell'utente", quindi restituiamo semplicemente false
         if (lezione.getPostiDisponibili() <= 0) {
-            System.err.println("Errore: La corsia per il nuoto libero è attualmente al completo.");
+            logger.severe("Errore: La corsia per il nuoto libero è attualmente al completo.");
             return false;
         }
 

@@ -6,9 +6,10 @@ import org.example.model.domain.Lezione;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
-
+    private static final Logger logger = Logger.getLogger(PrenotazioneDAOMySQL.class.getName());
     @Override
     public void salva(Prenotazione p) {
         String query = "INSERT INTO prenotazioni (data_richiesta, stato, tipologia, id_cliente, id_lezione) VALUES (?, ?, ?, ?, ?)";
@@ -32,7 +33,7 @@ public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
             }
 
         } catch (SQLException e) {
-            System.err.println("Errore salvataggio prenotazione: " + e.getMessage());
+            logger.severe("Errore salvataggio prenotazione: " + e.getMessage());
         }
     }
 
@@ -49,7 +50,7 @@ public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            System.err.println("Errore aggiornamento stato prenotazione: " + e.getMessage());
+            logger.severe("Errore aggiornamento stato prenotazione: " + e.getMessage());
         }
     }
 
@@ -82,7 +83,7 @@ public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Errore recupero prenotazioni cliente: " + e.getMessage());
+            logger.severe("Errore recupero prenotazioni cliente: " + e.getMessage());
         }
         return lista;
     }
@@ -119,7 +120,7 @@ public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Errore nel recupero della prenotazione tramite ID: " + e.getMessage());
+            logger.severe("Errore nel recupero della prenotazione tramite ID: " + e.getMessage());
         }
         return prenotazione;
     }

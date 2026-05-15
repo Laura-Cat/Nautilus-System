@@ -7,9 +7,10 @@ import org.example.model.domain.Prenotazione;
 import org.example.model.domain.TitoloAccesso;
 
 import java.time.LocalDate;
+import java.util.logging.Logger;
 
 public class PrenotazionePrivataStrategy implements StrategiaPrenotazione {
-
+    private static final Logger logger = Logger.getLogger(PrenotazionePrivataStrategy.class.getName());
     private static final int COSTO_PRIVATA = 10;
 
 
@@ -24,7 +25,7 @@ public class PrenotazionePrivataStrategy implements StrategiaPrenotazione {
 
             // 2. Controllo posti fisici (massimo 1)
         if (lezione.getNumPostiPrenotati() >= 1) {
-                System.err.println("Errore: Lezione privata già occupata o richiesta in corso.");
+                logger.severe("Errore: Lezione privata già occupata o richiesta in corso.");
                 return false; // Fallimento logico, ma non è un'eccezione dei crediti
         }
 

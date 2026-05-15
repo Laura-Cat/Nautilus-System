@@ -28,7 +28,7 @@ public class PagamentoController {
             logger.info("Aggiunti " + creditiDaAggiungere + " crediti. Pagamento con " + metodoPagamento);
             return true;
         } else {
-            System.err.println("Errore: Il cliente non possiede una tessera a crediti su cui fare la ricarica.");
+            logger.severe("Errore: Il cliente non possiede una tessera a crediti su cui fare la ricarica.");
             return false;
         }
     }
@@ -77,12 +77,12 @@ public class PagamentoController {
                 logger.info("Abbonamento prolungato di " + mesiDaAggiungere + " mesi.");
                 return true;
             } else {
-                System.err.println("Errore: Transazione rifiutata.");
+                logger.severe("Errore: Transazione rifiutata.");
                 return false;
             }
 
         } else {
-            System.err.println("Errore: Il cliente non ha un abbonamento periodico da rinnovare.");
+            logger.severe("Errore: Il cliente non ha un abbonamento periodico da rinnovare.");
             return false;
         }
     }

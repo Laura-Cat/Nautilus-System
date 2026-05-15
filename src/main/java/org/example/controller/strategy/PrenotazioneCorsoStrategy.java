@@ -23,7 +23,7 @@ public class PrenotazioneCorsoStrategy implements StrategiaPrenotazione {
 
         // 2. Controllo Posti (restituisce false perché non è un errore dell'utente, è solo pieno)
         if (lezione.getPostiDisponibili() <= 0) {
-            System.err.println("Errore: Il corso è al completo.");
+            logger.severe("Errore: Il corso è al completo.");
             return false;
         }
 

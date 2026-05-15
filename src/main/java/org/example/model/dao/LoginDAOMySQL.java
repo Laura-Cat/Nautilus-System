@@ -7,9 +7,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 public class LoginDAOMySQL implements LoginDAO {
-
+    private static final Logger logger = Logger.getLogger(LoginDAOMySQL.class.getName());
     @Override
     public User trovaPerCredenziali(String email, String password) {
         User utente = null;
@@ -52,7 +53,7 @@ public class LoginDAOMySQL implements LoginDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Errore DAO: " + e.getMessage());
+            logger.severe("Errore DAO: " + e.getMessage());
         }
 
         return utente; // Ora non sarà più null (se le credenziali sono giuste)!

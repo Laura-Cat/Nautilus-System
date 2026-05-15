@@ -8,9 +8,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 public class DBConnectionFactory {
-
+    private static final Logger logger = Logger.getLogger( DBConnectionFactory.class.getName());
     private static DBConnectionFactory instance;
     private static String url;
     private static String username;
@@ -29,7 +30,7 @@ public class DBConnectionFactory {
 
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Errore di inizializzazione o file properties non trovato: " + e.getMessage());
+            logger.severe("Errore di inizializzazione o file properties non trovato: " + e.getMessage());
         }
     }
 
