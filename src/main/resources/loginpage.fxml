@@ -29,7 +29,7 @@
                     </children>
                 </VBox>
 
-                <Button mnemonicParsing="false" onAction="#bottoneAccediCliccato" styleClass="bottone-primario" text="ACCEDI" />
+                <Button fx:id="loginButton" mnemonicParsing="false" onAction="#bottoneAccediCliccato" styleClass="bottone-primario" text="ACCEDI" />
             </children>
         </VBox>
     </children>

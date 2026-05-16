@@ -58,7 +58,7 @@ public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
     public List<Prenotazione> trovaPerCliente(Cliente c) {
         List<Prenotazione> lista = new ArrayList<>();
         // Query semplice: in un progetto reale useremmo una JOIN, ma per ora teniamola base
-        String query = "SELECT * FROM prenotazioni WHERE id_cliente = ?";
+        String query = "SELECT id, data_richiesta, tipologia FROM prenotazioni WHERE id_cliente = ?";
 
         try (Connection conn = DBConnectionFactory.getInstance().createConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -91,7 +91,7 @@ public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
     public Prenotazione trovaPerId(Integer id) {
         Prenotazione prenotazione = null;
         // La query cerca la riga specifica tramite la chiave primaria
-        String query = "SELECT * FROM prenotazioni WHERE id = ?";
+        String query = "SELECT id, id_cliente, id_lezione, data_richiesta, tipologia, stato FROM prenotazioni WHERE id = ?";
 
         try (Connection conn = DBConnectionFactory.getInstance().createConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {

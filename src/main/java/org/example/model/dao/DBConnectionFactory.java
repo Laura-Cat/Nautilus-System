@@ -2,16 +2,17 @@ package org.example.model.dao;
 
 import org.example.model.domain.Ruolo;
 
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DBConnectionFactory {
-    private static final Logger logger = Logger.getLogger( DBConnectionFactory.class.getName());
+    private static final Logger logger = Logger.getLogger(DBConnectionFactory.class.getName());
     private static DBConnectionFactory instance;
     private static String url;
     private static String username;
@@ -20,17 +21,27 @@ public class DBConnectionFactory {
 
     private DBConnectionFactory() {
         props = new Properties();
-        try {
-            // Assicurati che il file si chiami esattamente così e sia nella cartella root del progetto
-            props.load(new FileInputStream("db.properties"));
 
+        // Questo è il modo corretto per leggere i file in un progetto Maven!
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("db.properties")) {
+
+            if (input == null) {
+                logger.severe("Attenzione: Impossibile trovare il file db.properties in src/main/resources!");
+                return;
+            }
+
+            props.load(input);
             url = props.getProperty("CONNECTION_URL");
+
+            // Impostiamo l'utente di base all'avvio
             username = props.getProperty("LOGIN_USER");
             password = props.getProperty("LOGIN_PASS");
 
             Class.forName("com.mysql.cj.jdbc.Driver");
+
         } catch (IOException | ClassNotFoundException e) {
-            logger.severe("Errore di inizializzazione o file properties non trovato: " + e.getMessage());
+            // Logger sistemato per SonarCloud!
+            logger.log(Level.SEVERE, "Errore di inizializzazione del Database", e);
         }
     }
 
@@ -41,31 +52,37 @@ public class DBConnectionFactory {
         return instance;
     }
 
-    // Il metodo che cambia utente leggendo dal TUO file properties
-    public static void changeRole(Ruolo nuovoRuolo) throws SQLException {
+    // Ora leggiamo le password in modo sicuro dal file properties
+    public void changeRole(Ruolo nuovoRuolo) {
         if (props == null) return;
 
         switch (nuovoRuolo) {
             case LOGIN:
-                username = "login_user";
-                password = "login_pass";
+                username = props.getProperty("LOGIN_USER");
+                password = props.getProperty("LOGIN_PASS");
                 break;
             case CLIENTE:
-                username = "cliente_user";
-                password = "cliente_pass";
+                username = props.getProperty("CLIENTE_USER");
+                password = props.getProperty("CLIENTE_PASS");
                 break;
             case ISTRUTTORE:
-                username = "istruttore_user";
-                password = "istruttore_pass";
+                username = props.getProperty("ISTRUTTORE_USER");
+                password = props.getProperty("ISTRUTTORE_PASS");
                 break;
             case AMMINISTRAZIONE:
-                username = "admin_user";
-                password = "admin_pass";
+                username = props.getProperty("AMMINISTRAZIONE_USER");
+                password = props.getProperty("AMMINISTRAZIONE_PASS");
+                break;
+            default: // Aggiunto il default per togliere l'altro Code Smell!
+                logger.warning("Ruolo non riconosciuto, impossibile cambiare credenziali.");
                 break;
         }
     }
 
     public Connection createConnection() throws SQLException {
+        if (url == null || username == null || password == null) {
+            throw new SQLException("Credenziali del database mancanti o file non letto correttamente.");
+        }
         return DriverManager.getConnection(url, username, password);
     }
 }

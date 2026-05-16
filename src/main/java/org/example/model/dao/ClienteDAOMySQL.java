@@ -2,10 +2,7 @@ package org.example.model.dao;
 
 import org.example.model.domain.Cliente;
 // Importa anche le classi del tuo DBConnectionFactory ecc.
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.logging.Logger;
 
@@ -24,19 +21,19 @@ public class ClienteDAOMySQL implements ClienteDAO {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    java.sql.Date sqlDate = rs.getDate("dataNascita");
-                    LocalDate dataNascita = (sqlDate != null) ? sqlDate.toLocalDate() : null;
+                    java.sql.Date sqlDateNascita = rs.getDate("data_nascita");
+                    LocalDate dataNascita = (sqlDateNascita != null) ? sqlDateNascita.toLocalDate() : null;
                     cliente = new Cliente(
                             rs.getString("cf"),
                             rs.getString("nome"),
                             rs.getString("cognome"),
                             dataNascita,
-                            rs.getString("luogoNascita"),
+                            rs.getString("luogo_nascita"),
                             rs.getString("indirizzo"),
                             rs.getString("email"),
                             rs.getString("password"),
                             id,                 // Questo è il clienteID
-                            rs.getBoolean("certificatoValido")
+                            rs.getBoolean("certificato_valido")
                     );
 
                     /* Se il cliente ha anche un Abbonamento da caricare,

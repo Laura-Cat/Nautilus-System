@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.model.dao.DAOFactory;
 import org.example.model.dao.NotificaDAO;
 import org.example.model.domain.Notifica;
 import org.example.model.domain.User;
@@ -25,7 +26,7 @@ public class NotificaController {
             notifica.segnaComeLetta();
             logger.info("Notifica aperta e segnata come letta: " + notifica.getMessaggio());
 
-            NotificaDAO.aggiornaStato(notifica);
+            DAOFactory.getInstance().getNotificaDAO().aggiornaStato(notifica);
         }
     }
 

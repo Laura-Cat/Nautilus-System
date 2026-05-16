@@ -12,7 +12,7 @@ public class CorsoDAOMySQL implements CorsoDAO {
     @Override
     public List<Corso> recuperaCorsiAttivi() {
         List<Corso> lista = new ArrayList<>();
-        String query = "SELECT * FROM corsi WHERE stato_attivita = 'Attivo'";
+        String query = "SELECT nome, stato_attivita, data_inizio, id, num_posti, descrizione FROM corsi WHERE stato_attivita = 'Attivo'";
 
         try (Connection conn = DBConnectionFactory.getInstance().createConnection();
              PreparedStatement stmt = conn.prepareStatement(query);

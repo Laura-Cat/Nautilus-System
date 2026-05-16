@@ -8,15 +8,25 @@ USE nautilus_db;
 -- 2. CREAZIONE DELLE TABELLE (DOMAIN MODEL MAPPING)
 -- ==============================================================================
 
--- Tabella Ruoli (utile per referenza, 1=Admin, 2=Istruttore, 3=Cliente, 4=Login)
+
+-- SET FOREIGN_KEY_CHECKS = 0; -- Disabilita il controllo delle chiavi esterne
+
+DROP TABLE IF EXISTS utenti; -- Ora puoi cancellarla senza problemi!
+DROP TABLE IF EXISTS titoli_accesso;
+DROP TABLE IF EXISTS lezioni;
+DROP TABLE IF EXISTS ruoli;
+DROP TABLE IF EXISTS corsie;
+DROP TABLE IF EXISTS corsi;
+DROP TABLE IF EXISTS prenotazioni;
+DROP TABLE IF EXISTS notifiche;
+DROP TABLE IF EXISTS pagamenti;
+
+-- SET FOREIGN_KEY_CHECKS = 1; -- Riabilita il controllo (MOLTO IMPORTANTE)
+
 CREATE TABLE ruoli (
     id INT PRIMARY KEY,
     nome_ruolo VARCHAR(50) NOT NULL
 );
-
-INSERT INTO ruoli (id, nome_ruolo) VALUES 
-(1, 'AMMINISTRAZIONE'), (2, 'ISTRUTTORE'), (3, 'CLIENTE'), (4, 'LOGIN');
-
 -- Tabella Utenti (Pattern Single Table Inheritance per User, Cliente e Istruttore)
 CREATE TABLE utenti (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -36,7 +46,7 @@ CREATE TABLE utenti (
     FOREIGN KEY (id_ruolo) REFERENCES ruoli(id)
 );
 
--- Tabella Titoli di Accesso (Pacchetti Crediti e Abbonamenti Periodici)
+
 CREATE TABLE titoli_accesso (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_cliente INT NOT NULL,
@@ -48,6 +58,7 @@ CREATE TABLE titoli_accesso (
 );
 
 -- Tabella Corsie
+
 CREATE TABLE corsie (
     id INT AUTO_INCREMENT PRIMARY KEY,
     numero_corsia INT NOT NULL UNIQUE,
@@ -55,6 +66,7 @@ CREATE TABLE corsie (
 );
 
 -- Tabella Corsi
+
 CREATE TABLE corsi (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
@@ -63,6 +75,7 @@ CREATE TABLE corsi (
     num_posti INT NOT NULL,
     descrizione TEXT
 );
+
 
 -- Tabella Lezioni
 CREATE TABLE lezioni (
@@ -80,7 +93,19 @@ CREATE TABLE lezioni (
     FOREIGN KEY (id_corsia) REFERENCES corsie(id)
 );
 
+
+
+
+INSERT INTO ruoli (id, nome_ruolo) VALUES 
+(1, 'AMMINISTRAZIONE'), (2, 'ISTRUTTORE'), (3, 'CLIENTE'), (4, 'LOGIN');
+
+
+
+
+
+
 -- Tabella Prenotazioni
+
 CREATE TABLE prenotazioni (
     id INT AUTO_INCREMENT PRIMARY KEY,
     data_richiesta DATE NOT NULL,
@@ -93,6 +118,7 @@ CREATE TABLE prenotazioni (
 );
 
 -- Tabella Notifiche
+
 CREATE TABLE notifiche (
     id INT AUTO_INCREMENT PRIMARY KEY,
     messaggio TEXT NOT NULL,
@@ -103,6 +129,7 @@ CREATE TABLE notifiche (
 );
 
 -- Tabella Pagamenti
+
 CREATE TABLE pagamenti (
     id_transazione VARCHAR(50) PRIMARY KEY,
     importo DECIMAL(10,2) NOT NULL,
@@ -147,7 +174,7 @@ GRANT SELECT, INSERT, UPDATE ON nautilus_db.notifiche TO 'istruttore_user'@'loca
 
 -- D. UTENTE AMMINISTRATORE
 DROP USER IF EXISTS 'admin_user'@'localhost';
-CREATE USER IF NOT EXISTS 'admin_user'@'localhost' I IDENTIFIED WITH mysql_native_password BY  'admin_pass';
+CREATE USER IF NOT EXISTS 'admin_user'@'localhost' IDENTIFIED WITH mysql_native_password BY  'admin_pass';
 GRANT ALL PRIVILEGES ON nautilus_db.* TO 'admin_user'@'localhost';
 
 GRANT SELECT ON nautilus_db.* TO 'login_user'@'localhost';
@@ -185,4 +212,4 @@ VALUES ('CF456', 'Marco', 'Trainer', 'trainer@test.it', '1234', 2);
 
 -- Inseriamo un Admin (id_ruolo = 1)
 INSERT INTO utenti (cf, nome, cognome, email, password, id_ruolo)
-VALUES ('CF789', 'Admin', 'Boss', 'admin@test.it', '1234', 1)clien
+VALUES ('CF789', 'Admin', 'Boss', 'admin@test.it', '1234', 1);

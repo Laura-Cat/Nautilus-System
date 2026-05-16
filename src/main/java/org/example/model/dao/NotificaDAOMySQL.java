@@ -75,4 +75,26 @@ public class NotificaDAOMySQL implements NotificaDAO {
             logger.severe("Errore durante l'aggiornamento della notifica: " + e.getMessage());
         }
     }
+    @Override
+    public void aggiornaStato(Notifica notifica) {
+        // La query aggiorna solo lo stato 'letta' della notifica specifica
+        String query = "UPDATE notifiche SET letta = ? WHERE id = ?";
+
+        try (Connection conn = DBConnectionFactory.getInstance().createConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            // 1. Impostiamo il nuovo stato (true/false)
+            // Assumo che la tua classe Notifica abbia un metodo isLetta() o getLetta()
+            stmt.setBoolean(1, notifica.isLetta());
+
+            // 2. Indichiamo l'ID esatto della notifica da modificare
+            stmt.setInt(2, notifica.getId());
+
+        } catch (SQLException e) {
+            // Manteniamo la stampa per noi programmatori in caso di problemi col DB
+            System.err.println("Errore DAO durante l'aggiornamento della notifica: " + e.getMessage());
+        }
+
+    }
+
 }

@@ -31,41 +31,32 @@ public class LoginController {
     // Metodi di business
     public Boolean autenticaUtente(LoginDTO credenziali) {
         logger.info("Cerco nel DB: Email=" + credenziali.email() + " | Pass=" + credenziali.password());
+
         // Chiediamo alla Factory il DAO corretto in base alla configurazione
         LoginDAO dao = DAOFactory.getInstance().getLoginDAO();
         User utenteTrovato = dao.trovaPerCredenziali(credenziali.email(), credenziali.password());
+
         logger.info("Risultato dal DAO: " + utenteTrovato);
+
         if (utenteTrovato == null) {
             return false;
         }
 
         this.utenteAttivo = utenteTrovato;
-
-        try {
-            if (utenteTrovato instanceof Istruttore) {
-                DBConnectionFactory.changeRole(Ruolo.ISTRUTTORE);
-            } else if (utenteTrovato instanceof Cliente) {
-                DBConnectionFactory.changeRole(Ruolo.CLIENTE);
-            } else {
-                DBConnectionFactory.changeRole(Ruolo.AMMINISTRAZIONE);
-            }
-        } catch (SQLException e) {
-            logger.severe("Errore DB durante il cambio ruolo: " + e.getMessage());
-            this.utenteAttivo = null;
-            return false;
+        if (utenteTrovato instanceof Istruttore) {
+            DBConnectionFactory.getInstance().changeRole(Ruolo.ISTRUTTORE);
+        } else if (utenteTrovato instanceof Cliente) {
+            DBConnectionFactory.getInstance().changeRole(Ruolo.CLIENTE);
+        } else {
+            DBConnectionFactory.getInstance().changeRole(Ruolo.AMMINISTRAZIONE);
         }
+
         return true;
     }
 
     public void effettuaLogout() {
         this.utenteAttivo = null;
-
-        // Ripristiniamo la connessione "base" per permettere ad altri di loggarsi
-        try {
-            DBConnectionFactory.changeRole(Ruolo.LOGIN);
-        } catch (SQLException e) {
-            logger.severe("Errore DB durante il logout: " + e.getMessage());
-        }
+        DBConnectionFactory.getInstance().changeRole(Ruolo.LOGIN);
     }
 
     // Getter

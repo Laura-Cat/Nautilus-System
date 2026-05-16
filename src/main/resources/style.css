@@ -1,7 +1,9 @@
 /* Colore di sfondo di tutta l'applicazione (Azzurro chiarissimo) */
 .sfondo-principale {
     /* Sfumatura diagonale dall'azzurro Nautilus al bianco */
-    -fx-background-color: linear-gradient(to bottom right, #C9E4FF, #FFFFFF);
+    /*-fx-background-color: linear-gradient(to bottom right, #C9E4FF, #FFFFFF);*/
+    -fx-background-image: url('piscina.jpg'); -fx-background-size: cover; -fx-background-position: center center;
+
 }
 
 /* La carta bianca al centro con l'ombra */

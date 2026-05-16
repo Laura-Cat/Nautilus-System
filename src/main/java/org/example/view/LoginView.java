@@ -57,17 +57,17 @@ public class LoginView{
 
                 // 3. IL VIGILE URBANO: Scegliamo quale View caricare
                 if (utenteLoggato instanceof Cliente) {
-                    fileFxmlDaCaricare = "/cliente_view.fxml";
+                    fileFxmlDaCaricare = "/clientePage.fxml";
                 }
                 else if (utenteLoggato instanceof Istruttore) {
-                    fileFxmlDaCaricare = "/istruttore_view.fxml";
+                    fileFxmlDaCaricare = "/istruttorePage.fxml";
                 }
                 else {
-                    fileFxmlDaCaricare = "/admin_view.fxml";
+                    fileFxmlDaCaricare = "/adminPage.fxml";
                 }
 
                 // 4. Carichiamo la nuova finestra
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(fileFxmlDaCaricare));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientePage.fxml"));
                 Parent root = loader.load();
 
                 // 5. Cambiamo la scenografia prendendo la finestra attuale dal bottone
