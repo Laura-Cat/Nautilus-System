@@ -76,7 +76,7 @@ public class LoginView{
                 stage.show();
 
             } catch (Exception e) {
-                e.printStackTrace();
+
                 mostraPopupErrore("Error", " Errore nel caricamento della schermata successiva!");
             }
         } else {

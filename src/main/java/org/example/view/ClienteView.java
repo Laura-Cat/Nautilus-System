@@ -11,12 +11,14 @@ import javafx.stage.Stage;
 import org.example.controller.LoginController; // Il tuo backend controller
 import org.example.model.domain.Cliente;
 import org.example.model.domain.User;
-
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class ClienteView{
-
+    private static final Logger logger = Logger.getLogger(ClienteView.class.getName());
     @FXML private Label labelNomeCliente;
     @FXML private javafx.scene.layout.StackPane contentArea;
     @FXML private BorderPane mainPane;
@@ -56,8 +58,7 @@ public class ClienteView{
             mainPane.setCenter(palinsestoNode);
 
         } catch (IOException e) {
-            System.err.println("Errore nel caricamento del Palinsesto: " + e.getMessage());
-            e.printStackTrace();
+            logger.severe("Errore nel caricamento del Palinsesto");
         }
     }
 }

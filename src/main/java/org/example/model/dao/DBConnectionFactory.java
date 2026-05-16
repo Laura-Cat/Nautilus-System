@@ -14,10 +14,10 @@ import java.util.logging.Logger;
 public class DBConnectionFactory {
     private static final Logger logger = Logger.getLogger(DBConnectionFactory.class.getName());
     private static DBConnectionFactory instance;
-    private static String url;
-    private static String username;
-    private static String password;
-    private static Properties props;
+    private  String url;
+    private  String username;
+    private  String password;
+    private  Properties props;
 
     private DBConnectionFactory() {
         props = new Properties();
