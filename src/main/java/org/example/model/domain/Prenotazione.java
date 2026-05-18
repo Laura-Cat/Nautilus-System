@@ -8,13 +8,13 @@ public class Prenotazione {
     private Integer id;
     private LocalDate dataRichiesta;
     private String stato;
-    private String tipologia;
+    private TipoAttivita tipologia;
     private Cliente cliente;
     private Lezione lezionePrenotata;
     private Corsia corsiaPrenotata;
 
     // Costruttore
-    public Prenotazione(Integer id, LocalDate dataRichiesta, String tipologia, Cliente cliente) {
+    public Prenotazione(Integer id, LocalDate dataRichiesta, TipoAttivita tipologia, Cliente cliente) {
         this.id = id;
         this.dataRichiesta = dataRichiesta;
         this.tipologia = tipologia;
@@ -27,15 +27,12 @@ public class Prenotazione {
     public void conferma() {
         this.stato = "Confermata";
     }
-
     public void rifiuta() {
         this.stato = "Rifiutata";
     }
-
     public Boolean inAttesa() {
         return "In Attesa".equalsIgnoreCase(this.stato);
     }
-
     // Getter Setter
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
@@ -58,8 +55,8 @@ public class Prenotazione {
         return "Accettata - In attesa di pagamento".equalsIgnoreCase(this.stato);
     }
 
-    public String getTipologia() { return tipologia; }
-    public void setTipologia(String tipologia) { this.tipologia = tipologia; }
+    public TipoAttivita getTipologia() { return tipologia; }
+    public void setTipologia(TipoAttivita tipologia) { this.tipologia = tipologia; }
 
     public Cliente getCliente() { return cliente; }
     public void setCliente(Cliente cliente) { this.cliente = cliente; }
@@ -73,8 +70,9 @@ public class Prenotazione {
     public String getStato() {
         return stato;
     }
-
     public void setStato(String stato) {
         this.stato = stato;
     }
+
+
 }

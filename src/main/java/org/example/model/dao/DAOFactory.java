@@ -1,5 +1,8 @@
 package org.example.model.dao;
 
+import org.example.model.dao.Interface.*;
+import org.example.model.dao.db.*;
+
 public class DAOFactory {
     private static DAOFactory instance;
     private PersistenceType tipoCorrente;

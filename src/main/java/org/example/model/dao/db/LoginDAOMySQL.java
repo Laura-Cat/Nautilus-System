@@ -1,5 +1,7 @@
-package org.example.model.dao;
+package org.example.model.dao.db;
 
+import org.example.model.dao.DAOFactory;
+import org.example.model.dao.Interface.LoginDAO;
 import org.example.model.domain.Ruolo;
 import org.example.model.domain.User;
 

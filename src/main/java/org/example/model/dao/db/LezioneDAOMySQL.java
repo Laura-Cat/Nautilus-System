@@ -1,5 +1,6 @@
-package org.example.model.dao;
+package org.example.model.dao.db;
 
+import org.example.model.dao.Interface.LezioneDAO;
 import org.example.model.domain.Lezione;
 import org.example.model.domain.TipoAttivita;
 import java.sql.*;
@@ -46,7 +47,7 @@ public class LezioneDAOMySQL implements LezioneDAO {
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, lezione.getNumPostiPrenotati());
-            stmt.setInt(2, lezione.getIDLezione());
+            stmt.setInt(2, lezione.getIdLezione());
             stmt.executeUpdate();
 
         } catch (SQLException e) {

@@ -7,58 +7,77 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.example.controller.LoginController; // Il tuo backend controller
+import org.example.controller.LoginController;
 import org.example.model.domain.Cliente;
 import org.example.model.domain.User;
-import java.awt.event.ActionEvent;
+
+import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+public class ClienteView {
 
-public class ClienteView{
     private static final Logger logger = Logger.getLogger(ClienteView.class.getName());
     @FXML private Label labelNomeCliente;
-    @FXML private javafx.scene.layout.StackPane contentArea;
-    @FXML private BorderPane mainPane;
+    @FXML private StackPane contentArea;
+    @FXML private VBox sottoMenuPrenotazioni;
+
     @FXML
     public void initialize() {
-        // Recuperiamo l'utente che è appena entrato dal Singleton del backend
         User utente = LoginController.getInstance().getUtenteAttivo();
-
         if (utente instanceof Cliente) {
             Cliente c = (Cliente) utente;
             labelNomeCliente.setText("Ciao, " + c.getNome());
         }
     }
 
+    // FA APRIRE/CHIUDERE LA TENDINA
     @FXML
-    public void logout() throws IOException {
-        // 1. Puliamo la sessione nel backend
-        LoginController.getInstance().effettuaLogout();
+    public void cliccaPrenotaLezione(ActionEvent event) {
+        boolean isAperto = sottoMenuPrenotazioni.isVisible();
+        sottoMenuPrenotazioni.setVisible(!isAperto);
+        sottoMenuPrenotazioni.setManaged(!isAperto);
+    }
 
-        // 2. Torniamo al Login
-        Parent root = FXMLLoader.load(getClass().getResource("/loginpage.fxml"));
-        Stage stage = (Stage) labelNomeCliente.getScene().getWindow();
-        stage.setScene(new Scene(root));
-        stage.show();
+    // AZIONI DEI 3 BOTTONCINI DEL SOTTOMENU
+
+    // Funzione comodità per non ripetere il codice di caricamento 3 volte
+    private void caricaPaginaAlCentro(String fxmlPath) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Node nuovaPagina = loader.load();
+            contentArea.getChildren().setAll(nuovaPagina);
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Errore caricamento pagina: " + fxmlPath, e);
+        }
     }
 
     @FXML
-    public void cliccaPrenotaLezione(ActionEvent event) {
-        try {
-            // Carica il "mattoncino" del palinsesto
-            // Assicurati che il percorso del file sia esatto!
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/palinsestoPage.fxml"));
-            Node palinsestoNode = loader.load();
+    public void sceltaCorso(ActionEvent event) {
+        caricaPaginaAlCentro("/fxml/corsiPage.fxml");
+    }
 
-            // Magia: prendi il mattoncino e incastralo al centro della finestra!
-            // Questo farà sparire in automatico la scritta "Seleziona un'operazione..."
-            mainPane.setCenter(palinsestoNode);
+    @FXML
+    public void sceltaLezionePrivata(ActionEvent event) {
+        caricaPaginaAlCentro("/fxml/privatePage.fxml");
+    }
 
-        } catch (IOException e) {
-            logger.severe("Errore nel caricamento del Palinsesto");
-        }
+    @FXML
+    public void sceltaNuotoLibero(ActionEvent event) {
+        caricaPaginaAlCentro("/fxml/nuotoLiberoPage.fxml");
+    }
+    // ----------------------------------------------
+
+    @FXML
+    public void logout() throws IOException {
+        LoginController.getInstance().effettuaLogout();
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/loginpage.fxml"));
+        Stage stage = (Stage) labelNomeCliente.getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 }

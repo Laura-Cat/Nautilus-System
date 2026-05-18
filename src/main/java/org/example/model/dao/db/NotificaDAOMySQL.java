@@ -1,5 +1,6 @@
-package org.example.model.dao;
+package org.example.model.dao.db;
 
+import org.example.model.dao.Interface.NotificaDAO;
 import org.example.model.domain.Notifica;
 import org.example.model.domain.User;
 

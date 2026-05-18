@@ -1,4 +1,4 @@
-package org.example.model.dao;
+package org.example.model.dao.db;
 
 import org.example.model.domain.Ruolo;
 

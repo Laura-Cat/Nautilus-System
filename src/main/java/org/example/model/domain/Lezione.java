@@ -28,7 +28,7 @@ public class Lezione {
     }
 
     // Getter e Setter
-    public Integer getIDLezione() {
+    public Integer getIdLezione() {
         return idLezione;
     }
     public void setIdLezione(Integer idLezione) {

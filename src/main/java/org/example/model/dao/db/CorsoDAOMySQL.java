@@ -1,5 +1,6 @@
-package org.example.model.dao;
+package org.example.model.dao.db;
 
+import org.example.model.dao.Interface.CorsoDAO;
 import org.example.model.domain.Corso;
 import java.sql.*;
 import java.util.ArrayList;

@@ -1,7 +1,6 @@
 package org.example.controller;
 
 import org.example.model.dao.DAOFactory;
-import org.example.model.dao.NotificaDAO;
 import org.example.model.domain.Notifica;
 import org.example.model.domain.User;
 

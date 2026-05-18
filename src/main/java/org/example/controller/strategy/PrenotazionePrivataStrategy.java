@@ -1,10 +1,7 @@
 package org.example.controller.strategy;
 
 import org.example.exception.CreditiInsufficientiException;
-import org.example.model.domain.Cliente;
-import org.example.model.domain.Lezione;
-import org.example.model.domain.Prenotazione;
-import org.example.model.domain.TitoloAccesso;
+import org.example.model.domain.*;
 
 import java.time.LocalDate;
 import java.util.logging.Logger;
@@ -30,7 +27,7 @@ public class PrenotazionePrivataStrategy implements StrategiaPrenotazione {
         }
 
             // 3. Creiamo la prenotazione "congelata"
-        Prenotazione p = new Prenotazione(null, LocalDate.now(), "PRIVATA", cliente);
+        Prenotazione p = new Prenotazione(null, LocalDate.now(), TipoAttivita.PRIVATA, cliente);
         p.setLezionePrenotata(lezione);
         p.setCorsiaPrenotata(lezione.getCorsiaAssegnata());
 

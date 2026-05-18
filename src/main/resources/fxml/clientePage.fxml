@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?language java?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane fx:id="mainPane" stylesheets="@../style/styleCliente.css" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.ClienteView">
+    <left>
+        <VBox spacing="10" styleClass="sidebar">
+            <children>
+                <Label fx:id="labelNomeCliente" styleClass="testo-benvenuto" text="Benvenuto!" />
+                <Separator />
+
+                <Button fx:id="btnPrenotaLezione" maxWidth="Infinity" onAction="#cliccaPrenotaLezione" text="Prenota Lezione" />
+
+                <VBox fx:id="sottoMenuPrenotazioni" visible="false" managed="false" spacing="5">
+                    <padding>
+                        <Insets left="15.0" />
+                    </padding>
+                    <children>
+                        <Button maxWidth="Infinity" onAction="#sceltaNuotoLibero" styleClass="bottone-sottomenu" text="🏊 Nuoto Libero" />
+                        <Button maxWidth="Infinity" onAction="#sceltaLezionePrivata" styleClass="bottone-sottomenu" text="🤝 Lezione Privata" />
+                        <Button maxWidth="Infinity" onAction="#sceltaCorso" styleClass="bottone-sottomenu" text="🗓️ Corso di Gruppo" />
+                    </children>
+                </VBox>
+
+                <Button fx:id="btnAbbonamenti" maxWidth="Infinity" text="Miei Abbonamenti" />
+
+                <Region VBox.vgrow="ALWAYS" />
+
+                <Button fx:id="btnLogout" maxWidth="Infinity" onAction="#logout" text="Logout" />
+            </children>
+        </VBox>
+    </left>
+    <center>
+        <StackPane fx:id="contentArea">
+            <children>
+                <Label text="Seleziona un'operazione dal menu a sinistra" />
+            </children>
+        </StackPane>
+    </center>
+</BorderPane>

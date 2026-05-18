@@ -1,4 +1,4 @@
-package org.example.model.dao;
+package org.example.model.dao.Interface;
 
 import org.example.model.domain.Notifica;
 import org.example.model.domain.User;

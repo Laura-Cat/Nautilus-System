@@ -10,13 +10,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.geometry.Insets?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" styleClass="sfondo-principale" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.LoginView">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" styleClass="sfondo-principale" stylesheets="@../style/styleLogin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.LoginView">
     <children>
         <VBox alignment="CENTER" layoutX="250.0" layoutY="100.0" prefHeight="400.0" prefWidth="320.0" spacing="25.0" styleClass="pannello-login">
             <children>
                 <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@logo.png" />
+                        <Image url="@../icone/logo.png" />
                     </image>
                 </ImageView>
 

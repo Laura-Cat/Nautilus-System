@@ -9,7 +9,7 @@ USE nautilus_db;
 -- ==============================================================================
 
 
--- SET FOREIGN_KEY_CHECKS = 0; -- Disabilita il controllo delle chiavi esterne
+SET FOREIGN_KEY_CHECKS = 0; -- Disabilita il controllo delle chiavi esterne
 
 DROP TABLE IF EXISTS utenti; -- Ora puoi cancellarla senza problemi!
 DROP TABLE IF EXISTS titoli_accesso;
@@ -21,7 +21,7 @@ DROP TABLE IF EXISTS prenotazioni;
 DROP TABLE IF EXISTS notifiche;
 DROP TABLE IF EXISTS pagamenti;
 
--- SET FOREIGN_KEY_CHECKS = 1; -- Riabilita il controllo (MOLTO IMPORTANTE)
+SET FOREIGN_KEY_CHECKS = 1; -- Riabilita il controllo (MOLTO IMPORTANTE)
 
 CREATE TABLE ruoli (
     id INT PRIMARY KEY,
@@ -213,3 +213,68 @@ VALUES ('CF456', 'Marco', 'Trainer', 'trainer@test.it', '1234', 2);
 -- Inseriamo un Admin (id_ruolo = 1)
 INSERT INTO utenti (cf, nome, cognome, email, password, id_ruolo)
 VALUES ('CF789', 'Admin', 'Boss', 'admin@test.it', '1234', 1);
+
+-- ==========================================================
+-- 1. POPOLAMENTO TABELLA UTENTI (Istruttori id_ruolo=2, Clienti id_ruolo=3)
+-- ==========================================================
+INSERT INTO utenti ( cf, nome, cognome, data_nascita, luogo_nascita, indirizzo, email, password, id_ruolo, certificato_valido, specializzazione)
+VALUES 
+-- ISTRUTTORI (id_ruolo = 2, compilano la specializzazione)
+('RSSMRA75A01H501Z', 'Mario', 'Rossi', '1975-01-01', 'Roma', 'Via delle Rose 12', 'mario.rossi@piscina.it', 'password123', 2, FALSE, 'Perfezionamento Stile Libero e Agonismo'),
+('BNCELN88M41H501Y', 'Elena', 'Bianchi', '1988-08-20', 'Milano', 'Corso Italia 45', 'elena.bianchi@piscina.it', 'password123', 2, FALSE, 'AcquaGym e Hydrobike'),
+
+-- CLIENTI (id_ruolo = 3, compilano il certificato_valido)
+('VRDGLC95A15H501X', 'Gianluca', 'Verdi', '1995-03-15', 'Napoli', 'Via Napoli 8', 'verdi@email.com', '1234', 3, TRUE, NULL),
+('GLLNNA00A41H501W', 'Anna', 'Gialli', '2000-01-01', 'Firenze', 'Via Firenze 99', 'gialli@email.com', 'password123', 3, TRUE, NULL);
+
+
+-- ==========================================================
+-- 2. POPOLAMENTO TABELLA TITOLI_ACCESSO (Legati ai Clienti)
+-- ==========================================================
+INSERT INTO titoli_accesso (id, id_cliente, tipo_titolo, crediti_rimanenti, data_inizio, data_fine)
+VALUES 
+(1, 3, 'PACCHETTO_CREDITI', 10, '2026-05-01', '2026-08-01'), -- Gianluca (id=3) ha 10 crediti: prenotazione OK!
+(2, 4, 'PACCHETTO_CREDITI', 0, '2026-05-01', '2026-08-01');  -- Anna (id=4) ha 0 crediti: farà scattare la tua CreditiInsufficientiException!
+
+
+-- ==========================================================
+-- 3. POPOLAMENTO TABELLA CORSIE (Usa numero_corsia e capienza_massima)
+-- ==========================================================
+INSERT INTO corsie (id, numero_corsia, capienza_massima)
+VALUES 
+(1, 1, 5),
+(2, 2, 5),
+(3, 3, 5);
+
+
+-- ==========================================================
+-- 4. POPOLAMENTO TABELLA CORSI
+-- ==========================================================
+INSERT INTO corsi (id, nome, stato_attivita, data_inizio, num_posti, descrizione)
+VALUES 
+(1, 'AcquaGym', 'Attività', '2026-01-10', 15, 'Attività aerobica in acqua media a ritmo di musica'),
+(2, 'Scuola Nuoto Adulti', 'Attività', '2026-01-15', 12, 'Corso di nuoto per livelli principiante e intermedio');
+
+
+-- ==========================================================
+-- 5. POPOLAMENTO TABELLA LEZIONI (Fasce orarie coordinate per tipo_attivita)
+-- ==========================================================
+INSERT INTO lezioni (id, data, ora_inizio, ora_fine, num_posti_prenotati, tipo_attivita, id_istruttore, id_corso, id_corsia)
+VALUES 
+-- --- NUOTO LIBERO (id_istruttore e id_corso sono NULL, legati alla corsia) ---
+-- Turni per Oggi (18 Maggio 2026)
+(1, '2026-05-18', '09:00:00', '10:00:00', 2, 'NUOTO_LIBERO', NULL, NULL, 1), -- 3 posti liberi in Corsia 1
+(2, '2026-05-18', '10:00:00', '11:00:00', 5, 'NUOTO_LIBERO', NULL, NULL, 2), -- ESAURITO (5 su 5) in Corsia 2
+(3, '2026-05-18', '11:00:00', '12:00:00', 0, 'NUOTO_LIBERO', NULL, NULL, 1), -- Completamente vuoto
+
+-- Turni per Domani (19 Maggio 2026)
+(4, '2026-05-19', '09:00:00', '10:00:00', 1, 'NUOTO_LIBERO', NULL, NULL, 2),
+(5, '2026-05-19', '15:00:00', '16:00:00', 0, 'NUOTO_LIBERO', NULL, NULL, 1),
+
+-- --- CORSI DI GRUPPO (id_istruttore, id_corso e id_corsia tutti compilati) ---
+(6, '2026-05-18', '18:00:00', '19:00:00', 10, 'CORSO', 2, 1, 3), -- AcquaGym con Elena (id_istruttore=2) in Corsia 3
+(7, '2026-05-19', '13:00:00', '14:00:00', 4, 'CORSO', 1, 2, 1),  -- Scuola Nuoto con Mario (id_istruttore=1) in Corsia 1
+
+-- --- LEZIONI PRIVATE (id_corso è NULL, id_istruttore e id_corsia compilati) ---
+(8, '2026-05-18', '14:00:00', '15:00:00', 0, 'PRIVATA', 1, NULL, 1), -- Slot privato Libero con Mario
+(9, '2026-05-19', '10:00:00', '11:00:00', 1, 'PRIVATA', 2, NULL, 2); -- Slot privato Occupato con Elena

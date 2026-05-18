@@ -1,5 +1,6 @@
-package org.example.model.dao;
+package org.example.model.dao.db;
 
+import org.example.model.dao.Interface.ClienteDAO;
 import org.example.model.domain.Cliente;
 // Importa anche le classi del tuo DBConnectionFactory ecc.
 import java.sql.*;

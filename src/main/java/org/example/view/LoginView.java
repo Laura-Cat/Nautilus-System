@@ -14,7 +14,7 @@ import javafx.scene.control.TextField;
 import org.example.model.domain.Cliente;
 import org.example.model.domain.Istruttore;
 import org.example.model.domain.User;
-import org.example.model.dto.LoginDTO;
+import org.example.model.bean.LoginDTO;
 
 public class LoginView{
 
@@ -57,17 +57,17 @@ public class LoginView{
 
                 // 3. IL VIGILE URBANO: Scegliamo quale View caricare
                 if (utenteLoggato instanceof Cliente) {
-                    fileFxmlDaCaricare = "/clientePage.fxml";
+                    fileFxmlDaCaricare = "/fxml/clientePage.fxml";
                 }
                 else if (utenteLoggato instanceof Istruttore) {
-                    fileFxmlDaCaricare = "/istruttorePage.fxml";
+                    fileFxmlDaCaricare = "/fxml/istruttorePage.fxml";
                 }
                 else {
-                    fileFxmlDaCaricare = "/adminPage.fxml";
+                    fileFxmlDaCaricare = "/fxml/adminPage.fxml";
                 }
 
                 // 4. Carichiamo la nuova finestra
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientePage.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/clientePage.fxml"));
                 Parent root = loader.load();
 
                 // 5. Cambiamo la scenografia prendendo la finestra attuale dal bottone

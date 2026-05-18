@@ -1,8 +1,12 @@
-package org.example.model.dao;
+package org.example.model.dao.db;
 
+import org.example.model.dao.DAOFactory;
+import org.example.model.dao.Interface.PrenotazioneDAO;
 import org.example.model.domain.Prenotazione;
 import org.example.model.domain.Cliente;
 import org.example.model.domain.Lezione;
+import org.example.model.domain.TipoAttivita;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +23,9 @@ public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
 
             stmt.setDate(1, Date.valueOf(p.getDataRichiesta()));
             stmt.setString(2, p.getStato()); // Stato iniziale (es. "In Attesa")
-            stmt.setString(3, p.getTipologia());
+            stmt.setString(3, p.getTipologia().name());
             stmt.setInt(4, p.getCliente().getClienteID());
-            stmt.setInt(5, p.getLezionePrenotata().getIDLezione());
+            stmt.setInt(5, p.getLezionePrenotata().getIdLezione());
 
             stmt.executeUpdate();
 
@@ -64,14 +68,14 @@ public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, c.getClienteID());
-
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     // Creiamo l'oggetto Prenotazione (Mapping)
                     Prenotazione p = new Prenotazione(
                             rs.getInt("id"),
                             rs.getDate("data_richiesta").toLocalDate(),
-                            rs.getString("tipologia"),
+                            TipoAttivita.valueOf(rs.getString("tipologia")),
+
                             c
                     );
                     p.setStato(rs.getString("stato"));
@@ -82,6 +86,7 @@ public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
                     lista.add(p);
                 }
             }
+
         } catch (SQLException e) {
             logger.severe("Errore recupero prenotazioni cliente: " + e.getMessage());
         }
@@ -110,7 +115,7 @@ public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
                     prenotazione = new Prenotazione(
                             rs.getInt("id"),
                             rs.getDate("data_richiesta").toLocalDate(),
-                            rs.getString("tipologia"),
+                            TipoAttivita.valueOf(rs.getString("tipologia")),
                             null // Qui andrebbe l'oggetto cliente caricato dal DAO
                     );
                     prenotazione.setStato(rs.getString("stato"));

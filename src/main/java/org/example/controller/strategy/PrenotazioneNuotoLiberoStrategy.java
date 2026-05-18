@@ -1,10 +1,10 @@
 package org.example.controller.strategy;
 
 import org.example.exception.CreditiInsufficientiException;
-import org.example.model.domain.Cliente;
-import org.example.model.domain.Lezione;
-import org.example.model.domain.TitoloAccesso;
+import org.example.model.dao.DAOFactory;
+import org.example.model.domain.*;
 
+import java.time.LocalDate;
 import java.util.logging.Logger;
 
 public class PrenotazioneNuotoLiberoStrategy implements StrategiaPrenotazione {
@@ -13,28 +13,27 @@ public class PrenotazioneNuotoLiberoStrategy implements StrategiaPrenotazione {
 
     @Override
     public boolean eseguiPrenotazione(Cliente cliente, Lezione lezione) throws CreditiInsufficientiException {
+        // 1. Logica di business del Nuoto Libero
         TitoloAccesso titolo = cliente.getTitoloAccesso();
+        if (titolo == null || !titolo.checkValidita(1)) throw new CreditiInsufficientiException("...");
+        if (lezione.getPostiDisponibili() <= 0) return false;
 
-        // 1. Controllo Crediti con l'Eccezione
-        if (titolo == null || !titolo.checkValidita(COSTO_NUOTO_LIBERO)) {
-            // Invece di restituire false, "urliamo" l'errore alla View!
-            throw new CreditiInsufficientiException(
-                    "Crediti insufficienti per accedere al Nuoto Libero. (Richiesti: " + COSTO_NUOTO_LIBERO + ")"
-            );
-        }
+        // 2. Modifiche in memoria
+        lezione.setNumPostiPrenotati(lezione.getNumPostiPrenotati() + 1);
+        titolo.registraAccesso(1);
 
-        // 2. Controllo Posti Fisici in Corsia
-        // Se non c'è posto non è un "errore dell'utente", quindi restituiamo semplicemente false
-        if (lezione.getPostiDisponibili() <= 0) {
-            logger.severe("Errore: La corsia per il nuoto libero è attualmente al completo.");
+        // 3. Salvataggio specifico per il Nuoto Libero
+        try {
+            Prenotazione p = new Prenotazione(null, LocalDate.now(), TipoAttivita.NUOTO_LIBERO, cliente);
+            p.setLezionePrenotata(lezione);
+            p.conferma(); // Il nuoto libero è confermato subito!
+
+            DAOFactory.getInstance().getPrenotazioneDAO().salva(p);
+            DAOFactory.getInstance().getLezioneDAO().aggiornaPostiOccupati(lezione);
+            DAOFactory.getInstance().getTitoloAccessoDAO().aggiornaCrediti((PacchettoCrediti) titolo);
+            return true;
+        } catch (Exception e) {
             return false;
         }
-
-        // 3. Conferma ed esecuzione immediata (Sincrona)
-        lezione.setNumPostiPrenotati(lezione.getNumPostiPrenotati() + 1);
-        titolo.registraAccesso(COSTO_NUOTO_LIBERO); // Scala 1 credito
-
-        logger.info("Prenotazione per Nuoto Libero confermata con successo!");
-        return true;
     }
 }

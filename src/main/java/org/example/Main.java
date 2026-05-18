@@ -14,7 +14,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Questa riga va a prendere il tuo file FXML dalla cartella resources
-        Parent root = FXMLLoader.load(getClass().getResource("/loginPage.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/loginpage.fxml"));
 
         // Impostiamo il titolo della finestra e la mostriamo!
         primaryStage.setTitle("Nautilus Systems - Accesso");
