@@ -4,14 +4,13 @@ import java.time.LocalDate;
 
 public class Cliente extends User {
 
-    private Integer clienteID;
+
     private Boolean certificatoValido;
     private TitoloAccesso titoloAccesso;
 
     // Costruttore
-    public Cliente(String cf, String nome, String cognome, LocalDate dataNascita, String luogoNascita, String indirizzo, String email, String password, Integer clienteID, Boolean certificatoValido) {
-        super(cf, nome, cognome, dataNascita, luogoNascita, indirizzo, email, password);
-        this.clienteID = clienteID;
+    public Cliente(Integer id, String cf, String nome, String cognome, LocalDate dataNascita, String luogoNascita, String indirizzo, String email, String password, Integer clienteId, Boolean certificatoValido) {
+        super(id, cf, nome, cognome, dataNascita, luogoNascita, indirizzo, email, password);
         this.certificatoValido = certificatoValido;
     }
 
@@ -28,9 +27,6 @@ public class Cliente extends User {
         return this.titoloAccesso.checkValidita(costoInCrediti);
     }
 
-    // Getter e Setter ClienteID
-    public Integer getClienteID() { return clienteID; }
-    public void setClienteID(Integer clienteID) { this.clienteID = clienteID; }
 
     // Getter e Setter CertificatoValido
     public Boolean getCertificatoValido() { return certificatoValido; }

@@ -48,7 +48,7 @@ public class PagamentoController {
 
             // 3. LO ASSEGNIAMO AL CLIENTE
             cliente.setTitoloAccesso(nuovoAbbonamento);
-            DAOFactory.getInstance().getTitoloAccessoDAO().salvaNuovo(nuovoAbbonamento, cliente.getClienteID());
+            DAOFactory.getInstance().getTitoloAccessoDAO().salvaNuovo(nuovoAbbonamento, cliente.getId());
 
             logger.info("Acquisto completato! Nuovo Abbonamento mensile assegnato a " + cliente.getNome());
             return true;

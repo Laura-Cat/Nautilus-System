@@ -30,11 +30,7 @@ public class LoginDAOMySQL implements LoginDAO {
                 if (rs.next()) {
                     int ruoloId = rs.getInt("id_ruolo");
                     Ruolo ruolo = Ruolo.fromInt(ruoloId);
-
-                    // Prendiamo l'ID dell'utente appena trovato
                     int idUtente = rs.getInt("id"); // Metti il nome esatto della tua colonna ID
-
-                    // ORA COSTRUIAMO L'UTENTE IN BASE AL RUOLO!
                     switch (ruolo) {
                         case CLIENTE:
                             // Usiamo il tuo fantastico ClienteDAO per "resuscitare" il cliente con tutti i suoi dati!

@@ -1,0 +1,62 @@
+/* =========================================
+   STILE PER LA PAGINA LEZIONI PRIVATE
+   ========================================= */
+
+/* Intestazione */
+.titolo-pagina {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e3a8a; /* Blu profondo elegante */
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.sottotitolo-pagina {
+    -fx-font-size: 16px;
+    -fx-text-fill: #64748b; /* Grigio-bluastro morbido */
+    -fx-font-style: italic;
+}
+
+/* =========================================
+   STILE PER LA CARD DELL'ISTRUTTORE
+   ========================================= */
+.istruttore-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 1;
+    -fx-padding: 20;
+    -fx-alignment: center;
+    -fx-cursor: hand; /* Mostra la manina cliccabile */
+
+    /* Ombra leggera di base */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5);
+
+    /* Dimensioni fisse per avere una griglia ordinata */
+    -fx-pref-width: 220px;
+    -fx-pref-height: 280px;
+}
+
+/* 🌟 L'EFFETTO MAGICO AL PASSAGGIO DEL MOUSE */
+.istruttore-card:hover {
+    -fx-translate-y: -5; /* Fa "sollevare" la card di 5 pixel */
+    -fx-border-color: #3b82f6; /* Illumina il bordo di azzurro */
+
+    /* Aumenta l'ombra per dare senso di tridimensionalità */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 15, 0, 0, 8);
+}
+
+/* Testi dentro la Card */
+.nome-istruttore {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0f172a; /* Quasi nero */
+    -fx-padding: 15 0 5 0; /* Spazio: top right bottom left */
+}
+
+.specializzazione-istruttore {
+    -fx-font-size: 13px;
+    -fx-text-fill: #475569;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+}

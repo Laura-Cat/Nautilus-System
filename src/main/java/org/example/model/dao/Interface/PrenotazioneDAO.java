@@ -16,4 +16,6 @@ public interface PrenotazioneDAO {
 
     // Recupera una singola prenotazione tramite ID
     Prenotazione trovaPerId(Integer id);
+
+    public boolean esisteGia(int idCliente, int idLezione);
 }

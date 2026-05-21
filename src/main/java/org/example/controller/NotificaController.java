@@ -4,35 +4,28 @@ import org.example.model.dao.DAOFactory;
 import org.example.model.domain.Notifica;
 import org.example.model.domain.User;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Logger;
 
 public class NotificaController {
-    private static final Logger logger = Logger.getLogger(NotificaController.class.getName());
-    /**
-     * Recupera tutte le notifiche non lette per un dato utente (Cliente o Istruttore).
-     */
-    public List<Notifica> recuperaNotificheNonLette(User utente) {
-        return utente.getNotificheDaLeggere();
-    }
 
-    /**
-     * Segna una notifica come letta.
-     * In futuro, questo metodo comunicherà con il DAO per aggiornare il Database.
-     */
-    public void apriNotifica(Notifica notifica) {
-        if (!notifica.isLetta()) {
-            notifica.segnaComeLetta();
-            logger.info("Notifica aperta e segnata come letta: " + notifica.getMessaggio());
+        public boolean inviaRichiestaLezionePrivata(String cfMittente, String cfDestinatario, LocalDate data, String orario, String note) {
 
-            DAOFactory.getInstance().getNotificaDAO().aggiornaStato(notifica);
+            // 1. Logica di Business: Assembliamo il messaggio in modo formattato
+            String messaggio = "Richiesta Lezione Privata:\n" +
+                    "Data: " + data.toString() + "\n" +
+                    "Ore: " + orario + "\n" +
+                    "Note Livello: " + (note.trim().isEmpty() ? "Nessuna nota" : note);
+
+            // 2. Creiamo l'entità
+            Notifica nuovaRichiesta = new Notifica();
+            nuovaRichiesta.setMittente(cfMittente); // Se gestisci il mittente nel DB
+            nuovaRichiesta.setDestinatario(cfDestinatario);
+            nuovaRichiesta.setDescrizione(messaggio);
+            nuovaRichiesta.setLetta(false);
+
+            // 3. Persistenza: deleghiamo al DAO
+            return DAOFactory.getInstance().getNotificaDAO().invia(nuovaRichiesta);
         }
     }
-
-    /**
-     * (Opzionale) Elimina una notifica letta
-     */
-    public void eliminaNotifica(User utente, Notifica notifica) {
-        // Logica per rimuovere la notifica dalla lista dell'utente e dal DB
-    }
-}

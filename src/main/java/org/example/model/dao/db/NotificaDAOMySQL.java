@@ -11,28 +11,27 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class NotificaDAOMySQL implements NotificaDAO {
-    
+
     private static final Logger logger = Logger.getLogger(NotificaDAOMySQL.class.getName());
+
     @Override
-    public void inserisci(Notifica notifica, Integer idDestinatario) {
-        // La query SQL nuda e cruda. I punti interrogativi (?) sono i parametri.
+    public boolean invia(Notifica notifica, Integer idDestinatario) {
         String query = "INSERT INTO notifiche (messaggio, letta, data_invio, id_destinatario) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = DBConnectionFactory.getInstance().createConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            // Sostituiamo i punti interrogativi con i dati veri
             stmt.setString(1, notifica.getMessaggio());
             stmt.setBoolean(2, notifica.isLetta());
-            stmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now())); // Convertiamo la data di Java in data di SQL
+            stmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
             stmt.setInt(4, idDestinatario);
-
-            // Eseguiamo la query sul DB!
             stmt.executeUpdate();
 
+            return true;
         } catch (SQLException e) {
             logger.severe("Errore durante l'inserimento della notifica nel DB: " + e.getMessage());
         }
+        return false;
     }
 
     @Override
@@ -46,12 +45,9 @@ public class NotificaDAOMySQL implements NotificaDAO {
             stmt.setInt(1, idUtente);
 
             try (ResultSet rs = stmt.executeQuery()) {
-                // Cicliamo su tutte le righe trovate dal database
                 while (rs.next()) {
-                    // Creiamo l'oggetto Java leggendo le colonne del DB
                     Notifica n = new Notifica(rs.getString("messaggio"), utente);
-                    // n.setId(rs.getInt("id")); // Scommentalo se in Notifica.java aggiungi il setter per l'ID!
-
+                    n.setId(rs.getInt("id"));
                     notifiche.add(n);
                 }
             }
@@ -63,7 +59,6 @@ public class NotificaDAOMySQL implements NotificaDAO {
 
     @Override
     public void segnaComeLetta(Notifica notifica) {
-        // Immaginiamo che la notifica abbia un ID preso dal DB
         String query = "UPDATE notifiche SET letta = TRUE WHERE id = ?";
 
         try (Connection conn = DBConnectionFactory.getInstance().createConnection();
@@ -76,26 +71,20 @@ public class NotificaDAOMySQL implements NotificaDAO {
             logger.severe("Errore durante l'aggiornamento della notifica: " + e.getMessage());
         }
     }
+
     @Override
     public void aggiornaStato(Notifica notifica) {
-        // La query aggiorna solo lo stato 'letta' della notifica specifica
         String query = "UPDATE notifiche SET letta = ? WHERE id = ?";
 
         try (Connection conn = DBConnectionFactory.getInstance().createConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            // 1. Impostiamo il nuovo stato (true/false)
-            // Assumo che la tua classe Notifica abbia un metodo isLetta() o getLetta()
             stmt.setBoolean(1, notifica.isLetta());
-
-            // 2. Indichiamo l'ID esatto della notifica da modificare
             stmt.setInt(2, notifica.getId());
+            stmt.executeUpdate(); // FIX: mancava questa riga — la query non veniva mai eseguita
 
         } catch (SQLException e) {
-            // Manteniamo la stampa per noi programmatori in caso di problemi col DB
-            System.err.println("Errore DAO durante l'aggiornamento della notifica: " + e.getMessage());
+            logger.severe("Errore DAO durante l'aggiornamento della notifica: " + e.getMessage());
         }
-
     }
-
 }

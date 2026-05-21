@@ -22,6 +22,8 @@ public class Prenotazione {
         this.stato = "In Attesa";
     }
 
+    public Prenotazione() {
+    }
     // Metodi di business
 
     public void conferma() {

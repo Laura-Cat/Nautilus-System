@@ -3,6 +3,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.shape.Circle?>
 
 <BorderPane fx:id="mainPane" stylesheets="@../style/styleCliente.css" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.ClienteView">
     <left>
@@ -25,6 +26,18 @@
                 </VBox>
 
                 <Button fx:id="btnAbbonamenti" maxWidth="Infinity" text="Miei Abbonamenti" />
+
+                <StackPane alignment="TOP_RIGHT">
+                    <children>
+                        <Button fx:id="btnNotifiche" maxWidth="Infinity" onAction="#apriNotifiche" text="🔔 Notifiche" />
+
+                        <Circle fx:id="pallinoRosso" radius="5.0" fill="#ef4444" visible="false">
+                            <StackPane.margin>
+                                <Insets top="5.0" right="10.0" />
+                            </StackPane.margin>
+                        </Circle>
+                    </children>
+                </StackPane>
 
                 <Region VBox.vgrow="ALWAYS" />
 

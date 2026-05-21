@@ -2,7 +2,7 @@
 .sfondo-principale {
     /* Sfumatura diagonale dall'azzurro Nautilus al bianco */
     /*-fx-background-color: linear-gradient(to bottom right, #C9E4FF, #FFFFFF);*/
-    -fx-background-image: url('../icone/piscina.jpg'); -fx-background-size: cover; -fx-background-position: center center;
+    -fx-background-image: url('../images/piscina.jpg'); -fx-background-size: cover; -fx-background-position: center center;
 
 }
 

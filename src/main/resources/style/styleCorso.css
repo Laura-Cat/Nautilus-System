@@ -1,0 +1,45 @@
+.main-container {
+    -fx-background-color: #f8fafc;
+    -fx-padding: 30;
+}
+.titolo-pagina {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e293b;
+}
+.filter-bar {
+    -fx-background-color: #ffffff;
+    -fx-padding: 15;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);
+}
+.filter-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #475569;
+}
+.or-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 11px;
+}
+.corso-card {
+    -fx-background-color: white;
+    -fx-padding: 15;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.04), 6, 0, 0, 3);
+}
+.corso-titolo {
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-text-fill: #0f172a;
+}
+.btn-prenota {
+    -fx-background-color: #0284c7;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 6 14;
+    -fx-background-radius: 4;
+}
+.btn-prenota:hover {
+    -fx-background-color: #0369a1;
+}

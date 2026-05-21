@@ -14,7 +14,7 @@ import javafx.scene.control.TextField;
 import org.example.model.domain.Cliente;
 import org.example.model.domain.Istruttore;
 import org.example.model.domain.User;
-import org.example.model.bean.LoginDTO;
+import org.example.model.bean.LoginBean;
 
 public class LoginView{
 
@@ -43,7 +43,7 @@ public class LoginView{
 
         // 3. Chiamiamo il VERO controller (La Logica di Business)
          LoginController backendController = LoginController.getInstance();
-         LoginDTO credenziali = new LoginDTO(emailInserita, passwordInserita);
+         LoginBean credenziali = new LoginBean(emailInserita, passwordInserita);
          boolean successo = backendController.autenticaUtente(credenziali);
 
         // 4. Decidiamo cosa fare in base alla risposta del DB

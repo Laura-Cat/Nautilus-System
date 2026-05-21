@@ -25,6 +25,7 @@ public class ClienteDAOMySQL implements ClienteDAO {
                     java.sql.Date sqlDateNascita = rs.getDate("data_nascita");
                     LocalDate dataNascita = (sqlDateNascita != null) ? sqlDateNascita.toLocalDate() : null;
                     cliente = new Cliente(
+                            id,
                             rs.getString("cf"),
                             rs.getString("nome"),
                             rs.getString("cognome"),
@@ -33,7 +34,7 @@ public class ClienteDAOMySQL implements ClienteDAO {
                             rs.getString("indirizzo"),
                             rs.getString("email"),
                             rs.getString("password"),
-                            id,                 // Questo è il clienteID
+                            id,
                             rs.getBoolean("certificato_valido")
                     );
 

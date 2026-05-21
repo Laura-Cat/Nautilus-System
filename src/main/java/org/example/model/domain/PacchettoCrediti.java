@@ -6,11 +6,13 @@ public class PacchettoCrediti  extends TitoloAccesso{
     private static final Logger logger = Logger.getLogger(PacchettoCrediti.class.getName());
     private Integer creditiRimanenti;
 
-    public PacchettoCrediti(Integer titoloID, Integer creditiTotali) {
-        super(titoloID);
+    public PacchettoCrediti(Integer titoloId, Integer creditiTotali) {
+        super(titoloId);
         this.creditiRimanenti = creditiTotali; // All'inizio i rimanenti sono uguali ai totali
     }
 
+    public PacchettoCrediti() {
+    }
     // Metodi di business (Information Expert)
     @Override
     public void registraAccesso(int costoInCrediti) {

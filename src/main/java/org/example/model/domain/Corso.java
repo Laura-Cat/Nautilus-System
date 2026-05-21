@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Corso {
 
-    private String  nome;
+    private TipoCorso  nome;
     private String  statoAttivita;
     private LocalDate dataInizio;
     private Integer idCorso;
@@ -16,7 +16,7 @@ public class Corso {
     private List<Lezione> lezioni;
 
     // Costruttore
-    public Corso(String nome, String statoAttivita, LocalDate dataInizio, Integer idCorso, Integer numPosti, String descrizione) {
+    public Corso(TipoCorso nome, String statoAttivita, LocalDate dataInizio, Integer idCorso, Integer numPosti, String descrizione) {
         this.nome= nome;
         this.statoAttivita= statoAttivita;
         this.dataInizio=  dataInizio;
@@ -26,11 +26,14 @@ public class Corso {
         this.lezioni = new ArrayList<>();
     }
 
+    public Corso(){
+
+    }
     // Getter e Setter Nome
-    public String getNome() {
+    public TipoCorso getNome() {
         return nome;
     }
-    public void setNome(String nome) {
+    public void setNome(TipoCorso nome) {
         this.nome = nome;
     }
 
@@ -98,7 +101,7 @@ public class Corso {
     public void aggiungiLezione(Lezione lezione) {
         if (lezione != null) {
             lezione.setCorsoAppartenenza(this); // Colleghiamo i due oggetti
-            lezione.setTipoAttivita(TipoAttivita.CORSO); // Automatizziamo il tipo
+            lezione.setTipoAttivita(TipoAttivita.CORSO_GRUPPO); // Automatizziamo il tipo
             this.lezioni.add(lezione);
         }
     }

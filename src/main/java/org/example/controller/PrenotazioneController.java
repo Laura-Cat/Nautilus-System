@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class PrenotazioneController {
     private static final Logger logger = Logger.getLogger(PrenotazioneController.class.getName());
     private static PrenotazioneController instance; // AGGIUNTO PER SINGLETON
-    private StrategiaPrenotazione strategiaCorrente;
+    private PrenotazioneStrategy strategiaCorrente;
 
     // Costruttore privato e getInstance per il Singleton
     private PrenotazioneController() {}
@@ -32,26 +32,36 @@ public class PrenotazioneController {
     // AGGIUNTA: IL PONTE TRA LA VIEW (BEAN) E IL TUO CONTROLLER
     // ==========================================================
 
-    // 1. Converte i dati reali del DB in Bean per la View
-    public List<LezioneBean> trovaTurniNuotoLibero(LocalDate data) {
-        // Prende le lezioni reali dal DB
-        List<Lezione> turni = DAOFactory.getInstance().getLezioneDAO().trovaPerTipoEData(TipoAttivita.NUOTO_LIBERO, data);
+    public List<LezioneBean> trovaPerTipoEData(TipoAttivita tipo, LocalDate data) {
+        List<Lezione> turni = DAOFactory.getInstance().getLezioneDAO().trovaPerTipoEData(tipo, data);
         List<LezioneBean> listaBean = new ArrayList<>();
 
-        // Riempie i pacchettini "Bean" da dare alla grafica
         for (Lezione l : turni) {
             LezioneBean bean = new LezioneBean();
             bean.setIdLezione(l.getIdLezione());
             bean.setOrario(l.getOraInizio() + " - " + l.getOraFine());
-            bean.setIdCorsia(String.valueOf(l.getCorsiaAssegnata().getIdCorsia()));
-            bean.setPostiTotali(l.getNumPostiTotali());
-            bean.setPostiLiberi(l.getNumPostiTotali() - l.getNumPostiPrenotati());
+
+            if (l.getCorsiaAssegnata() != null) {
+                bean.setIdCorsia(String.valueOf(l.getCorsiaAssegnata().getIdCorsia()));
+            } else {
+                bean.setIdCorsia("N/D");
+            }
+
+            if (l.getCorsoAppartenenza() != null) {
+                bean.setNomeCorso(l.getCorsoAppartenenza().getNome());
+            }
+
+            // 4. Calcolo dei posti
+            int postiTotali = (l.getNumPostiTotali() != null) ? l.getNumPostiTotali() : 5;
+            int postiPrenotati = (l.getNumPostiPrenotati() != null) ? l.getNumPostiPrenotati() : 0;
+            bean.setPostiTotali(postiTotali);
+            bean.setPostiLiberi(postiTotali - postiPrenotati);
+
             listaBean.add(bean);
         }
         return listaBean;
     }
 
-    // 2. Riceve l'ID dalla View, recupera la lezione vera e avvia la tua Fase 1
     public boolean finalizzaPrenotazioneDaId(Cliente cliente, int idLezione) throws CreditiInsufficientiException {
         Lezione lezioneVera = DAOFactory.getInstance().getLezioneDAO().trovaPerId(idLezione);
         return finalizzaPrenotazione(cliente, lezioneVera);
@@ -62,24 +72,68 @@ public class PrenotazioneController {
     // FASE 1: IL CLIENTE CHIEDE LA PRENOTAZIONE (IL TUO CODICE ORIGINALE)
     // ==========================================================
     public boolean finalizzaPrenotazione(Cliente cliente, Lezione lezione) throws CreditiInsufficientiException {
-        // 1. CONTROLLI VALIDI PER TUTTI (Esempio)
+        // 1. CONTROLLI VALIDI PER TUTTI
         if (!cliente.verificaValiditaCertificato()) {
             throw new IllegalStateException("Certificato medico scaduto o assente!");
         }
 
-        // 2. CAMBIO DI STRATEGIA AUTOMATICO (Quello che dicevi tu!)
+        // 2. CONTROLLO DOPPIONI (La tua nuova regola di business!)
+        boolean giaPrenotato = org.example.model.dao.DAOFactory.getInstance()
+                .getPrenotazioneDAO()
+                .esisteGia(cliente.getId(), lezione.getIdLezione());
+
+        if (giaPrenotato) {
+            throw new IllegalStateException("Hai già prenotato questa lezione! Non puoi occupare due posti.");
+        }
+
+        // 3. CAMBIO DI STRATEGIA AUTOMATICO
         impostaStrategiaCorretta(lezione);
 
         try {
-            return this.strategiaCorrente.eseguiPrenotazione(cliente, lezione);
+            // A. Eseguiamo i controlli della strategia e salviamo il risultato in una variabile
+            boolean esito = this.strategiaCorrente.eseguiPrenotazione(cliente, lezione);
+
+            // B. Se la strategia ha dato il via libera, facciamo le modifiche sul Database!
+            if (esito) {
+                logger.info("La strategia ha approvato. Aggiorno i posti per la lezione ID: " + lezione.getIdLezione());
+
+                // 1. Aggiorniamo i posti della lezione (questo lo avevamo già fatto)
+                lezione.setNumPostiPrenotati(lezione.getNumPostiPrenotati() + 1);
+                org.example.model.dao.DAOFactory.getInstance().getLezioneDAO().aggiornaPostiOccupati(lezione);
+
+                // 2. CREIAMO LA PRENOTAZIONE USANDO IL PATTERN BEAN!
+                org.example.model.domain.Prenotazione nuovaPrenotazione = new org.example.model.domain.Prenotazione();
+                nuovaPrenotazione.setDataRichiesta(java.time.LocalDate.now());
+                nuovaPrenotazione.setStato("Confermata");
+                nuovaPrenotazione.setTipologia(lezione.getTipoAttivita());
+                nuovaPrenotazione.setCliente(cliente);
+                nuovaPrenotazione.setLezionePrenotata(lezione);
+
+                // Se è nuoto libero e c'è una corsia assegnata, salviamo anche quella
+                if (lezione.getCorsiaAssegnata() != null) {
+                    nuovaPrenotazione.setCorsiaPrenotata(lezione.getCorsiaAssegnata());
+                }
+                // 3. Mandiamo il Bean al DAO per il salvataggio finale nel DB!
+                org.example.model.dao.DAOFactory.getInstance().getPrenotazioneDAO().salva(nuovaPrenotazione);
+            }
+            // C. Solo adesso restituiamo l'esito alla View
+            return esito;
+
+        } catch (CreditiInsufficientiException creditiEx) {
+            // LASCIA PASSARE LA NOSTRA ECCEZIONE: La rilanciamo alla View!
+            throw creditiEx;
         } catch (Exception e) {
-            logger.severe("Errore durante l'esecuzione della strategia");
+            // CATTURA GLI ERRORI VERI (es. database offline, null pointer)
+            logger.severe("Errore durante l'esecuzione della strategia o durante il salvataggio");
+            e.printStackTrace();
             return false;
         }
     }
+
+
     private void impostaStrategiaCorretta(Lezione lezione) {
         switch (lezione.getTipoAttivita()) {
-            case CORSO: this.strategiaCorrente = new PrenotazioneCorsoStrategy(); break;
+            case CORSO_GRUPPO: this.strategiaCorrente = new PrenotazioneCorsoStrategy(); break;
             case NUOTO_LIBERO: this.strategiaCorrente = new PrenotazioneNuotoLiberoStrategy(); break;
             case PRIVATA: this.strategiaCorrente = new PrenotazionePrivataStrategy(); break;
         }
@@ -151,5 +205,27 @@ public class PrenotazioneController {
         }
 
         return true;
+    }
+
+    public List<LezioneBean> trovaPerCorso(TipoCorso tipo) {
+        List<Lezione> lezioni = DAOFactory.getInstance().getLezioneDAO().trovaPerCorso(tipo);
+        List<LezioneBean> listaBean = new ArrayList<>();
+
+        for (Lezione l : lezioni) {
+            LezioneBean bean = new LezioneBean();
+            bean.setIdLezione(l.getIdLezione());
+
+            // Formattiamo l'orario includendo la data (visto che i giorni cambiano!)
+            bean.setOrario(l.getData().toString() + " | " + l.getOraInizio() + " - " + l.getOraFine());
+            bean.setNomeCorso(tipo);
+
+            int tot = l.getNumPostiTotali() != null ? l.getNumPostiTotali() : 15;
+            int occ = l.getNumPostiPrenotati() != null ? l.getNumPostiPrenotati() : 0;
+            bean.setPostiLiberi(tot - occ);
+            bean.setPostiTotali(tot);
+
+            listaBean.add(bean);
+        }
+        return listaBean;
     }
 }

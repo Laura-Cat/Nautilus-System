@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface NotificaDAO {
     // 1. Salva una nuova notifica nel DB
-    void inserisci(Notifica notifica, Integer idDestinatario);
+    boolean invia(Notifica notifica, Integer idDestinatario);
 
     // 2. Legge dal DB tutte le notifiche non lette di una persona
     List<Notifica> recuperaNonLettePerUtente(User utente, Integer idUtente);

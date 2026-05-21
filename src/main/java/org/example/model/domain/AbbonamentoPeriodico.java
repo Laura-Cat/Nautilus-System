@@ -1,17 +1,22 @@
 package org.example.model.domain;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class AbbonamentoPeriodico extends TitoloAccesso {
     private static final Logger logger = Logger.getLogger(AbbonamentoPeriodico.class.getName());
     private LocalDate dataInizio;
     private LocalDate dataFine;
+    private List<TipoCorso> corsiInclusi;
 
     public AbbonamentoPeriodico(Integer titoloID, LocalDate dataInizio, LocalDate dataFine) {
         super(titoloID);
         this.dataInizio = dataInizio;
         this.dataFine = dataFine;
+    }
+
+    public AbbonamentoPeriodico() {
     }
 
     @Override
@@ -29,14 +34,10 @@ public class AbbonamentoPeriodico extends TitoloAccesso {
         if (mesiDaAggiungere <= 0) {
             throw new IllegalArgumentException("I mesi da aggiungere devono essere maggiori di zero.");
         }
-
         LocalDate oggi = LocalDate.now();
-
-        // Se è già scaduto, il rinnovo parte da oggi
         if (this.dataFine.isBefore(oggi)) {
             this.dataFine = oggi.plusMonths(mesiDaAggiungere);
         }
-        // Se è ancora valido, prolunghiamo la scadenza attuale
         else {
             this.dataFine = this.dataFine.plusMonths(mesiDaAggiungere);
         }
@@ -48,4 +49,11 @@ public class AbbonamentoPeriodico extends TitoloAccesso {
 
     public LocalDate getDataFine() { return dataFine; }
     public void setDataFine(LocalDate dataFine) { this.dataFine = dataFine; }
+
+    public List<TipoCorso> getCorsiInclusi() {
+        return corsiInclusi;
+    }
+    public void setCorsiInclusi(List<TipoCorso> corsiInclusi) {
+        this.corsiInclusi = corsiInclusi;
+    }
 }

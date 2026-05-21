@@ -14,6 +14,7 @@ public class Corsia {
         this.capienzaMassima = capienzaMassima;
 
     }
+    public Corsia() {}
 
     // Getter Setter
     public Integer getIdCorsia() {

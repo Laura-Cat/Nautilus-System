@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class User {
-
+    private Integer id;
     private String cf;
     private String nome;
     private String cognome;
@@ -17,7 +17,8 @@ public abstract class User {
     protected List<Notifica> notifichePersonali = new ArrayList<>();
 
     // Costruttore
-    public User(String cf, String nome, String cognome, LocalDate dataNascita, String luogoNascita, String indirizzo, String email, String password) {
+    public User( Integer id, String cf, String nome, String cognome, LocalDate dataNascita, String luogoNascita, String indirizzo, String email, String password) {
+        this.id=id;
         this.cf = cf;
         this.nome = nome;
         this.cognome = cognome;
@@ -28,12 +29,31 @@ public abstract class User {
         this.password = password;
     }
 
+    public User(){
+
+    }
     // Metodi
+
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public List<Notifica> getNotifichePersonali() {
+        return notifichePersonali;
+    }
+
+    public void setNotifichePersonali(List<Notifica> notifichePersonali) {
+        this.notifichePersonali = notifichePersonali;
+    }
 
     public String getCf() {
         return cf;
     }
-
     public void setCf(String cf) {
         this.cf = cf;
     }

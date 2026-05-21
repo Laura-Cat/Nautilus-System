@@ -5,7 +5,7 @@ import org.example.model.domain.Cliente;
 import org.example.model.domain.Lezione;
 
 
-public interface StrategiaPrenotazione {
+public interface PrenotazioneStrategy {
         // Aggiungiamo il "throws CreditiInsufficientiException" alla firma
         boolean eseguiPrenotazione(Cliente cliente, Lezione lezione) throws CreditiInsufficientiException;
     }

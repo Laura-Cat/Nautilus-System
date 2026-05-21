@@ -3,6 +3,7 @@ package org.example.model.dao;
 import org.example.model.dao.Interface.*;
 import org.example.model.dao.db.*;
 
+
 public class DAOFactory {
     private static DAOFactory instance;
     private PersistenceType tipoCorrente;
@@ -70,6 +71,13 @@ public class DAOFactory {
             return null; // O un eventuale ClienteDAOFile in futuro
         }
         return new ClienteDAOMySQL(); // Implementazione su DB
+    }
+
+    public IstruttoreDAO getIstruttoreDAO() {
+        if (tipoCorrente == PersistenceType.FILE) {
+            return null; // Eventuale IstruttoreDAOFile futuro
+        }
+        return new IstruttoreDAOMySQL(); // Implementazione su DB
     }
 
 }

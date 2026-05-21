@@ -17,6 +17,10 @@ public class Notifica {
         this.dataInvio = LocalDateTime.now();
     }
 
+    public Notifica(){
+
+    }
+
     // Metodo di business utile
     public void segnaComeLetta() {
         this.letta = true;

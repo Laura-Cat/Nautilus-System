@@ -7,7 +7,7 @@ import org.example.model.domain.Cliente;
 import org.example.model.domain.Istruttore;
 import org.example.model.domain.Ruolo;
 import org.example.model.domain.User;
-import org.example.model.bean.LoginDTO;
+import org.example.model.bean.LoginBean;
 import java.util.logging.Logger;
 
 public class LoginController {
@@ -27,7 +27,7 @@ public class LoginController {
     }
 
     // Metodi di business
-    public Boolean autenticaUtente(LoginDTO credenziali) {
+    public Boolean autenticaUtente(LoginBean credenziali) {
         logger.info("Cerco nel DB: Email=" + credenziali.email() + " | Pass=" + credenziali.password());
 
         // Chiediamo alla Factory il DAO corretto in base alla configurazione

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="TOP_CENTER" spacing="20.0" stylesheets="@../style/styleDettaglio.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.DettaglioIstruttoreView">
+    <padding>
+        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+    </padding>
+
+    <HBox alignment="CENTER_LEFT">
+        <Button onAction="#tornaIndietro" styleClass="bottone-indietro" text="← Torna agli Istruttori" />
+    </HBox>
+
+    <HBox spacing="40.0" alignment="CENTER" VBox.vgrow="ALWAYS">
+
+        <VBox alignment="TOP_CENTER" spacing="15.0" styleClass="scheda-istruttore" prefWidth="350.0">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+            <ImageView fx:id="fotoDettaglio" fitHeight="180.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="lblNomeDettaglio" styleClass="nome-istruttore" text="Nome Istruttore" />
+            <Label fx:id="lblSpecDettaglio" styleClass="specializzazione-istruttore" text="Specializzazione" />
+            <VBox alignment="TOP_LEFT" spacing="5.0">
+                <Label styleClass="label-sezione" text="Biografia:" />
+                <Text fx:id="txtBiografia" styleClass="testo-biografia" wrappingWidth="310.0" />
+            </VBox>
+        </VBox>
+
+        <VBox spacing="15.0" prefWidth="400.0" styleClass="form-prenotazione">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+
+            <Label styleClass="titolo-sezione" text="Richiedi una Lezione Privata" />
+
+            <VBox spacing="5.0">
+                <Label styleClass="label-input" text="1. Scegli il giorno:" />
+                <DatePicker fx:id="datePickerLezione" maxWidth="Infinity" onAction="#gestisciDataSelezionata" promptText="Seleziona una data" />
+            </VBox>
+
+            <VBox spacing="5.0">
+                <Label styleClass="label-input" text="2. Orari disponibili (08:30 - 21:00):" />
+                <ComboBox fx:id="comboOrario" maxWidth="Infinity" promptText="Seleziona prima una data" disable="true" />
+            </VBox>
+
+            <VBox spacing="5.0">
+                <Label styleClass="label-input" text="3. Note per l'istruttore (specifica il tuo livello):" />
+                <TextArea fx:id="txtNoteUtente" prefHeight="100.0" promptText="Es: Sono un principiante, vorrei migliorare lo stile libero..." wrapText="true" />
+            </VBox>
+
+            <Label fx:id="lblErrore" styleClass="label-errore" visible="false" wrapText="true" />
+
+            <Button fx:id="btnInviaRichiesta" maxWidth="Infinity" onAction="#inviaRichiesta" styleClass="bottone-invia" text="Invia Richiesta di Prenotazione" />
+        </VBox>
+
+    </HBox>
+</VBox>

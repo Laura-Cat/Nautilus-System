@@ -9,13 +9,17 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import org.example.controller.LoginController;
+import org.example.model.dao.DAOFactory;
 import org.example.model.domain.Cliente;
+import org.example.model.domain.Notifica;
 import org.example.model.domain.User;
 
 import javafx.event.ActionEvent;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,6 +29,7 @@ public class ClienteView {
     @FXML private Label labelNomeCliente;
     @FXML private StackPane contentArea;
     @FXML private VBox sottoMenuPrenotazioni;
+    @FXML private Circle pallinoRosso;
 
     @FXML
     public void initialize() {
@@ -33,6 +38,7 @@ public class ClienteView {
             Cliente c = (Cliente) utente;
             labelNomeCliente.setText("Ciao, " + c.getNome());
         }
+        aggiornaPallinoNotifiche();
     }
 
     // FA APRIRE/CHIUDERE LA TENDINA
@@ -42,6 +48,8 @@ public class ClienteView {
         sottoMenuPrenotazioni.setVisible(!isAperto);
         sottoMenuPrenotazioni.setManaged(!isAperto);
     }
+
+    @FXML public void apriNotifiche() {  }
 
     // AZIONI DEI 3 BOTTONCINI DEL SOTTOMENU
 
@@ -56,6 +64,22 @@ public class ClienteView {
         }
     }
 
+    private void aggiornaPallinoNotifiche() {
+        // 1. Recupera l'utente
+        User utenteCorrente = LoginController.getInstance().getUtenteAttivo();
+        Integer idCliente = LoginController.getInstance().getUtenteAttivo().getId();
+        // 2. Sfrutta il metodo che hai già per recuperare la lista intera
+        List<Notifica> notificheNonLette = DAOFactory.getInstance()
+                .getNotificaDAO()
+                .recuperaNonLettePerUtente(utenteCorrente, idCliente);
+
+        // 3. Verifica se la lista esiste e se contiene almeno un elemento
+        if (notificheNonLette != null && !notificheNonLette.isEmpty()) {
+            pallinoRosso.setVisible(true);  // Accendi il pallino!
+        } else {
+            pallinoRosso.setVisible(false); // Spegni il pallino
+        }
+    }
     @FXML
     public void sceltaCorso(ActionEvent event) {
         caricaPaginaAlCentro("/fxml/corsiPage.fxml");
