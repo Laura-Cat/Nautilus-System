@@ -10,8 +10,7 @@
     -fx-underline: true;
 }
 
-/* Colonna sinistra */
-.scheda-istruttore {
+.scheda-istruttore, .form-prenotazione {
     -fx-background-color: #ffffff;
     -fx-background-radius: 15;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5);
@@ -45,17 +44,7 @@
     -fx-line-spacing: 4;
 }
 
-/* Colonna destra */
-.form-prenotazione {
-    -fx-background-color: #ffffff;
-    -fx-background-radius: 15;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5);
-    -fx-border-color: #e2e8f0;
-    -fx-border-width: 1;
-    -fx-border-radius: 15;
-}
-
-.titolo-sesection {
+.titolo-sezione {
     -fx-font-size: 20px;
     -fx-font-weight: bold;
     -fx-text-fill: #1e3a8a;
@@ -81,7 +70,6 @@
 }
 
 .label-errore {
-    -fx-text-fill: #ef4444;
     -fx-font-weight: bold;
     -fx-font-size: 13px;
 }

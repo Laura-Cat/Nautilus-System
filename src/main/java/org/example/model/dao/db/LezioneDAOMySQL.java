@@ -6,6 +6,7 @@ import org.example.model.domain.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LezioneDAOMySQL implements LezioneDAO {
@@ -191,5 +192,48 @@ public class LezioneDAOMySQL implements LezioneDAO {
             logger.severe("Errore nel recupero lezioni per corso: " + e.getMessage());
         }
         return lista;
+    }
+
+    @Override
+    public List<Lezione> trovaPrivateDisponibiliPerIstruttore(Integer idIstruttore) {
+        List<Lezione> lezioniDisponibili = new ArrayList<>();
+
+        String query = "SELECT * FROM lezioni " +
+                "WHERE id_istruttore = ? " +
+                "AND tipo_attivita = 'PRIVATA' " +
+                "AND num_posti_prenotati = 0 " +
+                "AND data >= CURRENT_DATE() " +
+                "ORDER BY data ASC, ora_inizio ASC";
+
+        try (Connection conn = DBConnectionFactory.getInstance().createConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, idIstruttore);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Lezione l = new Lezione();
+                    l.setIdLezione(rs.getInt("id_lezione"));
+                    if (rs.getDate("data") != null) l.setData(rs.getDate("data").toLocalDate());
+                    if (rs.getTime("ora_inizio") != null) l.setOraInizio(rs.getTime("ora_inizio").toLocalTime());
+                    if (rs.getTime("ora_fine") != null) l.setOraFine(rs.getTime("ora_fine").toLocalTime());
+                    l.setNumPostiTotali(rs.getInt("num_posti_totali"));
+                    l.setNumPostiPrenotati(rs.getInt("num_posti_prenotati"));
+
+                    String tipo = rs.getString("tipo_attivita");
+                    if (tipo != null) l.setTipoAttivita(TipoAttivita.valueOf(tipo));
+
+                    Istruttore istr = new Istruttore();
+                    istr.setId(idIstruttore);
+                    l.setIstruttore(istr);
+
+                    lezioniDisponibili.add(l);
+                }
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Errore DB nel recupero slot privati per l'istruttore " + idIstruttore, e);
+        }
+
+        return lezioniDisponibili;
     }
 }

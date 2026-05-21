@@ -19,7 +19,8 @@ public class Main extends Application {
         // Impostiamo il titolo della finestra e la mostriamo!
         primaryStage.setTitle("Nautilus Systems - Accesso");
         primaryStage.setScene(new Scene(root));
-        primaryStage.setResizable(false); // Impedisce di allargare la finestra
+        primaryStage.setResizable(true);
+        primaryStage.setMaximized(true);
         primaryStage.show();
     }
 

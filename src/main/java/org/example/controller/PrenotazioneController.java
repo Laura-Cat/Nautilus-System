@@ -9,6 +9,7 @@ import org.example.model.dao.*; // Assicurati che i tuoi DAO siano importati cor
 import org.example.exception.CreditiInsufficientiException;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -227,5 +228,44 @@ public class PrenotazioneController {
             listaBean.add(bean);
         }
         return listaBean;
+    }
+
+    public List<Istruttore> recuperaTuttiIstruttori() {
+        return DAOFactory.getInstance().getIstruttoreDAO().recuperaTutti();
+    }
+
+    // 1. Metodo per la View: recupera gli slot per riempire la ComboBox
+    public List<Lezione> recuperaPrivateDisponibili(Integer idIstruttore) {
+        return DAOFactory.getInstance().getLezioneDAO().trovaPrivateDisponibiliPerIstruttore(idIstruttore);
+    }
+
+    // 2. Metodo per la View: elabora la richiesta vera e propria
+    public boolean richiediLezionePrivata(Cliente cliente, Lezione lezioneSelezionata, String noteLivello) {
+        try {
+            this.strategiaCorrente = new PrenotazionePrivataStrategy();
+            boolean valida = this.strategiaCorrente.eseguiPrenotazione(cliente, lezioneSelezionata);
+
+            if (valida) {
+                // A. Occupiamo fisicamente il posto sulla lezione
+                lezioneSelezionata.setNumPostiPrenotati(1);
+                DAOFactory.getInstance().getLezioneDAO().aggiornaPostiOccupati(lezioneSelezionata);
+
+                // B. Creiamo la prenotazione in stato "In Attesa"
+                Prenotazione p = new Prenotazione(null, java.time.LocalDate.now(), org.example.model.domain.TipoAttivita.PRIVATA, cliente);
+                p.setLezionePrenotata(lezioneSelezionata);
+                p.attesaAccettazione(); // O p.setStato("IN ATTESA"); a seconda di come hai chiamato il metodo in Prenotazione
+                DAOFactory.getInstance().getPrenotazioneDAO().salva(p);
+
+                // C. Inviamo la notifica all'istruttore
+                NotificaController nc = new NotificaController();
+                nc.inviaRichiestaLezionePrivata(cliente, lezioneSelezionata.getIstruttore(), lezioneSelezionata, noteLivello);
+
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            logger.log(java.util.logging.Level.SEVERE, "Errore imprevisto durante la richiesta della lezione privata", e);
+            return false;
+        }
     }
 }

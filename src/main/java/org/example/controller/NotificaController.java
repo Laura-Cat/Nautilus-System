@@ -1,31 +1,31 @@
 package org.example.controller;
 
 import org.example.model.dao.DAOFactory;
-import org.example.model.domain.Notifica;
-import org.example.model.domain.User;
+import org.example.model.domain.*;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.logging.Logger;
+
 
 public class NotificaController {
 
-        public boolean inviaRichiestaLezionePrivata(String cfMittente, String cfDestinatario, LocalDate data, String orario, String note) {
+    public boolean inviaRichiestaLezionePrivata(Cliente cliente, Istruttore istruttore, Lezione lezione, String noteCliente) {
 
-            // 1. Logica di Business: Assembliamo il messaggio in modo formattato
-            String messaggio = "Richiesta Lezione Privata:\n" +
-                    "Data: " + data.toString() + "\n" +
-                    "Ore: " + orario + "\n" +
-                    "Note Livello: " + (note.trim().isEmpty() ? "Nessuna nota" : note);
+        String livello = (noteCliente == null || noteCliente.trim().isEmpty()) ? "Nessuna nota sul livello fornita." : noteCliente;
 
-            // 2. Creiamo l'entità
-            Notifica nuovaRichiesta = new Notifica();
-            nuovaRichiesta.setMittente(cfMittente); // Se gestisci il mittente nel DB
-            nuovaRichiesta.setDestinatario(cfDestinatario);
-            nuovaRichiesta.setDescrizione(messaggio);
-            nuovaRichiesta.setLetta(false);
+        String corpoMessaggio = String.format(
+                "Nuova richiesta Lezione Privata in attesa di accettazione:\nDa: %s %s\nData: %s - Ore: %s\nLivello/Note: %s",
+                cliente.getNome(), cliente.getCognome(), lezione.getData().toString(), lezione.getOraInizio().toString(), livello
+        );
 
-            // 3. Persistenza: deleghiamo al DAO
-            return DAOFactory.getInstance().getNotificaDAO().invia(nuovaRichiesta);
-        }
+        Notifica nuovaRichiesta = new Notifica();
+        nuovaRichiesta.setMessaggio(corpoMessaggio);
+        nuovaRichiesta.setLetta(false);
+        // Assicurati che l'invio corrisponda al tuo DAO (es. passando l'ID destinatario)
+        return DAOFactory.getInstance().getNotificaDAO().invia(nuovaRichiesta, istruttore.getId());
     }
+
+    public List<Notifica> recuperaNonLettePerUtente(org.example.model.domain.User utente, Integer idUtente) {
+        return org.example.model.dao.DAOFactory.getInstance().getNotificaDAO().recuperaNonLettePerUtente(utente, idUtente);
+    }
+
+}

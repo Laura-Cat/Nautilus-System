@@ -8,13 +8,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
-import org.example.model.dao.DAOFactory;
+import org.example.controller.PrenotazioneController;
 import org.example.model.domain.Istruttore;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,20 +20,22 @@ public class PrenotazionePrivateView {
 
     @FXML
     private FlowPane gridIstruttori;
+    private ClienteView clienteViewPrincipale;
+    public void setClienteViewPrincipale(ClienteView principale) {
+        this.clienteViewPrincipale = principale;
+    }
+
     @FXML
     public void initialize() {
-        System.out.println("Metodo initialize partito!");
+        logger.info("Metodo initialize di PrenotazionePrivateView partito!");
         caricaIstruttori();
     }
 
     private void caricaIstruttori() {
-        // 1. Chiediamo al DAO la lista degli istruttori (il backend lavora per noi!)
-        List<Istruttore> istruttori = DAOFactory.getInstance().getIstruttoreDAO().recuperaTutti();
-
-        // 2. Svuotiamo la griglia per sicurezza
+        List<Istruttore> istruttori = PrenotazioneController.getInstance().recuperaTuttiIstruttori();
         gridIstruttori.getChildren().clear();
 
-        // 3. Per ogni istruttore trovato, creiamo una Card grafica
+        // Per ogni istruttore trovato, creiamo una Card grafica
         for (Istruttore ist : istruttori) {
             VBox card = creaCardIstruttore(ist);
             gridIstruttori.getChildren().add(card);
@@ -51,14 +50,15 @@ public class PrenotazionePrivateView {
         ImageView foto = new ImageView();
         foto.setFitWidth(150);
         foto.setFitHeight(150);
-
-        // Cerca di caricare l'immagine dal percorso, se fallisce ne mette una di default
         try {
-            Image img = new Image(getClass().getResourceAsStream(istruttore.getFotoPath()));
-            foto.setImage(img);
+            var imageStream = getClass().getResourceAsStream(istruttore.getFotoPath());
+            if (imageStream != null) {
+                foto.setImage(new Image(imageStream));
+            } else {
+                logger.warning("Immagine non trovata per: " + istruttore.getNome());
+            }
         } catch (Exception e) {
-            System.err.println("Immagine non trovata per: " + istruttore.getNome());
-            // foto.setImage(new Image(getClass().getResourceAsStream("/images/default_istruttore.png")));
+            logger.warning("Errore caricamento immagine per: " + istruttore.getNome());
         }
 
         // Il Nome
@@ -68,27 +68,31 @@ public class PrenotazionePrivateView {
         // La Specializzazione
         Label lblSpec = new Label(istruttore.getSpecializzazione());
         lblSpec.getStyleClass().add("specializzazione-istruttore");
-        lblSpec.setWrapText(true); // Se il testo è lungo, va a capo da solo
+        lblSpec.setWrapText(true);
 
         // Aggiungiamo tutto al VBox (la Card)
         card.getChildren().addAll(foto, lblNome, lblSpec);
 
-        // Prepariamo il click! (Per ora stampa solo in console, poi aprirà il dettaglio)
+        // Prepariamo il click!
         card.setOnMouseClicked(event -> {
             try {
-                // Log per tracciare l'azione dell'utente
                 logger.info("L'utente ha cliccato sull'istruttore: " + istruttore.getNome());
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/dettaglioIstruttore.fxml"));
+                // Carica la pagina di dettaglio
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/dettagliIstruttore.fxml"));
                 Parent root = loader.load();
 
-                DettaglioIstruttoreView dettaglioController = loader.getController();
-                dettaglioController.setIstruttore(istruttore, this.clienteViewPrincipale);
+                DettagliIstruttoreView dettaglioController = loader.getController();
 
-                this.contentArea.getChildren().setAll(root);
+                dettaglioController.setIstruttore(istruttore, clienteViewPrincipale);
+
+                if (clienteViewPrincipale != null) {
+                    clienteViewPrincipale.impostaSchermataCentrale(root);
+                } else {
+                    logger.severe("Errore: clienteViewPrincipale è null, impossibile navigare.");
+                }
 
             } catch (Exception e) {
-                // SOSTITUITO e.printStackTrace() E System.err CON UN LOG DI LIVELLO SEVERE
                 logger.log(Level.SEVERE, "Errore critico: Impossibile caricare la pagina di dettaglio istruttore.", e);
             }
         });

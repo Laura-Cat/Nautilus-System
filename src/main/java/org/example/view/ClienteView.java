@@ -87,7 +87,19 @@ public class ClienteView {
 
     @FXML
     public void sceltaLezionePrivata(ActionEvent event) {
-        caricaPaginaAlCentro("/fxml/privatePage.fxml");
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/fxml/privatePage.fxml"));
+            javafx.scene.Node root = loader.load();
+
+            // 2. Peschiamo il controller e facciamo le presentazioni!
+            org.example.view.PrenotazionePrivateView controllerPrivata = loader.getController();
+            controllerPrivata.setClienteViewPrincipale(this);
+
+            impostaSchermataCentrale(root);
+
+        } catch (Exception e) {
+            logger.log(java.util.logging.Level.SEVERE, "Errore nel caricamento della pagina privatePage", e);
+        }
     }
 
     @FXML
@@ -103,5 +115,13 @@ public class ClienteView {
         Stage stage = (Stage) labelNomeCliente.getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.show();
+    }
+
+    public void impostaSchermataCentrale(javafx.scene.Node nuovoNodo) {
+        if (this.contentArea != null) {
+            this.contentArea.getChildren().setAll(nuovoNodo);
+        } else {
+            System.err.println("Errore: contentArea è null in ClienteView!");
+        }
     }
 }
