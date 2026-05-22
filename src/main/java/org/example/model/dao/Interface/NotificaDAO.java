@@ -3,6 +3,8 @@ package org.example.model.dao.Interface;
 import org.example.model.domain.Notifica;
 import org.example.model.domain.User;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface NotificaDAO {
@@ -11,9 +13,8 @@ public interface NotificaDAO {
 
     // 2. Legge dal DB tutte le notifiche non lette di una persona
     List<Notifica> recuperaNonLettePerUtente(User utente, Integer idUtente);
+    List<Notifica> recuperaTuttePerUtente(User utente, Integer idDestinatario);
 
-    // 3. Aggiorna il DB quando l'utente legge il messaggio
-    void segnaComeLetta(Notifica notifica);
+    boolean aggiornaStato(Notifica notifica);
 
-    void aggiornaStato(Notifica notifica);
 }

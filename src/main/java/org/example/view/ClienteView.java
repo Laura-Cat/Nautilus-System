@@ -49,8 +49,6 @@ public class ClienteView {
         sottoMenuPrenotazioni.setManaged(!isAperto);
     }
 
-    @FXML public void apriNotifiche() {  }
-
     // AZIONI DEI 3 BOTTONCINI DEL SOTTOMENU
 
     // Funzione comodità per non ripetere il codice di caricamento 3 volte
@@ -64,20 +62,36 @@ public class ClienteView {
         }
     }
 
-    private void aggiornaPallinoNotifiche() {
-        // 1. Recupera l'utente
+    public void aggiornaPallinoNotifiche() {
         User utenteCorrente = LoginController.getInstance().getUtenteAttivo();
-        Integer idCliente = LoginController.getInstance().getUtenteAttivo().getId();
-        // 2. Sfrutta il metodo che hai già per recuperare la lista intera
-        List<Notifica> notificheNonLette = DAOFactory.getInstance()
+        Integer idCliente = utenteCorrente.getId();
+
+        List<Notifica> notificheNonLette = org.example.model.dao.DAOFactory.getInstance()
                 .getNotificaDAO()
                 .recuperaNonLettePerUtente(utenteCorrente, idCliente);
 
-        // 3. Verifica se la lista esiste e se contiene almeno un elemento
         if (notificheNonLette != null && !notificheNonLette.isEmpty()) {
-            pallinoRosso.setVisible(true);  // Accendi il pallino!
+            pallinoRosso.setVisible(true);
         } else {
-            pallinoRosso.setVisible(false); // Spegni il pallino
+            pallinoRosso.setVisible(false);
+        }
+    }
+
+    // 🌟 2. Sostituisci il metodo apriNotifiche() vuoto con questo:
+    @FXML
+    public void apriNotifiche() {
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/fxml/notifichePage.fxml"));
+            javafx.scene.Node root = loader.load();
+
+            // Peschiamo il controller delle notifiche e gli passiamo la ClienteView principale
+            org.example.view.NotificheView controllerNotifiche = loader.getController();
+            controllerNotifiche.setClienteViewPrincipale(this);
+
+            impostaSchermataCentrale(root);
+
+        } catch (Exception e) {
+            logger.log(java.util.logging.Level.SEVERE, "Errore nel caricamento della pagina notifiche", e);
         }
     }
     @FXML

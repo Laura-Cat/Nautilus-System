@@ -1,17 +1,23 @@
-/* Colore di sfondo di tutta l'applicazione (Azzurro chiarissimo) */
-.sfondo-principale {
-    /* Sfumatura diagonale dall'azzurro Nautilus al bianco */
-    /*-fx-background-color: linear-gradient(to bottom right, #C9E4FF, #FFFFFF);*/
-    -fx-background-image: url('../images/piscina.jpg'); -fx-background-size: cover; -fx-background-position: center center;
-
+/* Sfondo base elegante e pulito */
+.sfondo-pulito {
+    -fx-background-color: linear-gradient(to bottom right, #f8fafc, #e0f2fe);
 }
 
-/* La carta bianca al centro con l'ombra */
+/* 2. Il login rimane bianco e bellissimo */
 .pannello-login {
     -fx-background-color: white;
-    -fx-padding: 40;
-    -fx-background-radius: 15; /* Arrotonda gli angoli */
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 5); /* Crea un'ombra leggera */
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 15, 0, 0, 5);
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 20;
+    -fx-border-width: 2;
+}
+
+/* 3. Lo slideshow diventa COMPLETAMENTE TRASPARENTE e senza bordi bianchi */
+.slideshow-widget-box {
+    -fx-background-color: transparent; /* Via il bianco! */
+    /* Applichiamo l'ombra direttamente al contenitore dell'immagine */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 20, 0, 0, 8);
 }
 
 /* Il titolo grande */
@@ -53,4 +59,56 @@
 /* Cosa succede se passo col mouse sul bottone? Si scurisce! */
 .bottone-primario:hover {
     -fx-background-color: #005A9E;
+}
+
+/* Stile per il link della password */
+.link-password {
+    -fx-text-fill: #64748b; /* Grigio elegante */
+    -fx-underline: false;   /* Togliamo la riga sotto di default */
+    -fx-border-width: 0;    /* Togliamo il bordo tratteggiato quando ci clicchi */
+    -fx-font-size: 12px;
+}
+
+/* Quando passi il mouse sul link diventa azzurro */
+.link-password:hover {
+    -fx-text-fill: #0284c7;
+    -fx-underline: true;
+}
+
+/* Stile per il Footer in basso */
+.testo-footer {
+    -fx-text-fill: #94a3b8; /* Grigio chiaro per non dare fastidio */
+    -fx-font-size: 11px;
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    -fx-opacity: 0.8;
+}
+
+/* --- BOTTONI SOCIAL --- */
+.bottone-google {
+    -fx-background-color: white;
+    -fx-text-fill: #475569;
+    -fx-border-color: #cbd5e1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-font-weight: bold;
+    -fx-padding: 8 15 8 15;
+    -fx-cursor: hand;
+}
+
+.bottone-google:hover {
+    -fx-background-color: #f1f5f9;
+}
+
+.bottone-facebook {
+    -fx-background-color: #1877f2;
+    -fx-text-fill: white;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-font-weight: bold;
+    -fx-padding: 8 15 8 15;
+    -fx-cursor: hand;
+}
+
+.bottone-facebook:hover {
+    -fx-background-color: #166fe5;
 }

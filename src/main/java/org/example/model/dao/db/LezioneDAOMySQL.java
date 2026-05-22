@@ -213,11 +213,16 @@ public class LezioneDAOMySQL implements LezioneDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     Lezione l = new Lezione();
-                    l.setIdLezione(rs.getInt("id_lezione"));
+
+                    // Colonna corretta: 'id'
+                    l.setIdLezione(rs.getInt("id"));
+
                     if (rs.getDate("data") != null) l.setData(rs.getDate("data").toLocalDate());
                     if (rs.getTime("ora_inizio") != null) l.setOraInizio(rs.getTime("ora_inizio").toLocalTime());
                     if (rs.getTime("ora_fine") != null) l.setOraFine(rs.getTime("ora_fine").toLocalTime());
-                    l.setNumPostiTotali(rs.getInt("num_posti_totali"));
+
+                    // Impostiamo a 1 di default per le private
+                    l.setNumPostiTotali(1);
                     l.setNumPostiPrenotati(rs.getInt("num_posti_prenotati"));
 
                     String tipo = rs.getString("tipo_attivita");
@@ -231,9 +236,11 @@ public class LezioneDAOMySQL implements LezioneDAO {
                 }
             }
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "Errore DB nel recupero slot privati per l'istruttore " + idIstruttore, e);
+            // Se c'è un errore SQL, lo cattura qui senza far crashare il programma
+            logger.log(java.util.logging.Level.SEVERE, "Errore DB nel recupero slot privati per l'istruttore " + idIstruttore, e);
         }
 
+        // Ritorna la lista piena o vuota al Controller
         return lezioniDisponibili;
     }
 }

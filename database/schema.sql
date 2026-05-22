@@ -121,6 +121,8 @@ CREATE TABLE notifiche (
     letta BOOLEAN DEFAULT FALSE,
     data_invio DATETIME DEFAULT CURRENT_TIMESTAMP,
     id_destinatario INT NOT NULL,
+    tipo VARCHAR(50) DEFAULT 'INFO',
+    id_riferiemnto INT,
     FOREIGN KEY (id_destinatario) REFERENCES utenti(id) ON DELETE CASCADE
 );
 
@@ -154,79 +156,120 @@ GRANT INSERT, UPDATE ON nautilus_db.prenotazioni TO 'cliente_user'@'localhost';
 GRANT INSERT, UPDATE ON nautilus_db.pagamenti TO 'cliente_user'@'localhost';
 GRANT INSERT, UPDATE ON nautilus_db.lezioni TO 'cliente_user'@'localhost';
 GRANT INSERT, UPDATE ON nautilus_db.titoli_accesso TO 'cliente_user'@'localhost';
+GRANT INSERT, UPDATE ON nautilus_db.notifiche TO 'cliente_user'@'localhost';
 
 FLUSH PRIVILEGES;
 
 -- ==========================================================
--- 4. POPOLAMENTO DATI TEST
+-- 4. POPOLAMENTO DATI TEST (Aggiornato a Maggio 2026)
 -- ==========================================================
 
 INSERT INTO ruoli (id, nome_ruolo) VALUES 
 (1, 'AMMINISTRAZIONE'), (2, 'ISTRUTTORE'), (3, 'CLIENTE'), (4, 'LOGIN');
 
--- UTENTI
-INSERT INTO utenti ( cf, nome, cognome, data_nascita, luogo_nascita, indirizzo, email, password, id_ruolo, certificato_valido, specializzazione)
+-- ----------------------------------------------------------
+-- A. UTENTI
+-- ----------------------------------------------------------
+INSERT INTO utenti (id, cf, nome, cognome, data_nascita, luogo_nascita, indirizzo, email, password, id_ruolo, certificato_valido, specializzazione, descrizione, foto_path)
 VALUES 
+-- Clienti (Ruolo 3)
+(1, 'VRDGLC95A15H501X', 'Gianluca', 'Verdi', '1995-03-15', 'Napoli', 'Via Napoli 8', 'verdi@email.com', '1234', 3, TRUE, NULL, NULL, NULL),
+(2, 'GLLNNA00A41H501W', 'Anna', 'Gialli', '2000-01-01', 'Firenze', 'Via Firenze 99', 'gialli@email.com', '1234', 3, TRUE, NULL, NULL, NULL),
+(7, 'MRCNCL85M20H501K', 'Marco', 'Neri', '1985-06-20', 'Roma', 'Via Roma 1', 'marco.neri@email.com', '1234', 3, FALSE, NULL, NULL, NULL), -- Certificato scaduto!
+(8, 'SFAFRR92M10H501J', 'Sofia', 'Ferrari', '1992-10-10', 'Milano', 'Corso Como 5', 'sofia.ferrari@email.com', '1234', 3, TRUE, NULL, NULL, NULL),
 
--- Clienti
-('VRDGLC95A15H501X', 'Gianluca', 'Verdi', '1995-03-15', 'Napoli', 'Via Napoli 8', 'verdi@email.com', '1234', 3, TRUE, NULL),
-('GLLNNA00A41H501W', 'Anna', 'Gialli', '2000-01-01', 'Firenze', 'Via Firenze 99', 'gialli@email.com', '1234', 3, TRUE, NULL),
--- Admin
-('CF789', 'Admin', 'Boss', '1980-01-01', 'Roma', 'Centro', 'admin@test.it', '1234', 1, FALSE, NULL);
+-- Admin (Ruolo 1)
+(3, 'CF789', 'Admin', 'Boss', '1980-01-01', 'Roma', 'Centro', 'admin@test.it', '1234', 1, FALSE, NULL, NULL, NULL),
 
--- TITOLI DI ACCESSO
+-- Istruttori (Ruolo 2)
+(4, 'RSSMRA75A01H501Z', 'Mario', 'Rossi', '1975-01-01', 'Roma', 'Via delle Rose 12', 'mario.rossi@piscina.it', '1234', 2, FALSE, 'Perfezionamento Stile Libero e Agonismo', 'Specializzato nell''affinamento della tecnica e nello sviluppo della velocità.', '/images/istruttori/mario.jpg'),
+(5, 'BNCELN88M41H501Y', 'Elena', 'Bianchi', '1988-08-20', 'Milano', 'Corso Italia 45', 'elena.bianchi@piscina.it', '1234', 2, FALSE, 'Acquaticità & Nuoto per Principianti', 'La mia priorità è farti sentire a tuo agio in acqua. Ti aiuterò a superare la paura.', '/images/istruttori/elena.jpg'),
+(6, 'VRDLSN82A05F205H', 'Alessandro', 'Verdi', '1982-05-12', 'Firenze', 'Via Garibaldi 89', 'alessandro.verdi@piscina.it', '1234', 2, FALSE, 'Recupero Funzionale in Acqua', 'Le mie lezioni private si concentrano sulla riabilitazione e sul rinforzo muscolare a basso impatto.', '/images/istruttori/alessandro.jpg');
+
+
+-- ----------------------------------------------------------
+-- B. TITOLI DI ACCESSO & CORSI INCLUSI
+-- ----------------------------------------------------------
 INSERT INTO titoli_accesso (id, id_cliente, tipo_titolo, crediti_rimanenti, data_inizio, data_fine)
 VALUES 
-(1, 1, 'PACCHETTO_CREDITI', 10, '2026-05-01', '2026-08-01'),     -- Gianluca: Pacchetto 10 crediti (OK Nuoto Libero)
-(2, 2, 'ABBONAMENTO_PERIODICO', 0, '2026-01-01', '2026-12-31'); -- Anna: Abbonamento annuale (OK Corsi)
+(1, 1, 'PACCHETTO_CREDITI', 8, '2026-05-01', '2026-08-01'),       -- Gianluca: Pacchetto a ingressi (valido)
+(2, 2, 'ABBONAMENTO_PERIODICO', 0, '2026-01-01', '2026-12-31'),  -- Anna: Annuale (valido)
+(3, 7, 'PACCHETTO_CREDITI', 10, '2025-10-01', '2026-04-01'),     -- Marco: Pacchetto scaduto
+(4, 8, 'ABBONAMENTO_PERIODICO', 0, '2026-05-01', '2026-05-31');  -- Sofia: Mensile in scadenza (tra 9 giorni)
 
--- CORSI INCLUSI NELL'ABBONAMENTO (Anna può fare Acquagym e Hydrobike!)
-INSERT INTO abbonamenti_corsi_inclusi (id_titolo, tipo_corso)
-VALUES 
-(2, 'ACQUAGYM'),
-(2, 'HYDROBIKE');
+-- Corsi associati agli abbonamenti periodici
+INSERT INTO abbonamenti_corsi_inclusi (id_titolo, tipo_corso) VALUES 
+(2, 'ACQUAGYM'), (2, 'HYDROBIKE'), (2, 'ACQUACROSSFIT'), -- Anna
+(4, 'NUOTO_MASTER'), (4, 'SCUOLA_NUOTO_ADULTI');         -- Sofia
 
--- CORSIE
-INSERT INTO corsie (id, numero_corsia, capienza_massima)
-VALUES (1, 1, 5), (2, 2, 5), (3, 3, 5);
 
--- CORSI (Usano il nuovo Enum)
-INSERT INTO corsi (id, tipo_corso, stato_attivita, data_inizio, num_posti, descrizione)
-VALUES 
-(1, 'ACQUAGYM', 'Attività', '2026-01-10', 15, 'Attività aerobica in acqua media a ritmo di musica'),
-(2, 'SCUOLA_NUOTO_ADULTI', 'Attività', '2026-01-15', 12, 'Corso di nuoto per livelli principiante e intermedio');
+-- ----------------------------------------------------------
+-- C. CORSIE E CORSI 
+-- ----------------------------------------------------------
+INSERT INTO corsie (id, numero_corsia, capienza_massima) VALUES 
+(1, 1, 6), (2, 2, 6), (3, 3, 6), (4, 4, 8), (5, 5, 8); -- Ampliate a 5 corsie per gestire più attività
 
--- LEZIONI (Aggiornate al 20 e 21 Maggio 2026)
+INSERT INTO corsi (id, tipo_corso, stato_attivita, data_inizio, num_posti, descrizione) VALUES 
+(1, 'ACQUAGYM', 'Attivo', '2026-01-10', 15, 'Attività aerobica in acqua media a ritmo di musica'),
+(2, 'SCUOLA_NUOTO_ADULTI', 'Attivo', '2026-01-15', 12, 'Corso di nuoto per livelli principiante e intermedio'),
+(3, 'HYDROBIKE', 'Attivo', '2026-02-01', 10, 'Pedalare in acqua per tonificare e bruciare calorie'),
+(4, 'NUOTO_MASTER', 'Attivo', '2026-01-01', 15, 'Allenamento intensivo per agonisti e nuotatori esperti'),
+(5, 'ACQUACROSSFIT', 'Attivo', '2026-03-01', 12, 'Circuito ad alta intensità con attrezzi in acqua'),
+(6, 'NEONATALE', 'Attivo', '2026-04-01', 8, 'Acquaticità per bambini dai 3 ai 36 mesi con genitore');
+
+
+-- ----------------------------------------------------------
+-- D. LEZIONI (IL PALINSESTO DI MAGGIO 2026)
+-- ----------------------------------------------------------
 INSERT INTO lezioni (id, data, ora_inizio, ora_fine, num_posti_prenotati, tipo_attivita, id_istruttore, id_corso, id_corsia)
 VALUES 
--- Nuoto Libero (20 Maggio)
-(1, '2026-05-20', '09:00:00', '10:00:00', 2, 'NUOTO_LIBERO', NULL, NULL, 1), 
-(2, '2026-05-20', '10:00:00', '11:00:00', 5, 'NUOTO_LIBERO', NULL, NULL, 2), -- ESAURITO
-(3, '2026-05-20', '11:00:00', '12:00:00', 0, 'NUOTO_LIBERO', NULL, NULL, 1), 
+-- Lezioni Passate (20 e 21 Maggio)
+(1, '2026-05-20', '18:00:00', '19:00:00', 10, 'CORSO_GRUPPO', 5, 1, 1), -- Acquagym con Elena
+(2, '2026-05-21', '09:00:00', '10:00:00', 4,  'NUOTO_LIBERO', NULL, NULL, 5), 
 
--- Nuoto Libero (21 Maggio)
-(4, '2026-05-21', '09:00:00', '10:00:00', 1, 'NUOTO_LIBERO', NULL, NULL, 2),
+-- Lezioni di OGGI (Venerdì 22 Maggio 2026)
+(3, '2026-05-22', '09:00:00', '10:00:00', 0,  'PRIVATA', 6, NULL, 1),       -- Lezione privata di Alessandro
+(4, '2026-05-22', '10:00:00', '11:00:00', 6,  'CORSO_GRUPPO', 5, 6, 2),     -- Neonatale con Elena
+(5, '2026-05-22', '13:00:00', '14:00:00', 2,  'NUOTO_LIBERO', NULL, NULL, 3),-- Pausa pranzo
+(6, '2026-05-22', '18:00:00', '19:00:00', 12, 'CORSO_GRUPPO', 4, 4, 1),     -- Nuoto Master con Mario (Corsia 1)
+(7, '2026-05-22', '18:00:00', '19:00:00', 8,  'CORSO_GRUPPO', 5, 1, 2),     -- Acquagym con Elena (Corsia 2, stesso orario!)
+(8, '2026-05-22', '18:00:00', '19:00:00', 5,  'NUOTO_LIBERO', NULL, NULL, 5),-- Nuoto libero in contemporanea (Corsia 5)
 
--- Corsi di Gruppo (Associazione con id_corso=1(Acquagym) e id_corso=2(Scuola Nuoto))
-(5, '2026-05-20', '18:00:00', '19:00:00', 10, 'CORSO_GRUPPO', 2, 1, 3), -- Acquagym (Oggi)
-(6, '2026-05-21', '13:00:00', '14:00:00', 4, 'CORSO_GRUPPO', 1, 2, 1);  -- Scuola Nuoto (Domani)
+-- Lezioni Future (Sabato 23 e oltre)
+(9, '2026-05-23', '10:00:00', '11:00:00', 0, 'PRIVATA', 4, NULL, 1),        -- Privata con Mario
+(10,'2026-05-25', '19:00:00', '20:00:00', 5, 'CORSO_GRUPPO', 6, 3, 2);      -- Hydrobike con Alessandro
 
-INSERT INTO utenti (cf, nome, cognome, data_nascita, luogo_nascita, indirizzo, email, password, id_ruolo, certificato_valido, specializzazione, descrizione, foto_path) 
-VALUES 
--- 1. MARIO ROSSI (Sistemata la virgola mancante e il percorso della foto)
-('RSSMRA75A01H501Z', 'Mario', 'Rossi', '1975-01-01', 'Roma', 'Via delle Rose 12', 'mario.rossi@piscina.it', 'password123', 2, FALSE, 
- 'Perfezionamento Stile Libero e Agonismo', 
- 'Specializzato nell''affinamento della tecnica e nello sviluppo della velocità. Ideale per chi sa già nuotare e vuole prepararsi per le gare o migliorare drasticamente i propri tempi.', 
- '/images/istruttori/mario.jpg'),
 
--- 2. ELENA BIANCHI (Perfetta)
-('BNCELN88M41H501Y', 'Elena', 'Bianchi', '1988-08-20', 'Milano', 'Corso Italia 45', 'elena.bianchi@piscina.it', 'password123', 2, FALSE, 
- 'Acquaticità & Nuoto per Principianti', 
- 'La mia priorità è farti sentire a tuo agio in acqua. Con calma e pazienza, ti aiuterò a superare la paura e a padroneggiare le basi del galleggiamento e della respirazione.', 
- '/images/istruttori/elena.jpg'),
+-- ----------------------------------------------------------
+-- E. PRENOTAZIONI
+-- ----------------------------------------------------------
+INSERT INTO prenotazioni (id, data_richiesta, stato, id_cliente, id_lezione) VALUES 
+(1, '2026-05-18', 'Confermato', 2, 7), -- Anna prenota Acquagym di Oggi
+(2, '2026-05-20', 'Confermato', 1, 8), -- Gianluca prenota Nuoto Libero di Oggi alle 18
+(3, '2026-05-21', 'In Attesa',  8, 6); -- Sofia si prenota in lista d'attesa per Nuoto Master
 
--- 3. ALESSANDRO VERDI (Ora ha TUTTI gli attributi richiesti dalla tabella!)
-('VRDLSN82A05F205H', 'Alessandro', 'Verdi', '1982-05-12', 'Firenze', 'Via Garibaldi 89', 'alessandro.verdi@piscina.it', 'password123', 2, FALSE, 
- 'Recupero Funzionale in Acqua', 
- 'Le mie lezioni private si concentrano sulla riabilitazione e sul rinforzo muscolare a basso impatto. Sfruttiamo la resistenza dell''acqua per un allenamento sicuro ed efficace, perfetto nel post-infortunio.', 
- '/images/istruttori/alessandro.jpg');
+
+-- ----------------------------------------------------------
+-- F. NOTIFICHE (Coerenti con la data del 22 Maggio 2026)
+-- ----------------------------------------------------------
+
+INSERT INTO notifiche (messaggio, letta, data_invio, id_destinatario, tipo, id_riferimento) VALUES 
+
+-- 1. CASISTICA: NOTIFICA CON PAGAMENTO (Non Letta) -> Destinata a Gianluca (id 1)
+('La tua richiesta per la lezione privata con Mario è stata accettata! Procedi al pagamento per confermare definitivamente lo slot.', 0, '2026-05-22 10:15:00', 1, 'RICHIESTA_PAGAMENTO', 11),
+-- 2. CASISTICA: CAMBIO PROGRAMMA URGENTE (Non Letta) -> Destinata ad Anna (id 2)
+('Avviso: La lezione di Acquagym di stasera alle 18:00 è stata spostata alla Corsia 4 per manutenzione tecnica. A più tardi!', 0, '2026-05-22 08:30:00', 2, 'INFO', 7),
+-- 3. CASISTICA: SUCCESSO LISTA D'ATTESA (Non Letta) -> Destinata a Sofia (id 8)
+('Ottime notizie! Si è liberato un posto per il corso di Nuoto Master di stasera. La tua prenotazione in lista d''attesa è ora passata a "Confermata".', 0, '2026-05-21 17:45:00', 8, 'INFO', 6),
+-- 4. CASISTICA: PROMEMORIA NORMALE (Già Letta) -> Destinata a Sofia (id 8)
+('Promemoria: il tuo abbonamento periodico scade a fine mese (31/05/2026). Ricordati di rinnovarlo per non perdere i progressi!', 1, '2026-05-20 09:00:00', 8, 'INFO', NULL),
+-- 5. CASISTICA: MESSAGGIO DALLA SEGRETERIA (Già Letta) -> Destinata a Marco (id 7)
+('La segreteria ha appena respinto il caricamento del tuo certificato medico: il documento risulta sfocato e illeggibile. Ti preghiamo di ricaricarlo.', 1, '2026-05-18 14:20:00', 7, 'INFO', NULL);
+-- ----------------------------------------------------------
+-- G. PAGAMENTI
+-- ----------------------------------------------------------
+INSERT INTO pagamenti (id_transazione, importo, data_acquisto, stato, id_cliente, id_titolo_acquistato) VALUES 
+('TRX-2026-001', 75.00, '2026-05-01', 'Completato', 1, 1),
+('TRX-2026-002', 450.00, '2026-01-01', 'Completato', 2, 2),
+('TRX-2025-099', 90.00, '2025-10-01', 'Completato', 7, 3),
+('TRX-2026-004', 55.00, '2026-05-01', 'Completato', 8, 4);

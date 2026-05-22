@@ -8,7 +8,8 @@ public class Notifica {
     private User destinatario; // A chi è rivolta?
     private boolean letta;           // L'ha già aperta?
     private LocalDateTime dataInvio;
-
+    private String tipo;
+    private Integer idRiferimento;
     // Costruttore
     public Notifica(String messaggio, User destinatario) {
         this.messaggio = messaggio;
@@ -19,6 +20,22 @@ public class Notifica {
 
     public Notifica(){
 
+    }
+
+    public Integer getIdRiferimento() {
+        return idRiferimento;
+    }
+
+    public void setIdRiferimento(Integer idRiferimento) {
+        this.idRiferimento = idRiferimento;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     // Metodo di business utile

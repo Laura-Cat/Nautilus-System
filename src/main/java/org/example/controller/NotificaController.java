@@ -5,7 +5,6 @@ import org.example.model.domain.*;
 
 import java.util.List;
 
-
 public class NotificaController {
 
     public boolean inviaRichiestaLezionePrivata(Cliente cliente, Istruttore istruttore, Lezione lezione, String noteCliente) {
@@ -25,7 +24,15 @@ public class NotificaController {
     }
 
     public List<Notifica> recuperaNonLettePerUtente(org.example.model.domain.User utente, Integer idUtente) {
-        return org.example.model.dao.DAOFactory.getInstance().getNotificaDAO().recuperaNonLettePerUtente(utente, idUtente);
+        return DAOFactory.getInstance().getNotificaDAO().recuperaNonLettePerUtente(utente, idUtente);
+    }
+
+    public boolean aggiornaNotifica(Notifica notifica) {
+        return DAOFactory.getInstance().getNotificaDAO().aggiornaStato(notifica);
+    }
+
+    public List<Notifica> recuperaTuttePerUtente(org.example.model.domain.User utente, Integer idUtente) {
+        return DAOFactory.getInstance().getNotificaDAO().recuperaTuttePerUtente(utente, idUtente);
     }
 
 }

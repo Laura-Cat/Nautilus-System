@@ -1,0 +1,106 @@
+/* ============================================== */
+/* STRUTTURA GENERALE DELLA PAGINA NOTIFICHE      */
+/* ============================================== */
+
+/* Sfondo del pannello centrale */
+.sfondo-notifiche {
+    -fx-background-color: #f8fafc;
+    -fx-background-radius: 15;
+}
+
+/* Testi della testata */
+.titolo-notifiche {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e293b;
+}
+
+.sottotitolo-notifiche {
+    -fx-text-fill: #64748b;
+}
+
+/* ============================================== */
+/* BOTTONE "SEGNA TUTTE COME LETTE"               */
+/* ============================================== */
+.bottone-segna-lette {
+    -fx-background-color: #10b981; /* Verde smeraldo */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 15;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-cursor: hand;
+}
+
+/* L'effetto scurito quando ci passi sopra col mouse! */
+.bottone-segna-lette:hover {
+    -fx-background-color: #059669;
+}
+
+/* ============================================== */
+/* GESTIONE DELLO SCORRIMENTO (SCROLLPANE)        */
+/* ============================================== */
+
+/* Rende trasparente lo sfondo dello ScrollPane per fonderlo con la pagina */
+.scroll-notifiche, .scroll-notifiche > .viewport {
+    -fx-background-color: transparent;
+    -fx-control-inner-background: transparent;
+    -fx-border-color: transparent;
+}
+
+/* Il VBox interno che contiene le bolle */
+.contenitore-bolle {
+    -fx-background-color: transparent;
+}
+
+/* ============================================== */
+/* LE BOLLE EFFETTO CHAT / EMAIL                  */
+/* ============================================== */
+.bolla-notifica {
+    -fx-background-radius: 12;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.02), 10, 0, 0, 2);
+    -fx-cursor: hand;
+}
+
+/* 🌟 STATO 1: NOTIFICA NON LETTA (Luminosa, stile Inbox) */
+.bolla-non-letta {
+    -fx-background-color: white;
+    /* Un bellissimo bordo azzurro solo sul lato sinistro per farla "risaltare" */
+    -fx-border-color: #0284c7;
+    -fx-border-width: 0 0 0 4;
+    -fx-border-radius: 0;
+}
+.bolla-non-letta:hover {
+    -fx-background-color: #f0f9ff; /* Feedback azzurrino al passaggio del mouse */
+}
+.bolla-non-letta .notifica-messaggio {
+    -fx-text-fill: #0f172a; /* Testo molto scuro e leggibile */
+    -fx-font-weight: bold;  /* Grassetto come le email non lette! */
+}
+
+/* 🌟 STATO 2: NOTIFICA GIÀ LETTA (Sbiadita/Neutre) */
+.bolla-letta {
+    -fx-background-color: #f1f5f9; /* Sfondo grigio chiaro */
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 1;
+    -fx-border-radius: 12;
+    -fx-opacity: 0.65; /* Effetto semi-trasparente sbiadito */
+}
+.bolla-letta:hover {
+    -fx-background-color: #e2e8f0;
+}
+.bolla-letta .notifica-messaggio {
+    -fx-text-fill: #64748b; /* Testo grigio spento */
+    -fx-font-weight: normal;
+}
+
+/* Stili comuni per i testi interni */
+.notifica-data {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 11px;
+}
+.notifica-messaggio {
+    -fx-font-size: 13px;
+    -fx-line-spacing: 0.2em;
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="20.0" styleClass="sfondo-notifiche" stylesheets="@../style/styleNotifiche.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.NotificheView">
+    <padding>
+        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+    </padding>
+    <children>
+        <HBox alignment="CENTER_LEFT" spacing="20.0">
+            <children>
+                <VBox HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label styleClass="titolo-notifiche" text="Le tue Notifiche" />
+                        <Label styleClass="sottotitolo-notifiche" text="Qui trovi tutti gli aggiornamenti sui tuoi abbonamenti e prenotazioni." />
+                    </children>
+                </VBox>
+
+                <Button mnemonicParsing="false" onAction="#segnaTutteComeLette" styleClass="bottone-segna-lette" text="✔ Segna tutte come lette" />
+            </children>
+        </HBox>
+
+        <ScrollPane fitToWidth="true" styleClass="scroll-notifiche" VBox.vgrow="ALWAYS">
+            <content>
+                <VBox fx:id="contenitoreNotifiche" spacing="15.0" styleClass="contenitore-bolle">
+                    <padding>
+                        <Insets bottom="10.0" left="5.0" right="20.0" top="10.0" />
+                    </padding>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </children>
+</VBox>
