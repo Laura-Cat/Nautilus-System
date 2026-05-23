@@ -5,92 +5,106 @@ import org.example.model.domain.AbbonamentoPeriodico;
 import org.example.model.domain.Cliente;
 import org.example.model.domain.PacchettoCrediti;
 import org.example.model.domain.TitoloAccesso;
+import org.example.controller.strategy.MetodoPagamentoStrategy;
 
 import java.time.LocalDate;
 import java.util.logging.Logger;
 
 public class PagamentoController {
     private static final Logger logger = Logger.getLogger(PagamentoController.class.getName());
+
     // ==========================================================
-    // 1. ACQUISTO CREDITI
+    // IL MOTORE DEL PATTERN STRATEGY (Risolve il primo errore)
     // ==========================================================
-    public boolean acquistaCrediti(Cliente cliente, int creditiDaAggiungere, String metodoPagamento) {
-        TitoloAccesso titolo = cliente.getTitoloAccesso();
+    private MetodoPagamentoStrategy strategiaPagamento;
 
-        if (titolo instanceof PacchettoCrediti) {
-            PacchettoCrediti crediti = (PacchettoCrediti) titolo;
-            crediti.aggiungiCrediti(creditiDaAggiungere);
+    public void setStrategiaPagamento(MetodoPagamentoStrategy strategia) {
+        this.strategiaPagamento = strategia;
+    }
 
-            // Aggiorna il numero di crediti nel database
-            DAOFactory.getInstance().getTitoloAccessoDAO().aggiornaCrediti(crediti);
-            // --------------------
-
-            logger.info("Aggiunti " + creditiDaAggiungere + " crediti. Pagamento con " + metodoPagamento);
-            return true;
-        } else {
-            logger.severe("Errore: Il cliente non possiede una tessera a crediti su cui fare la ricarica.");
+    private boolean elaboraTransazione(double importo) {
+        if (strategiaPagamento == null) {
+            logger.severe("Errore: Nessun metodo di pagamento selezionato!");
             return false;
         }
+
+        logger.info("Avvio transazione di €" + importo + " tramite " + strategiaPagamento.getNomePiattaforma());
+        return strategiaPagamento.processaPagamento(importo);
     }
 
     // ==========================================================
-    // 2. RINNOVO / ACQUISTO ABBONAMENTO PERIODICO
+    // PAGAMENTO LEZIONE PRIVATA (Risolve il secondo errore)
     // ==========================================================
-    public boolean compraNuovoAbbonamento(Cliente cliente, int mesiValidita, String metodoPagamento) {
-        if (elaboraTransazione(metodoPagamento, mesiValidita * 30)) {
+    public boolean pagaLezionePrivata(int idPrenotazione, double costo, org.example.model.domain.Notifica notifica) {
+        if (elaboraTransazione(costo)) {
 
-            // 1. CALCOLIAMO LE DATE
-            LocalDate dataInizio = LocalDate.now();
-            LocalDate dataFine = dataInizio.plusMonths(mesiValidita);
+            // 1. Recuperiamo la prenotazione dal DB e la segniamo come pagata
+            org.example.model.domain.Prenotazione p = DAOFactory.getInstance().getPrenotazioneDAO().trovaPerId(idPrenotazione);
+            if (p != null) {
+                p.pagata(); // Mette lo stato "Confermata e Pagata"
+                DAOFactory.getInstance().getPrenotazioneDAO().aggiornaStato(p);
+            }
 
-            // 2. CREIAMO IL NUOVO OGGETTO (Passiamo null come ID, lo creerà poi il Database)
-            AbbonamentoPeriodico nuovoAbbonamento = new AbbonamentoPeriodico(null, dataInizio, dataFine);
+            // 2. Disinneschiamo la notifica
+            notifica.setTipo("PAGAMENTO_COMPLETATO");
+            notifica.setMessaggio("✅ Pagamento di €" + costo + " completato. La tua lezione è confermata!");
+            notifica.setLetta(true);
 
-            // 3. LO ASSEGNIAMO AL CLIENTE
-            cliente.setTitoloAccesso(nuovoAbbonamento);
-            DAOFactory.getInstance().getTitoloAccessoDAO().salvaNuovo(nuovoAbbonamento, cliente.getId());
+            DAOFactory.getInstance().getNotificaDAO().aggiornaStato(notifica);
 
-            logger.info("Acquisto completato! Nuovo Abbonamento mensile assegnato a " + cliente.getNome());
+            logger.info("Prenotazione " + idPrenotazione + " pagata con successo e notifica disinnescata!");
             return true;
         }
         return false;
     }
 
-    public boolean rinnovaAbbonamento(Cliente cliente, int mesiDaAggiungere, String metodoPagamento) {
+    // ==========================================================
+    // I TUOI VECCHI METODI AGGIORNATI AL NUOVO SISTEMA
+    // ==========================================================
+    public boolean acquistaCrediti(Cliente cliente, int creditiDaAggiungere, double costoTotale) {
         TitoloAccesso titolo = cliente.getTitoloAccesso();
 
-        // Controlliamo prima se il cliente ha l'abbonamento giusto
-        if (titolo instanceof AbbonamentoPeriodico) {
+        if (titolo instanceof PacchettoCrediti) {
+            if (elaboraTransazione(costoTotale)) {
+                PacchettoCrediti crediti = (PacchettoCrediti) titolo;
+                crediti.aggiungiCrediti(creditiDaAggiungere);
 
-            // Facciamo subito il casting per comodità, così non impazziamo con le parentesi
+                DAOFactory.getInstance().getTitoloAccessoDAO().aggiornaCrediti(crediti);
+                logger.info("Aggiunti " + creditiDaAggiungere + " crediti.");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean compraNuovoAbbonamento(Cliente cliente, int mesiValidita, double costoTotale) {
+        if (elaboraTransazione(costoTotale)) {
+            LocalDate dataInizio = LocalDate.now();
+            LocalDate dataFine = dataInizio.plusMonths(mesiValidita);
+
+            AbbonamentoPeriodico nuovoAbbonamento = new AbbonamentoPeriodico(null, dataInizio, dataFine);
+            cliente.setTitoloAccesso(nuovoAbbonamento);
+
+            DAOFactory.getInstance().getTitoloAccessoDAO().salvaNuovo(nuovoAbbonamento, cliente.getId());
+            logger.info("Nuovo Abbonamento mensile assegnato a " + cliente.getNome());
+            return true;
+        }
+        return false;
+    }
+
+    public boolean rinnovaAbbonamento(Cliente cliente, int mesiDaAggiungere, double costoTotale) {
+        TitoloAccesso titolo = cliente.getTitoloAccesso();
+
+        if (titolo instanceof AbbonamentoPeriodico) {
             AbbonamentoPeriodico abbonamento = (AbbonamentoPeriodico) titolo;
 
-            // Tentiamo il pagamento
-            if (elaboraTransazione(metodoPagamento, mesiDaAggiungere * 30)) {
-
-                // 1. Rinnoviamo l'oggetto Java
+            if (elaboraTransazione(costoTotale)) {
                 abbonamento.rinnova(mesiDaAggiungere);
-
-                // 2. Salviamo nel database passandogli l'oggetto forzato (abbonamento)
                 DAOFactory.getInstance().getTitoloAccessoDAO().aggiornaRinnovo(abbonamento);
-
                 logger.info("Abbonamento prolungato di " + mesiDaAggiungere + " mesi.");
                 return true;
-            } else {
-                logger.severe("Errore: Transazione rifiutata.");
-                return false;
             }
-
-        } else {
-            logger.severe("Errore: Il cliente non ha un abbonamento periodico da rinnovare.");
-            return false;
         }
+        return false;
     }
-
-    private boolean elaboraTransazione(String metodoPagamento, int importo) {
-        logger.info("Contattando il sistema per il pagamento di " + importo + " euro tramite " + metodoPagamento + "...");
-        return true;
-    }
-
-
 }

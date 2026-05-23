@@ -15,6 +15,8 @@ public class Lezione {
     private Corso corsoAppartenenza;
     private Corsia corsiaAssegnata;
     private TipoAttivita tipoAttivita;
+    private String infoClientePrivata;
+    private String noteClientePrivata;
 
     // Costruttore aggiornato: aggiunto numPostiTotali
     public Lezione(Integer idLezione, LocalDate data, LocalTime oraInizio, LocalTime oraFine,
@@ -76,4 +78,20 @@ public class Lezione {
 
     public Corsia getCorsiaAssegnata() { return corsiaAssegnata; }
     public void setCorsiaAssegnata(Corsia corsiaAssegnata) { this.corsiaAssegnata = corsiaAssegnata; }
+
+    public String getInfoClientePrivata() {
+        return infoClientePrivata;
+    }
+
+    public void setInfoClientePrivata(String infoClientePrivata) {
+        this.infoClientePrivata = infoClientePrivata;
+    }
+
+    public String getNoteClientePrivata() {
+        return noteClientePrivata;
+    }
+
+    public void setNoteClientePrivata(String noteClientePrivata) {
+        this.noteClientePrivata = noteClientePrivata;
+    }
 }

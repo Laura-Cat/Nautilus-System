@@ -1,0 +1,57 @@
+fondo-calendario {
+    -fx-background-color: #f8fafc; /* Grigio-azzurro chiarissimo */
+}
+
+/* ScrollPane trasparente per non rovinare lo sfondo */
+.scroll-calendario, .scroll-calendario > .viewport {
+    -fx-background-color: transparent;
+    -fx-control-inner-background: transparent;
+    -fx-border-color: transparent;
+}
+
+/* La colonna di un singolo giorno */
+.colonna-giorno {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.03), 10, 0, 0, 5);
+}
+
+/* Colonna speciale per evidenziare il giorno di OGGI */
+.colonna-oggi {
+    -fx-border-color: #3b82f6; /* Bordo azzurro marcato */
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(three-pass-box, rgba(59,130,246,0.15), 15, 0, 0, 5);
+}
+
+/* La singola "Card" di un appuntamento/lezione */
+.card-evento {
+    -fx-background-color: #f1f5f9;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-width: 0 0 0 4; /* Bordo colorato solo a sinistra! */
+    -fx-padding: 10;
+    -fx-cursor: hand;
+}
+
+/* Effetto 3D quando passi sopra a un evento col mouse */
+.card-evento:hover {
+    -fx-background-color: #e0f2fe; /* Diventa leggermente azzurro */
+    -fx-translate-y: -2; /* Si solleva verso l'alto */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 8, 0, 0, 3);
+}
+
+/* Testi dentro la card dell'evento */
+.evento-orario {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #64748b;
+}
+
+.evento-titolo {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0f172a;
+}

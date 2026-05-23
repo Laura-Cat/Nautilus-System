@@ -45,7 +45,7 @@ public class IstruttoreView {
         this.contentArea.getChildren().setAll(nuovoNodo);
     }
 
-    private void aggiornaPallinoNotifiche() {
+    public void aggiornaPallinoNotifiche() {
         User utenteCorrente = LoginController.getInstance().getUtenteAttivo();
         List<Notifica> notificheNonLette = notificaController.recuperaNonLettePerUtente(utenteCorrente, utenteCorrente.getId());
 
@@ -58,17 +58,27 @@ public class IstruttoreView {
 
     @FXML
     public void apriGestioneRichieste() {
-        // Qui caricheremo la schermata dove l'istruttore vede le richieste in attesa
-        logger.info("Apertura schermata gestione richieste...");
-        /*
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/gestioneRichieste.fxml"));
-            Node nuovaPagina = loader.load();
-            impostaSchermataCentrale(nuovaPagina);
-        } catch (IOException e) {
-            logger.log(Level.SEVERE, "Errore caricamento gestioneRichieste", e);
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/fxml/notifichePage.fxml"));
+            javafx.scene.Node root = loader.load();
+
+            org.example.view.NotificheView controllerNotifiche = loader.getController();
+            controllerNotifiche.setIstruttoreViewPrincipale(this);
+
+            impostaSchermataCentrale(root);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        */
+    }
+    @FXML
+    public void apriCalendario() {
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/fxml/calendarioPage.fxml"));
+            javafx.scene.Node root = loader.load();
+            impostaSchermataCentrale(root);
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Errore caricamento calendario istruttore", e);
+        }
     }
 
     @FXML

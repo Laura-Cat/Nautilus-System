@@ -18,12 +18,11 @@
                 <Label fx:id="labelNomeIstruttore" styleClass="testo-benvenuto" text="Benvenuto, Istruttore!" />
                 <Separator />
 
-                <Button maxWidth="Infinity" text="📅 Il Mio Calendario" />
-                <Button maxWidth="Infinity" text="📝 Gestisci Richieste" onAction="#apriGestioneRichieste" />
+                <Button text="📅 Agenda Settimanale" onAction="#apriCalendario" styleClass="bottone-menu-laterale" />
 
                 <StackPane alignment="TOP_RIGHT">
                     <children>
-                        <Button fx:id="btnNotifiche" maxWidth="Infinity" text="🔔 Notifiche" />
+                        <Button fx:id="btnNotifiche" maxWidth="Infinity" text="🔔 Notifiche" onAction="#apriGestioneRichieste" />
                         <Circle fx:id="pallinoRosso" fill="#ef4444" radius="5.0" visible="false">
                             <StackPane.margin>
                                 <Insets right="10.0" top="5.0" />

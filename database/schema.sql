@@ -110,6 +110,8 @@ CREATE TABLE prenotazioni (
     stato VARCHAR(50) DEFAULT 'In Attesa',
     id_cliente INT NOT NULL,
     id_lezione INT NOT NULL,
+    tipologia VARCHAR(45),
+    note TEXT,
     FOREIGN KEY (id_cliente) REFERENCES utenti(id),
     FOREIGN KEY (id_lezione) REFERENCES lezioni(id)
 );
@@ -122,7 +124,7 @@ CREATE TABLE notifiche (
     data_invio DATETIME DEFAULT CURRENT_TIMESTAMP,
     id_destinatario INT NOT NULL,
     tipo VARCHAR(50) DEFAULT 'INFO',
-    id_riferiemnto INT,
+    id_riferimento INT,
     FOREIGN KEY (id_destinatario) REFERENCES utenti(id) ON DELETE CASCADE
 );
 
@@ -157,6 +159,11 @@ GRANT INSERT, UPDATE ON nautilus_db.pagamenti TO 'cliente_user'@'localhost';
 GRANT INSERT, UPDATE ON nautilus_db.lezioni TO 'cliente_user'@'localhost';
 GRANT INSERT, UPDATE ON nautilus_db.titoli_accesso TO 'cliente_user'@'localhost';
 GRANT INSERT, UPDATE ON nautilus_db.notifiche TO 'cliente_user'@'localhost';
+
+
+GRANT SELECT ON nautilus_db.* TO 'istruttore_user'@'localhost';
+GRANT INSERT, UPDATE ON nautilus_db.prenotazioni TO 'istruttore_user'@'localhost';
+GRANT INSERT, UPDATE ON nautilus_db.lezioni TO 'istruttore_user'@'localhost';
 
 FLUSH PRIVILEGES;
 

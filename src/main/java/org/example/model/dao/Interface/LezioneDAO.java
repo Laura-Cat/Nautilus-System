@@ -9,12 +9,11 @@ import java.time.LocalTime;
 import java.util.List;
 
 public interface LezioneDAO {
-    // Recupera le lezioni di un certo tipo in una data specifica
+
     List<Lezione> trovaPerTipoEData(TipoAttivita tipo, LocalDate data);
     public List<Lezione> trovaPerCorso(TipoCorso tipoCorso);
-    // Recupera una singola lezione tramite ID
     Lezione trovaPerId(Integer id);
     List<Lezione> trovaPrivateDisponibiliPerIstruttore(Integer idIstruttore);
-    // Aggiorna il numero di posti occupati nel DB
+    List<Lezione> trovaImpegniIstruttore(Integer idIstruttore, LocalDate dataInizio, LocalDate dataFine);
     void aggiornaPostiOccupati(Lezione lezione);
 }

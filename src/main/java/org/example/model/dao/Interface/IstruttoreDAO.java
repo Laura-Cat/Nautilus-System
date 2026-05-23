@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface IstruttoreDAO {
     List<Istruttore> recuperaTutti();
+    Istruttore trovaPerId(Integer id);
 }

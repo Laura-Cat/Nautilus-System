@@ -131,6 +131,11 @@ public class ClienteView {
         stage.show();
     }
 
+    @FXML
+    public void apriCalendario(ActionEvent event) {
+        caricaPaginaAlCentro("/fxml/calendarioPage.fxml");
+    }
+
     public void impostaSchermataCentrale(javafx.scene.Node nuovoNodo) {
         if (this.contentArea != null) {
             this.contentArea.getChildren().setAll(nuovoNodo);

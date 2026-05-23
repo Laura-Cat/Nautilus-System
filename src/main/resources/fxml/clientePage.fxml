@@ -26,6 +26,7 @@
                 </VBox>
 
                 <Button fx:id="btnAbbonamenti" maxWidth="Infinity" text="Miei Abbonamenti" />
+                <Button text="📅 Il mio Calendario" onAction="#apriCalendario" styleClass="bottone-menu-laterale" />
 
                 <StackPane alignment="TOP_RIGHT">
                     <children>

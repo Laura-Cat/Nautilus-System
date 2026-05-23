@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static java.time.LocalDate.now;
+
 public class PrenotazioneController {
     private static final Logger logger = Logger.getLogger(PrenotazioneController.class.getName());
     private static PrenotazioneController instance; // AGGIUNTO PER SINGLETON
@@ -104,7 +106,7 @@ public class PrenotazioneController {
 
                 // 2. CREIAMO LA PRENOTAZIONE USANDO IL PATTERN BEAN!
                 org.example.model.domain.Prenotazione nuovaPrenotazione = new org.example.model.domain.Prenotazione();
-                nuovaPrenotazione.setDataRichiesta(java.time.LocalDate.now());
+                nuovaPrenotazione.setDataRichiesta(now());
                 nuovaPrenotazione.setStato("Confermata");
                 nuovaPrenotazione.setTipologia(lezione.getTipoAttivita());
                 nuovaPrenotazione.setCliente(cliente);
@@ -159,27 +161,35 @@ public class PrenotazioneController {
         Cliente clienteRichiedente = prenotazione.getCliente();
 
         if (accetta) {
-            prenotazione.accettataDaIstruttore();
+            prenotazione.accettataDaIstruttore(); // Mette lo stato "Accettata - In attesa di pagamento"
             logger.info("Sistema: L'istruttore ha accettato. Cliente pronto per pagare.");
 
-            String testoOk = "L'istruttore ha accettato la tua richiesta per la lezione del " + prenotazione.getLezionePrenotata().getData() + ". Puoi procedere al pagamento.";
-            clienteRichiedente.riceviNotifica(new Notifica(testoOk, clienteRichiedente));
+            // 🌟 CREIAMO LA NOTIFICA MAGICA PER IL PAGAMENTO!
+            Notifica n = new Notifica();
+            n.setMessaggio("L'istruttore ha accettato la tua richiesta per la lezione del " + prenotazione.getLezionePrenotata().getData() + ". Puoi procedere al pagamento.");
+            n.setLetta(false);
+            n.setTipo("RICHIESTA_PAGAMENTO");
+            n.setIdRiferimento(prenotazione.getId()); // AGGANCIAMO L'ID DELLA PRENOTAZIONE!
+
+            DAOFactory.getInstance().getNotificaDAO().invia(n, clienteRichiedente.getId());
 
         } else {
             prenotazione.rifiuta();
-
             Lezione lezione = prenotazione.getLezionePrenotata();
             lezione.setNumPostiPrenotati(lezione.getNumPostiPrenotati() - 1);
-            logger.info("Sistema: L'istruttore ha rifiutato. Posto liberato.");
 
-            String testoNo = "Ci dispiace, l'istruttore ha rifiutato la lezione privata per il " + prenotazione.getLezionePrenotata().getData() + ".";
-            clienteRichiedente.riceviNotifica(new Notifica(testoNo, clienteRichiedente));
+            Notifica n = new Notifica();
+            n.setMessaggio("Ci dispiace, l'istruttore ha rifiutato la lezione privata per il " + prenotazione.getLezionePrenotata().getData() + ".");
+            n.setLetta(false);
+            n.setTipo("INFO");
+
+            DAOFactory.getInstance().getNotificaDAO().invia(n, clienteRichiedente.getId());
         }
 
+        // Salviamo il nuovo stato della prenotazione nel DB
         PrenotazioneDAO dao = DAOFactory.getInstance().getPrenotazioneDAO();
         dao.aggiornaStato(prenotazione);
     }
-
     // ==========================================================
     // FASE 3: IL CLIENTE PAGA (Solo per le Private)
     // ==========================================================
@@ -251,14 +261,15 @@ public class PrenotazioneController {
                 DAOFactory.getInstance().getLezioneDAO().aggiornaPostiOccupati(lezioneSelezionata);
 
                 // B. Creiamo la prenotazione in stato "In Attesa"
-                Prenotazione p = new Prenotazione(null, java.time.LocalDate.now(), org.example.model.domain.TipoAttivita.PRIVATA, cliente);
+                Prenotazione p = new Prenotazione(null, now(), TipoAttivita.PRIVATA, cliente);
                 p.setLezionePrenotata(lezioneSelezionata);
                 p.attesaAccettazione(); // O p.setStato("IN ATTESA"); a seconda di come hai chiamato il metodo in Prenotazione
+                p.setNote(noteLivello);
                 DAOFactory.getInstance().getPrenotazioneDAO().salva(p);
 
                 // C. Inviamo la notifica all'istruttore
                 NotificaController nc = new NotificaController();
-                nc.inviaRichiestaLezionePrivata(cliente, lezioneSelezionata.getIstruttore(), lezioneSelezionata, noteLivello);
+                nc.inviaRichiestaLezionePrivata(cliente, lezioneSelezionata.getIstruttore(), lezioneSelezionata, noteLivello, p.getId());
 
                 return true;
             }

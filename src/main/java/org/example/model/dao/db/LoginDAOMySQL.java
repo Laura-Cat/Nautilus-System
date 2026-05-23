@@ -39,7 +39,7 @@ public class LoginDAOMySQL implements LoginDAO {
                             break;
 
                         case ISTRUTTORE:
-                            // utente = DAOFactory.getInstance().getIstruttoreDAO().trovaPerId(idUtente);
+                            utente = DAOFactory.getInstance().getIstruttoreDAO().trovaPerId(idUtente);
                             break;
 
                         case AMMINISTRAZIONE:

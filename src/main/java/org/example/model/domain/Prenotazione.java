@@ -12,6 +12,7 @@ public class Prenotazione {
     private Cliente cliente;
     private Lezione lezionePrenotata;
     private Corsia corsiaPrenotata;
+    private String note;
 
     // Costruttore
     public Prenotazione(Integer id, LocalDate dataRichiesta, TipoAttivita tipologia, Cliente cliente) {
@@ -33,7 +34,8 @@ public class Prenotazione {
         this.stato = "Rifiutata";
     }
     public Boolean inAttesa() {
-        return "In Attesa".equalsIgnoreCase(this.stato);
+        return "In Attesa".equalsIgnoreCase(this.stato) ||
+                "In Attesa di Accettazione".equalsIgnoreCase(this.stato);
     }
     // Getter Setter
     public Integer getId() { return id; }
@@ -76,5 +78,11 @@ public class Prenotazione {
         this.stato = stato;
     }
 
+    public String getNote() {
+        return note;
+    }
 
+    public void setNote(String note) {
+        this.note = note;
+    }
 }

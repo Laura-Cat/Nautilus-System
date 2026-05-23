@@ -8,6 +8,7 @@ import org.example.model.domain.Lezione;
 import org.example.model.domain.TipoAttivita;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -17,8 +18,7 @@ public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
 
     @Override
     public void salva(Prenotazione p) {
-        String query = "INSERT INTO prenotazioni (data_richiesta, stato, id_cliente, id_lezione) VALUES (?, ?, ?, ?)";
-
+        String query = "INSERT INTO prenotazioni (data_richiesta, stato, id_cliente, id_lezione, tipologia, note) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBConnectionFactory.getInstance().createConnection();
              PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -26,6 +26,7 @@ public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
             stmt.setString(2, p.getStato());
             stmt.setInt(3, p.getCliente().getId());
             stmt.setInt(4, p.getLezionePrenotata().getIdLezione());
+            stmt.setString(6, p.getNote());
             stmt.executeUpdate();
 
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
@@ -56,29 +57,37 @@ public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
     }
 
     @Override
-    public List<Prenotazione> trovaPerCliente(Cliente c) {
+    public List<Prenotazione> trovaAgendatiCliente(Integer idCliente, LocalDate dataInizio, LocalDate dataFine) {
         List<Prenotazione> lista = new ArrayList<>();
-        String query = "SELECT id, data_richiesta, tipologia, stato FROM prenotazioni WHERE id_cliente = ?";
+        String query = "SELECT id FROM prenotazioni " +
+                "WHERE id_cliente = ? " +
+                "  AND stato IN ('Confermata', 'Confermata e Pagata') " +
+                "  AND data_richiesta BETWEEN ? AND ?"; // Nota: se usi la data della lezione, fai un JOIN con lezioni l ON id_lezione = l.id e filtra per l.data
+
+        // Approccio più sicuro: uniamo direttamente la tabella lezioni per filtrare sulla data effettiva della lezione!
+        String queryConJoin = "SELECT p.id FROM prenotazioni p " +
+                "JOIN lezioni l ON p.id_lezione = l.id " +
+                "WHERE p.id_cliente = ? " +
+                "  AND p.stato IN ('Confermata', 'Confermata e Pagata') " +
+                "  AND l.data BETWEEN ? AND ?";
 
         try (Connection conn = DBConnectionFactory.getInstance().createConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+             PreparedStatement stmt = conn.prepareStatement(queryConJoin)) {
 
-            stmt.setInt(1, c.getId());
+            stmt.setInt(1, idCliente);
+            stmt.setDate(2, java.sql.Date.valueOf(dataInizio));
+            stmt.setDate(3, java.sql.Date.valueOf(dataFine));
+
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    Prenotazione p = new Prenotazione(
-                            rs.getInt("id"),
-                            rs.getDate("data_richiesta").toLocalDate(),
-                            TipoAttivita.valueOf(rs.getString("tipologia")),
-                            c
-                    );
-                    p.setStato(rs.getString("stato"));
-                    lista.add(p);
+                    Prenotazione p = trovaPerId(rs.getInt("id"));
+                    if (p != null) {
+                        lista.add(p);
+                    }
                 }
             }
-
         } catch (SQLException e) {
-            logger.severe("Errore recupero prenotazioni cliente: " + e.getMessage());
+            logger.severe("Errore nel recupero agenda cliente: " + e.getMessage());
         }
         return lista;
     }
@@ -102,14 +111,30 @@ public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
                     Cliente cliente = DAOFactory.getInstance().getClienteDAO().trovaPerId(idCliente);
                     Lezione lezione = DAOFactory.getInstance().getLezioneDAO().trovaPerId(idLezione);
 
+                    String tipoStringa = rs.getString("tipologia"); // Usa il nome esatto della colonna nel tuo DB!
+                    TipoAttivita tipoAttivita = null;
+
+                    if (tipoStringa != null && !tipoStringa.isEmpty()) {
+                        try {
+                            tipoAttivita = TipoAttivita.valueOf(tipoStringa);
+                        } catch (IllegalArgumentException e) {
+                            logger.warning("Tipo attività non riconosciuto nel DB: " + tipoStringa);
+                            tipoAttivita = TipoAttivita.PRIVATA; // Salvagente anche se la stringa è sbagliata
+                        }
+                    } else {
+                        // Se è null nel DB, mettiamo un valore di default per non far crashare tutto
+                        tipoAttivita = TipoAttivita.PRIVATA;
+                    }
+
                     prenotazione = new Prenotazione(
                             rs.getInt("id"),
                             rs.getDate("data_richiesta").toLocalDate(),
-                            TipoAttivita.valueOf(rs.getString("tipologia")),
-                            cliente   // FIX: passato cliente reale invece di null
+                            tipoAttivita,
+                            cliente
                     );
+
                     prenotazione.setStato(rs.getString("stato"));
-                    prenotazione.setLezionePrenotata(lezione); // FIX: lezione collegata
+                    prenotazione.setLezionePrenotata(lezione);
                 }
             }
         } catch (SQLException e) {
@@ -117,6 +142,7 @@ public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
         }
         return prenotazione;
     }
+
 
     @Override
     public boolean esisteGia(int idCliente, int idLezione) {
@@ -136,8 +162,36 @@ public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("❌ Errore durante il controllo doppioni: " + e.getMessage());
+            System.out.println("Errore durante il controllo doppioni: " + e.getMessage());
         }
         return false;
+    }
+
+    @Override
+    public List<Prenotazione> trovaInAttesaPerIstruttore(Integer idIstruttore) {
+        List<Prenotazione> lista = new ArrayList<>();
+        // Uniamo prenotazioni e lezioni per filtrare in base all'istruttore
+        String query = "SELECT p.id FROM prenotazioni p " +
+                "JOIN lezioni l ON p.id_lezione = l.id " +
+                "WHERE l.id_istruttore = ? AND p.stato = 'In Attesa'";
+
+        try (Connection conn = DBConnectionFactory.getInstance().createConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, idIstruttore);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    // Sfruttiamo il metodo che hai già scritto per caricare tutto perfettamente!
+                    Prenotazione p = trovaPerId(rs.getInt("id"));
+                    if (p != null) {
+                        lista.add(p);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            logger.severe("Errore recupero richieste per istruttore: " + e.getMessage());
+        }
+        return lista;
     }
 }

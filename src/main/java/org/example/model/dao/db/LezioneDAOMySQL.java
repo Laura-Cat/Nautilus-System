@@ -4,6 +4,7 @@ import org.example.model.dao.Interface.LezioneDAO;
 import org.example.model.domain.*;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -96,11 +97,13 @@ public class LezioneDAOMySQL implements LezioneDAO {
     public Lezione trovaPerId(Integer id) {
         Lezione l = null;
 
-        // AGGIORNAMENTO QUERY: LEFT JOIN su corsi e corsie per coprire tutte le tipologie di attività!
-        String query = "SELECT l.*, c.tipo_corso, c.num_posti AS posti_corso, cor.capienza_massima AS posti_corsia, cor.numero_corsia " +
+        // 🌟 QUERY AGGIORNATA: Prende anche nome e cognome dell'istruttore associato!
+        String query = "SELECT l.*, c.tipo_corso, c.num_posti AS posti_corso, cor.capienza_massima AS posti_corsia, cor.numero_corsia, " +
+                "u.nome AS nome_ist, u.cognome AS cognome_ist " +
                 "FROM lezioni l " +
                 "LEFT JOIN corsi c ON l.id_corso = c.id " +
                 "LEFT JOIN corsie cor ON l.id_corsia = cor.id " +
+                "LEFT JOIN utenti u ON l.id_istruttore = u.id " +
                 "WHERE l.id = ?";
 
         try (Connection conn = DBConnectionFactory.getInstance().createConnection();
@@ -111,7 +114,6 @@ public class LezioneDAOMySQL implements LezioneDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
 
-                    // 1. Determiniamo i posti totali corretti (se corso prende da corsi, se nuoto libero da corsie)
                     int postiTotali = 0;
                     String tipoCorsoTrovato = rs.getString("tipo_corso");
 
@@ -121,30 +123,37 @@ public class LezioneDAOMySQL implements LezioneDAO {
                         postiTotali = rs.getInt("posti_corsia");
                     }
 
-                    // 2. Creiamo la lezione usando il tuo costruttore a 7 argomenti
                     l = new Lezione(
                             rs.getInt("id"),
                             rs.getDate("data").toLocalDate(),
                             rs.getTime("ora_inizio").toLocalTime(),
                             rs.getTime("ora_fine").toLocalTime(),
                             rs.getInt("num_posti_prenotati"),
-                            postiTotali, // Il 6° parametro dinamico!
-                            TipoAttivita.valueOf(rs.getString("tipo_attivita")) // Il 7° parametro
+                            postiTotali,
+                            TipoAttivita.valueOf(rs.getString("tipo_attivita"))
                     );
 
-                    // 3. FONDAMENTALE PER LA STRATEGY: Se è un corso, creiamo e associamo l'oggetto Corso
                     if (tipoCorsoTrovato != null) {
                         Corso corsoDellaLezione = new Corso();
                         corsoDellaLezione.setNome(TipoCorso.valueOf(tipoCorsoTrovato));
                         l.setCorsoAppartenenza(corsoDellaLezione);
                     }
 
-                    // 4. Sistemiamo la corsia (se presente, per compatibilità Nuoto Libero)
                     int numCorsia = rs.getInt("numero_corsia");
                     if (!rs.wasNull()) {
                         Corsia corsia = new Corsia();
                         corsia.setIdCorsia(numCorsia);
                         l.setCorsiaAssegnata(corsia);
+                    }
+
+                    // 🌟 NUOVA LOGICA: Se la lezione ha un istruttore, popoliamo l'oggetto Java!
+                    int idIstruttore = rs.getInt("id_istruttore");
+                    if (!rs.wasNull()) {
+                        Istruttore ist = new Istruttore();
+                        ist.setId(idIstruttore);
+                        ist.setNome(rs.getString("nome_ist"));
+                        ist.setCognome(rs.getString("cognome_ist"));
+                        l.setIstruttore(ist); // Agganciamo l'istruttore alla lezione!
                     }
                 }
             }
@@ -242,5 +251,56 @@ public class LezioneDAOMySQL implements LezioneDAO {
 
         // Ritorna la lista piena o vuota al Controller
         return lezioniDisponibili;
+    }
+
+    @Override
+    public List<Lezione> trovaImpegniIstruttore(Integer idIstruttore, java.time.LocalDate dataInizio, java.time.LocalDate dataFine) {
+        List<Lezione> lista = new java.util.ArrayList<>();
+        String query = "SELECT l.*, c.tipo_corso, c.num_posti AS posti_corso, cor.numero_corsia, " +
+                "u_cli.nome AS nome_cli, u_cli.cognome AS cognome_cli, p.note AS note_pren " +
+                "FROM lezioni l " +
+                "LEFT JOIN corsi c ON l.id_corso = c.id " +
+                "LEFT JOIN corsie cor ON l.id_corsia = cor.id " +
+                "LEFT JOIN prenotazioni p ON l.id = p.id_lezione " +
+                "LEFT JOIN utenti u_cli ON p.id_cliente = u_cli.id " +
+                "WHERE (l.id_istruttore = ? AND l.tipo_attivita != 'PRIVATA' AND l.data BETWEEN ? AND ?) " +
+                "   OR (l.id_istruttore = ? AND l.tipo_attivita = 'PRIVATA' AND p.stato IN ('Accettata - In attesa di pagamento', 'Confermata e Pagata') AND l.data BETWEEN ? AND ?) " +
+                "ORDER BY l.data ASC, l.ora_inizio ASC";
+
+        try (java.sql.Connection conn = DBConnectionFactory.getInstance().createConnection();
+             java.sql.PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, idIstruttore); stmt.setDate(2, java.sql.Date.valueOf(dataInizio)); stmt.setDate(3, java.sql.Date.valueOf(dataFine));
+            stmt.setInt(4, idIstruttore); stmt.setDate(5, java.sql.Date.valueOf(dataInizio)); stmt.setDate(6, java.sql.Date.valueOf(dataFine));
+
+            try (java.sql.ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Lezione l = new Lezione();
+                    l.setIdLezione(rs.getInt("id"));
+                    l.setData(rs.getDate("data").toLocalDate());
+                    l.setOraInizio(rs.getTime("ora_inizio").toLocalTime());
+                    l.setOraFine(rs.getTime("ora_fine").toLocalTime());
+                    l.setTipoAttivita(TipoAttivita.valueOf(rs.getString("tipo_attivita")));
+
+                    String tipoCorso = rs.getString("tipo_corso");
+                    if (tipoCorso != null) {
+                        Corso corso = new Corso();
+                        corso.setNome(TipoCorso.valueOf(tipoCorso));
+                        l.setCorsoAppartenenza(corso);
+                    }
+
+                    // 🌟 Estraiamo nome e note del cliente
+                    String nomeCli = rs.getString("nome_cli");
+                    if (nomeCli != null) {
+                        l.setInfoClientePrivata(nomeCli + " " + rs.getString("cognome_cli"));
+                        l.setNoteClientePrivata(rs.getString("note_pren"));
+                    }
+                    lista.add(l);
+                }
+            }
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
     }
 }

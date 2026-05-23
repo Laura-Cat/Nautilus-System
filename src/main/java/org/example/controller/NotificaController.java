@@ -7,7 +7,7 @@ import java.util.List;
 
 public class NotificaController {
 
-    public boolean inviaRichiestaLezionePrivata(Cliente cliente, Istruttore istruttore, Lezione lezione, String noteCliente) {
+    public boolean inviaRichiestaLezionePrivata(Cliente cliente, Istruttore istruttore, Lezione lezione, String noteCliente, Integer idPrenotazione) {
 
         String livello = (noteCliente == null || noteCliente.trim().isEmpty()) ? "Nessuna nota sul livello fornita." : noteCliente;
 
@@ -19,6 +19,9 @@ public class NotificaController {
         Notifica nuovaRichiesta = new Notifica();
         nuovaRichiesta.setMessaggio(corpoMessaggio);
         nuovaRichiesta.setLetta(false);
+
+        nuovaRichiesta.setTipo("DA_ACCETTARE");
+        nuovaRichiesta.setIdRiferimento(idPrenotazione);
         // Assicurati che l'invio corrisponda al tuo DAO (es. passando l'ID destinatario)
         return DAOFactory.getInstance().getNotificaDAO().invia(nuovaRichiesta, istruttore.getId());
     }
