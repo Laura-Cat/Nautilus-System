@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<BorderPane fx:id="mainPane" stylesheets="@../style/styleCliente.css" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.IstruttoreView">
+<BorderPane fx:id="mainPane" stylesheets="@../style/styleCliente.css" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.JavaFX.IstruttoreView">
 
     <left>
         <VBox spacing="10" styleClass="sidebar">

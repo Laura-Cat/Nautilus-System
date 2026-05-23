@@ -228,24 +228,28 @@ INSERT INTO corsi (id, tipo_corso, stato_attivita, data_inizio, num_posti, descr
 -- ----------------------------------------------------------
 -- D. LEZIONI (IL PALINSESTO DI MAGGIO 2026)
 -- ----------------------------------------------------------
-INSERT INTO lezioni (id, data, ora_inizio, ora_fine, num_posti_prenotati, tipo_attivita, id_istruttore, id_corso, id_corsia)
-VALUES 
--- Lezioni Passate (20 e 21 Maggio)
-(1, '2026-05-20', '18:00:00', '19:00:00', 10, 'CORSO_GRUPPO', 5, 1, 1), -- Acquagym con Elena
-(2, '2026-05-21', '09:00:00', '10:00:00', 4,  'NUOTO_LIBERO', NULL, NULL, 5), 
+INSERT INTO lezioni (data, ora_inizio, ora_fine, num_posti_prenotati, tipo_attivita, id_istruttore, id_corso, id_corsia) VALUES
 
--- Lezioni di OGGI (Venerdì 22 Maggio 2026)
-(3, '2026-05-22', '09:00:00', '10:00:00', 0,  'PRIVATA', 6, NULL, 1),       -- Lezione privata di Alessandro
-(4, '2026-05-22', '10:00:00', '11:00:00', 6,  'CORSO_GRUPPO', 5, 6, 2),     -- Neonatale con Elena
-(5, '2026-05-22', '13:00:00', '14:00:00', 2,  'NUOTO_LIBERO', NULL, NULL, 3),-- Pausa pranzo
-(6, '2026-05-22', '18:00:00', '19:00:00', 12, 'CORSO_GRUPPO', 4, 4, 1),     -- Nuoto Master con Mario (Corsia 1)
-(7, '2026-05-22', '18:00:00', '19:00:00', 8,  'CORSO_GRUPPO', 5, 1, 2),     -- Acquagym con Elena (Corsia 2, stesso orario!)
-(8, '2026-05-22', '18:00:00', '19:00:00', 5,  'NUOTO_LIBERO', NULL, NULL, 5),-- Nuoto libero in contemporanea (Corsia 5)
+-- 🏊 5 TURNI DI NUOTO LIBERO (Nessun Istruttore, Nessun Corso, ma assegnati a una Corsia)
+('2026-05-24', '09:00:00', '10:00:00', 0, 'NUOTO_LIBERO', NULL, NULL, 1),
+('2026-05-24', '10:00:00', '11:00:00', 0, 'NUOTO_LIBERO', NULL, NULL, 2),
+('2026-05-25', '17:00:00', '18:00:00', 0, 'NUOTO_LIBERO', NULL, NULL, 3),
+('2026-05-26', '18:00:00', '19:00:00', 0, 'NUOTO_LIBERO', NULL, NULL, 1),
+('2026-05-27', '09:00:00', '10:00:00', 0, 'NUOTO_LIBERO', NULL, NULL, 2),
 
--- Lezioni Future (Sabato 23 e oltre)
-(9, '2026-05-23', '10:00:00', '11:00:00', 0, 'PRIVATA', 4, NULL, 1),        -- Privata con Mario
-(10,'2026-05-25', '19:00:00', '20:00:00', 5, 'CORSO_GRUPPO', 6, 3, 2);      -- Hydrobike con Alessandro
+-- 🏋️‍♀️ 5 CORSI DI GRUPPO (Servono Istruttore, Corso e Corsia)
+('2026-05-24', '18:00:00', '19:00:00', 0, 'CORSO_GRUPPO', 4, 1, 1),
+('2026-05-25', '19:00:00', '20:00:00', 0, 'CORSO_GRUPPO', 5, 2, 2),
+('2026-05-26', '10:00:00', '11:00:00', 0, 'CORSO_GRUPPO', 6, 3, 3),
+('2026-05-28', '18:00:00', '19:00:00', 0, 'CORSO_GRUPPO', 4, 1, 1),
+('2026-05-29', '19:00:00', '20:00:00', 0, 'CORSO_GRUPPO', 5, 2, 2),
 
+-- ⭐ 5 LEZIONI PRIVATE (Serve l'Istruttore e la Corsia, Nessun Corso)
+('2026-05-24', '11:00:00', '12:00:00', 0, 'PRIVATA', 4, NULL, 3),
+('2026-05-25', '15:00:00', '16:00:00', 0, 'PRIVATA', 5, NULL, 1),
+('2026-05-26', '16:00:00', '17:00:00', 0, 'PRIVATA', 6, NULL, 2),
+('2026-05-27', '11:00:00', '12:00:00', 0, 'PRIVATA', 4, NULL, 3),
+('2026-05-28', '15:00:00', '16:00:00', 0, 'PRIVATA', 6, NULL, 1);
 
 -- ----------------------------------------------------------
 -- E. PRENOTAZIONI

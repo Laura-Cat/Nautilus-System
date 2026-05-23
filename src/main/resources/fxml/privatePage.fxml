@@ -7,7 +7,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.control.ScrollPane?>
-<BorderPane stylesheets="@../style/stylePrivate.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.PrenotazionePrivateView">
+<BorderPane stylesheets="@../style/stylePrivate.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.JavaFX.PrenotazionePrivateView">
 
     <top>
         <VBox alignment="CENTER" spacing="10" BorderPane.alignment="CENTER">

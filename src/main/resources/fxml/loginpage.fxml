@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane fx:id="rootPane" prefHeight="750.0" prefWidth="1300.0" styleClass="sfondo-pulito" stylesheets="@../style/styleLogin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.LoginView">
+<StackPane fx:id="rootPane" prefHeight="750.0" prefWidth="1300.0" styleClass="sfondo-pulito" stylesheets="@../style/styleLogin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.JavaFX.LoginView">
     <children>
 
         <AnchorPane mouseTransparent="true" style="-fx-background-color: transparent;">

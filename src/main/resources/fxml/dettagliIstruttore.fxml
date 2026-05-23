@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="TOP_CENTER" spacing="20.0" stylesheets="@../style/styleDettaglio.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.DettagliIstruttoreView">
+<VBox alignment="TOP_CENTER" spacing="20.0" stylesheets="@../style/styleDettaglio.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.JavaFX.DettagliIstruttoreView">
     <padding>
         <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
     </padding>

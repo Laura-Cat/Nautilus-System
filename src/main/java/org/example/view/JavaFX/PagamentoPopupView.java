@@ -1,11 +1,10 @@
-package org.example.view;
+package org.example.view.JavaFX;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.example.controller.PagamentoController;
-import org.example.controller.strategy.MetodoPagamentoStrategy;
 import org.example.model.domain.Notifica;
 import org.example.controller.strategy.CartaStrategy;
 import org.example.controller.strategy.PayPalStrategy;

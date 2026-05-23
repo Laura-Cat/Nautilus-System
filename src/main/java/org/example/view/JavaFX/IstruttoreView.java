@@ -1,4 +1,4 @@
-package org.example.view;
+package org.example.view.JavaFX;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -62,7 +62,7 @@ public class IstruttoreView {
             javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/fxml/notifichePage.fxml"));
             javafx.scene.Node root = loader.load();
 
-            org.example.view.NotificheView controllerNotifiche = loader.getController();
+            NotificheView controllerNotifiche = loader.getController();
             controllerNotifiche.setIstruttoreViewPrincipale(this);
 
             impostaSchermataCentrale(root);

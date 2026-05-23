@@ -70,7 +70,7 @@ public class NotificaDAOMySQL implements  NotificaDAO{
         try (Connection conn = DBConnectionFactory.getInstance().createConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setBoolean(1, notifica.isLetta());
+            stmt.setBoolean(1, notifica.getLetta());
 
             if (notifica.getTipo() != null) {
                 stmt.setString(2, notifica.getTipo());
@@ -106,7 +106,7 @@ public class NotificaDAOMySQL implements  NotificaDAO{
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setString(1, notifica.getMessaggio());
-            stmt.setBoolean(2, notifica.isLetta()); // Solitamente false
+            stmt.setBoolean(2, notifica.getLetta()); // Solitamente false
             stmt.setInt(3, idDestinatario);
 
             stmt.setString(4, notifica.getTipo() != null ? notifica.getTipo() : "INFO");

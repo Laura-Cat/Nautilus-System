@@ -45,7 +45,7 @@ public class Notifica {
 
     // Getter e Setter
     public String getMessaggio() { return messaggio; }
-    public boolean isLetta() { return letta; }
+    public boolean getLetta() { return letta; }
 
     public Integer getId() {
         return id;

@@ -1,4 +1,4 @@
-package org.example.view;
+package org.example.view.JavaFX;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -9,7 +9,6 @@ import org.example.model.dao.DAOFactory;
 import org.example.model.domain.*;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;

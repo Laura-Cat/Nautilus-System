@@ -26,7 +26,13 @@ public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
             stmt.setString(2, p.getStato());
             stmt.setInt(3, p.getCliente().getId());
             stmt.setInt(4, p.getLezionePrenotata().getIdLezione());
-            stmt.setString(6, p.getNote());
+            stmt.setString(5, p.getLezionePrenotata().getTipoAttivita().name());
+
+            if (p.getNote() != null && !p.getNote().trim().isEmpty()) {
+                stmt.setString(6, p.getNote());
+            } else {
+                stmt.setNull(6, java.sql.Types.VARCHAR);
+            }
             stmt.executeUpdate();
 
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {

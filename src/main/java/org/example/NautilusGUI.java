@@ -7,13 +7,15 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class NautilusGUI extends Application {
+
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // Carichiamo il file FXML che abbiamo pulito prima
-        Parent root = FXMLLoader.load(getClass().getResource("/view/loginpage.fxml"));
-        primaryStage.setTitle("Nautilus Systems - Login");
+        // Carichiamo la pagina di Login
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/loginpage.fxml"));
+
+        primaryStage.setTitle("Nautilus Systems");
         primaryStage.setScene(new Scene(root));
-        primaryStage.setResizable(false);
+        primaryStage.setMaximized(true); // Schermo intero
         primaryStage.show();
     }
 }

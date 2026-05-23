@@ -4,7 +4,7 @@
 
 <VBox spacing="20" alignment="TOP_CENTER" stylesheets="@/style/styleCorso.css"
       styleClass="main-container" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="org.example.view.PrenotazioneCorsoView">
+      fx:controller="org.example.view.JavaFX.PrenotazioneCorsoView">
 
     <Label text="Prenotazione Corsi di Gruppo 🏊‍♀️" styleClass="titolo-pagina"/>
 

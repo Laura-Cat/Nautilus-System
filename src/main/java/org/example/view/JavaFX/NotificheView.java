@@ -1,4 +1,4 @@
-package org.example.view;
+package org.example.view.JavaFX;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -55,14 +55,14 @@ public class NotificheView {
                 bolla.getStyleClass().add("bolla-notifica");
 
                 // 2. 🌟 BIVIO GRAFICO: Applichiamo lo stile in base allo stato Letta/Non Letta
-                if (n.isLetta()) {
+                if (n.getLetta()) {
                     bolla.getStyleClass().add("bolla-letta");
                 } else {
                     bolla.getStyleClass().add("bolla-non-letta");
                 }
 
                 // Etichetta Data
-                Label labelData = new Label((n.isLetta() ? "✓ Letta • " : "🔵 Nuova • ") + n.getDataInvio());
+                Label labelData = new Label((n.getLetta() ? "✓ Letta • " : "🔵 Nuova • ") + n.getDataInvio());
                 labelData.getStyleClass().add("notifica-data");
 
                 // Etichetta Messaggio

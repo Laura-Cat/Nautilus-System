@@ -1,0 +1,11 @@
+[
+  {
+    "certificatoValido": true,
+    "id": 1,
+    "cf": "VRDGLC90",
+    "nome": "Gianluca",
+    "cognome": "Verdi",
+    "email": "verdi@email.com",
+    "password": "1234"
+  }
+]

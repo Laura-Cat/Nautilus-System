@@ -1,4 +1,4 @@
-package org.example.view;
+package org.example.view.JavaFX;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -6,13 +6,11 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import org.example.controller.LoginController;
-import org.example.model.dao.DAOFactory;
 import org.example.model.domain.Cliente;
 import org.example.model.domain.Notifica;
 import org.example.model.domain.User;
@@ -85,7 +83,7 @@ public class ClienteView {
             javafx.scene.Node root = loader.load();
 
             // Peschiamo il controller delle notifiche e gli passiamo la ClienteView principale
-            org.example.view.NotificheView controllerNotifiche = loader.getController();
+            NotificheView controllerNotifiche = loader.getController();
             controllerNotifiche.setClienteViewPrincipale(this);
 
             impostaSchermataCentrale(root);
@@ -106,7 +104,7 @@ public class ClienteView {
             javafx.scene.Node root = loader.load();
 
             // 2. Peschiamo il controller e facciamo le presentazioni!
-            org.example.view.PrenotazionePrivateView controllerPrivata = loader.getController();
+            PrenotazionePrivateView controllerPrivata = loader.getController();
             controllerPrivata.setClienteViewPrincipale(this);
 
             impostaSchermataCentrale(root);

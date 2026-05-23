@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox spacing="20.0" styleClass="sfondo-notifiche" stylesheets="@../style/styleNotifiche.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.NotificheView">
+<VBox spacing="20.0" styleClass="sfondo-notifiche" stylesheets="@../style/styleNotifiche.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.JavaFX.NotificheView">
     <padding>
         <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
     </padding>

@@ -128,7 +128,7 @@ public abstract class User {
     public List<Notifica> getNotificheDaLeggere() {
         List<Notifica> daLeggere = new ArrayList<>();
         for (Notifica n : this.notifichePersonali) {
-            if (!n.isLetta()) {
+            if (!n.getLetta()) {
                 daLeggere.add(n);
             }
         }

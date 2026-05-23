@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox spacing="20" styleClass="sfondo-calendario" stylesheets="@../style/styleCalendario.css" style="-fx-padding: 30;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.CalendarioView">
+<VBox spacing="20" styleClass="sfondo-calendario" stylesheets="@../style/styleCalendario.css" style="-fx-padding: 30;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.JavaFX.CalendarioView">
     <children>
         <Label fx:id="lblTitoloCalendario" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1e3a8a;" text="La tua Agenda" />
         <Label style="-fx-text-fill: #64748b; -fx-font-size: 14px;" text="Visualizza i tuoi impegni per la prossima settimana." />

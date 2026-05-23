@@ -2,6 +2,7 @@ package org.example.model.dao;
 
 import org.example.model.dao.Interface.*;
 import org.example.model.dao.db.*;
+import org.example.model.dao.file.*;
 
 
 public class DAOFactory {
@@ -25,8 +26,7 @@ public class DAOFactory {
 
     public LoginDAO getLoginDAO() {
         if (tipoCorrente == PersistenceType.FILE) {
-            // return new LoginDAOFile(); // Implementazione su file
-            return null;
+            return new LoginDAOJson(); // Implementazione su file
         }
         return new LoginDAOMySQL(); // Implementazione su DB
     }
@@ -40,44 +40,45 @@ public class DAOFactory {
 
     public PrenotazioneDAO getPrenotazioneDAO() {
         if (tipoCorrente == PersistenceType.FILE) {
-            return null; // Eventuale PrenotazioneDAOFile
+            return new PrenotazioneDAOJson(); //
         }
         return new PrenotazioneDAOMySQL();
     }
 
-    public TitoloAccessoDAO getTitoloAccessoDAO() {
-        if (tipoCorrente == PersistenceType.FILE) {
-            return null; // O la versione File in futuro
-        }
-        return new TitoloAccessoDAOMySQL();
-    }
 
     public LezioneDAO getLezioneDAO() {
         if (tipoCorrente == PersistenceType.FILE) {
-            return null; // Eventuale LezioneDAOFile futuro
+            return new LezioneDAOJson();
         }
         return new LezioneDAOMySQL();
     }
 
+    public TitoloAccessoDAO getTitoloAccessoDAO() {
+        if (tipoCorrente == PersistenceType.FILE) {
+            return new TitoloAccessoDAOJson();
+        }
+        return new TitoloAccessoDAOMySQL();
+    }
+
     public CorsoDAO getCorsoDAO() {
         if (tipoCorrente == PersistenceType.FILE) {
-            return null; // Eventuale CorsoDAOFile futuro
+            return new CorsoDAOJson();
         }
         return new CorsoDAOMySQL();
     }
 
     public ClienteDAO getClienteDAO() {
         if (tipoCorrente == PersistenceType.FILE) {
-            return null; // O un eventuale ClienteDAOFile in futuro
+            return new ClienteDAOJson();
         }
-        return new ClienteDAOMySQL(); // Implementazione su DB
+        return new ClienteDAOMySQL();
     }
 
     public IstruttoreDAO getIstruttoreDAO() {
         if (tipoCorrente == PersistenceType.FILE) {
-            return null; // Eventuale IstruttoreDAOFile futuro
+            return new IstruttoreDAOJson();
         }
-        return new IstruttoreDAOMySQL(); // Implementazione su DB
+        return new IstruttoreDAOMySQL();
     }
 
 }
