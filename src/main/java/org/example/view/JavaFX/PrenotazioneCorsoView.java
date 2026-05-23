@@ -126,6 +126,9 @@ public class PrenotazioneCorsoView {
     }
 
     private void mostraPopup(String t, String txt, Alert.AlertType type) {
-        new Alert(type, txt, ButtonType.OK).showAndWait();
+        Alert alert = new Alert(type, txt, ButtonType.OK);
+        alert.setTitle(t);
+        alert.setHeaderText(null);
+        alert.showAndWait();
     }
 }

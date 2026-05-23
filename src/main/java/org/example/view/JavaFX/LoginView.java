@@ -75,10 +75,10 @@ public class LoginView {
             if (imageStream != null) {
                 immagineSlideshow.setImage(new Image(imageStream));
             } else {
-                logger.warning("Immagine slideshow non trovata: " + immaginiSlideshowArr[indiceImmagineAttuale]);
+                logger.warning(() ->"Immagine slideshow non trovata: " + immaginiSlideshowArr[indiceImmagineAttuale]);
             }
         } catch (Exception e) {
-            logger.warning("Errore nel caricamento immagine slideshow: " + e.getMessage());
+            logger.warning(() ->"Errore nel caricamento immagine slideshow: " + e.getMessage());
         }
     }
 

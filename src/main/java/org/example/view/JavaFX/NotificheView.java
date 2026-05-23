@@ -45,9 +45,6 @@ public class NotificheView {
         // 1. 🌟 Cambiato: recuperiamo TUTTE le notifiche dello storico
         notificheAttuali = backendController.recuperaTuttePerUtente(utenteCorrente, utenteCorrente.getId());
 
-        // 🌟 AGGIUNGI QUESTA RIGA:
-        System.out.println("DEBUG: Sto cercando le notifiche per l'utente ID " + utenteCorrente.getId() + ". Ne ho trovate: " + (notificheAttuali != null ? notificheAttuali.size() : "NULL"));
-
         if (notificheAttuali == null || notificheAttuali.isEmpty()) {
             Label zeroNotifiche = new Label("Non hai nessuna notifica nello storico.");
             zeroNotifiche.setStyle("-fx-text-fill: #94a3b8; -fx-font-size: 14px; -fx-font-style: italic;");

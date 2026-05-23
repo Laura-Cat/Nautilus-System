@@ -129,9 +129,9 @@ public class ClienteCLIView {
                 return;
             }
 
-            disponibili = org.example.model.dao.DAOFactory.getInstance()
-                    .getLezioneDAO().trovaPerTipoEData(tipoScelto, dataScelta);
+            disponibili = DAOFactory.getInstance().getLezioneDAO().trovaPerTipoEData(tipoScelto, dataScelta);
         }
+
 
         // ==========================================================
         // STAMPA LISTA DETTAGLIATA E PRENOTAZIONE
@@ -212,7 +212,7 @@ public class ClienteCLIView {
 
         if (istruttori == null || istruttori.isEmpty()) {
             System.out.println("❌ Nessun istruttore disponibile al momento.");
-            return null;
+            return java.util.Collections.emptyList();
         }
 
         for (int i = 0; i < istruttori.size(); i++) {
@@ -223,15 +223,15 @@ public class ClienteCLIView {
         System.out.print("\nSeleziona il numero dell'istruttore: ");
         try {
             int indiceIstr = Integer.parseInt(scanner.nextLine());
-            if (indiceIstr == 0) return null;
+            if (indiceIstr == 0) return java.util.Collections.emptyList();
             if (indiceIstr < 1 || indiceIstr > istruttori.size()) {
                 System.out.println("❌ Scelta non valida.");
-                return null;
+                return java.util.Collections.emptyList();
             }
             istruttoreSelezionato = istruttori.get(indiceIstr - 1);
         } catch (NumberFormatException e) {
             System.out.println(TESTO_ERRORE_INPUT);
-            return null;
+            return java.util.Collections.emptyList();
         }
 
         System.out.println("\n--- 👤 Profilo: Prof. " + istruttoreSelezionato.getCognome() + " ---");
@@ -242,7 +242,7 @@ public class ClienteCLIView {
 
         if (!subScelta.equals("1")) {
             System.out.println("Operazione annullata.");
-            return null;
+            return java.util.Collections.emptyList();
         }
 
 

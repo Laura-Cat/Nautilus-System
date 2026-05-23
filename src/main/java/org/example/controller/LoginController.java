@@ -28,7 +28,7 @@ public class LoginController {
 
     // Metodi di business
     public Boolean autenticaUtente(LoginBean credenziali) {
-        logger.info("Cerco nel DB: Email=" + credenziali.email() + " | Pass=" + credenziali.password());
+        logger.info(() ->"Cerco nel DB: Email=" + credenziali.email() + " | Pass=" + credenziali.password());
 
         // Chiediamo alla Factory il DAO corretto in base alla configurazione
         LoginDAO dao = DAOFactory.getInstance().getLoginDAO();

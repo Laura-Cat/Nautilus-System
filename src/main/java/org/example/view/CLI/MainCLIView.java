@@ -7,6 +7,8 @@ import org.example.model.domain.User;
 
 import java.util.Scanner;
 
+
+@SuppressWarnings("java:S106")
 public class MainCLIView {
 
     public void start() {

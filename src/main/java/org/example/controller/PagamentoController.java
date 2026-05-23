@@ -28,7 +28,7 @@ public class PagamentoController {
             return false;
         }
 
-        logger.info("Avvio transazione di €" + importo + " tramite " + strategiaPagamento.getNomePiattaforma());
+        logger.info(() ->"Avvio transazione di €" + importo + " tramite " + strategiaPagamento.getNomePiattaforma());
         return strategiaPagamento.processaPagamento(importo);
     }
 
@@ -52,7 +52,7 @@ public class PagamentoController {
 
             DAOFactory.getInstance().getNotificaDAO().aggiornaStato(notifica);
 
-            logger.info("Prenotazione " + idPrenotazione + " pagata con successo e notifica disinnescata!");
+            logger.info(() ->"Prenotazione " + idPrenotazione + " pagata con successo e notifica disinnescata!");
             return true;
         }
         return false;
@@ -70,7 +70,7 @@ public class PagamentoController {
                 crediti.aggiungiCrediti(creditiDaAggiungere);
 
                 DAOFactory.getInstance().getTitoloAccessoDAO().aggiornaCrediti(crediti);
-                logger.info("Aggiunti " + creditiDaAggiungere + " crediti.");
+                logger.info(() ->"Aggiunti " + creditiDaAggiungere + " crediti.");
                 return true;
             }
         }
@@ -86,7 +86,7 @@ public class PagamentoController {
             cliente.setTitoloAccesso(nuovoAbbonamento);
 
             DAOFactory.getInstance().getTitoloAccessoDAO().salvaNuovo(nuovoAbbonamento, cliente.getId());
-            logger.info("Nuovo Abbonamento mensile assegnato a " + cliente.getNome());
+            logger.info(() ->"Nuovo Abbonamento mensile assegnato a " + cliente.getNome());
             return true;
         }
         return false;
@@ -101,7 +101,7 @@ public class PagamentoController {
             if (elaboraTransazione(costoTotale)) {
                 abbonamento.rinnova(mesiDaAggiungere);
                 DAOFactory.getInstance().getTitoloAccessoDAO().aggiornaRinnovo(abbonamento);
-                logger.info("Abbonamento prolungato di " + mesiDaAggiungere + " mesi.");
+                logger.info(() ->"Abbonamento prolungato di " + mesiDaAggiungere + " mesi.");
                 return true;
             }
         }

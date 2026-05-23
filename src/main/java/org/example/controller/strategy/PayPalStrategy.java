@@ -1,11 +1,23 @@
-package org.example.controller.strategy;
+package org.example.controller.strategy; // Controlla che il package sia quello giusto!
+
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class PayPalStrategy implements MetodoPagamentoStrategy {
+
+    private static final Logger logger = Logger.getLogger(PayPalStrategy.class.getName());
     @Override
     public boolean processaPagamento(double importo) {
-        System.out.println("🔄 Reindirizzamento sicuro a PayPal...");
-        try { Thread.sleep(1500); } catch (InterruptedException e) {} // Simula il caricamento web
-        System.out.println("✅ Transazione PayPal completata: €" + importo);
+        logger.info("🔄 Reindirizzamento sicuro a PayPal...");
+
+        try {
+            Thread.sleep(1500); // Simula il caricamento web
+        } catch (InterruptedException e) {
+            logger.log(Level.WARNING, "Simulazione del caricamento web interrotta", e);
+            Thread.currentThread().interrupt();
+        }
+        logger.info(() -> "✅ Transazione PayPal completata: €" + importo);
+
         return true;
     }
 

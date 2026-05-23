@@ -1,97 +1,68 @@
-package org.example.controller.strategy;
+package org.example.controller.strategy; // Verifica che il package sia corretto per te
 
-import org.example.exception.CreditiInsufficientiException;
-import org.example.model.dao.DAOFactory;
 import org.example.model.domain.*;
+import org.example.model.dao.DAOFactory;
+import org.example.exception.CreditiInsufficientiException;
 
+import java.time.LocalDate;
 import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class PrenotazioneNuotoLiberoStrategy implements PrenotazioneStrategy {
+
     private static final Logger logger = Logger.getLogger(PrenotazioneNuotoLiberoStrategy.class.getName());
     private static final int COSTO_NUOTO_LIBERO = 1;
 
-    /* @Override
-    public boolean eseguiPrenotazione(Cliente cliente, Lezione lezione) throws CreditiInsufficientiException {
-        // 1. Logica di business del Nuoto Libero
-        if (cliente.getTitoloAccesso() == null) {
-            try {
-                // Nota: Verifica che il metodo nel tuo TitoloAccessoDAO si chiami proprio 'trovaPerCliente'
-                // o adatta il nome a seconda di come lo hai battezzato (es. trovaPerIdCliente)
-                TitoloAccesso titoloDb = DAOFactory.getInstance().getTitoloAccessoDAO().trovaPerCliente(cliente.getClienteId());
-                cliente.setTitoloAccesso(titoloDb);
-            } catch (Exception e) {
-                System.out.println("Impossibile caricare il titolo d'accesso dal DB: " + e.getMessage());
-            }
-        }
-
-        TitoloAccesso titolo = cliente.getTitoloAccesso();
-        if (titolo == null || !titolo.checkValidita(1)) throw new CreditiInsufficientiException("Crediti non sufficienti");
-        if (lezione.getPostiDisponibili() <= 0) return false;
-
-        // 2. Modifiche in memoria
-        lezione.setNumPostiPrenotati(lezione.getNumPostiPrenotati() + 1);
-        titolo.registraAccesso(1);
-
-        // 3. Salvataggio specifico per il Nuoto Libero
-        try {
-            Prenotazione p = new Prenotazione(null, LocalDate.now(), TipoAttivita.NUOTO_LIBERO, cliente);
-            p.setLezionePrenotata(lezione);
-            p.conferma(); // Il nuoto libero è confermato subito!
-
-            DAOFactory.getInstance().getPrenotazioneDAO().salva(p);
-            DAOFactory.getInstance().getLezioneDAO().aggiornaPostiOccupati(lezione);
-            DAOFactory.getInstance().getTitoloAccessoDAO().aggiornaCrediti((PacchettoCrediti) titolo);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }*/
     @Override
     public boolean eseguiPrenotazione(Cliente cliente, Lezione lezione) throws CreditiInsufficientiException {
+        logger.info(() -> "Avvio prenotazione Nuoto Libero per cliente ID: " + cliente.getId());
 
-        System.out.println("\n=== INIZIO DEBUG STRATEGY ===");
-        System.out.println("1. Cliente ID che sta prenotando: " + cliente.getId());
-
+        // 1. Recupero titolo dal DB se assente in memoria
         if (cliente.getTitoloAccesso() == null) {
-            System.out.println("2. Titolo in memoria vuoto. Cerco nel DB...");
+            logger.info("Titolo in memoria vuoto. Recupero dal DB...");
             try {
-                // Usa il nome del metodo giusto del tuo DAO (es. trovaPerCliente)
                 TitoloAccesso titoloDb = DAOFactory.getInstance().getTitoloAccessoDAO().trovaPerCliente(cliente.getId());
                 cliente.setTitoloAccesso(titoloDb);
-
-                if (titoloDb == null) {
-                    System.out.println("3. RISULTATO: Il DAO non ha trovato nessun titolo per questo ID!");
-                } else if (titoloDb instanceof org.example.model.domain.PacchettoCrediti) {
-                    // Facciamo il casting per leggere i crediti!
-                    org.example.model.domain.PacchettoCrediti pacchetto = (org.example.model.domain.PacchettoCrediti) titoloDb;
-                    System.out.println("3. RISULTATO: Pacchetto trovato! Crediti: " + pacchetto.getCreditiRimanenti());
-                } else {
-                    System.out.println("3. RISULTATO: Titolo trovato (Non è un pacchetto crediti).");
-                }
             } catch (Exception e) {
-                System.out.println("ERRORE DAO: " + e.getMessage());
+                logger.log(Level.SEVERE, "Errore nel recupero del titolo di accesso dal DB", e);
+                return false;
             }
         }
 
         TitoloAccesso titolo = cliente.getTitoloAccesso();
 
-        if (titolo == null) {
-            System.out.println("4. BLOCCO: Titolo definitivamente null, lancio eccezione.");
-            throw new CreditiInsufficientiException("Crediti non sufficienti");
+        // 2. Controllo Validità Titolo
+        if (titolo == null || !titolo.checkValidita(COSTO_NUOTO_LIBERO)) {
+            logger.warning("BLOCCO: Crediti o abbonamento non sufficienti per il Nuoto Libero.");
+            throw new CreditiInsufficientiException("Crediti non sufficienti o abbonamento non valido.");
         }
 
-        System.out.println("4. Verifico checkValidita(1)...");
-        boolean valido = titolo.checkValidita(1);
-        System.out.println("5. Risultato checkValidita: " + valido);
+        // 3. LA PARTE MANCANTE: Creazione della Prenotazione e aggiornamento DB
+        try {
+            logger.info("Controlli superati. Generazione della prenotazione in corso...");
 
-        if (!valido) {
-            System.out.println("6. BLOCCO: checkValidita ha detto FALSE. Lancio eccezione.");
-            throw new CreditiInsufficientiException("Crediti non sufficienti");
+            Prenotazione prenotazione = new Prenotazione();
+            prenotazione.setCliente(cliente);
+            prenotazione.setLezionePrenotata(lezione);
+            prenotazione.setDataRichiesta(LocalDate.now());
+            prenotazione.setStato("Confermata"); // Il nuoto libero è subito confermato
+
+            DAOFactory.getInstance().getPrenotazioneDAO().salva(prenotazione);
+            if (titolo instanceof PacchettoCrediti) {
+                PacchettoCrediti pacchetto = (PacchettoCrediti) titolo;
+
+                pacchetto.setCreditiRimanenti(pacchetto.getCreditiRimanenti() - COSTO_NUOTO_LIBERO);
+                DAOFactory.getInstance().getTitoloAccessoDAO().aggiornaCrediti(pacchetto);
+
+                logger.info(() -> "✅ Prenotazione completata! Crediti residui aggiornati nel DB: " + pacchetto.getCreditiRimanenti());
+            } else {
+                logger.info("✅ Prenotazione completata tramite Abbonamento (ingressi illimitati).");
+            }
+            return true;
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Eccezione durante il salvataggio della prenotazione", e);
+            return false;
         }
-
-        System.out.println("=== FINE DEBUG: LA PRENOTAZIONE PUO' PROCEDERE! ===\n");
-
-        // ... il resto del tuo codice ...
-        return true;
     }
 }

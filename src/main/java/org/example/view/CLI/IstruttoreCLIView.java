@@ -26,7 +26,7 @@ public class IstruttoreCLIView {
     public void mostraMenu() {
         boolean esci = false;
         while (!esci) {
-            System.out.println("\n=== 👨‍🏫 MENU ISTRUTTORE: Prof. " + istruttore.getCognome() + " ===");
+            System.out.println("\n===  MENU ISTRUTTORE: " + istruttore.getCognome() + " ===");
             System.out.println("1. 📅 Visualizza Calendario Impegni");
             System.out.println("2. 📩 Gestisci Richieste Lezioni Private");
             System.out.println("0. 🚪 Logout");
@@ -75,7 +75,7 @@ public class IstruttoreCLIView {
                 System.out.println("🗓️ " + l.getData() + " | 🕒 " + l.getOraInizio() + " - " + l.getOraFine());
 
                 if (l.getTipoAttivita() == TipoAttivita.CORSO_GRUPPO && l.getCorsoAppartenenza() != null) {
-                    System.out.println("   ➤ 🏋️‍♀️ Corso di Gruppo: " + l.getCorsoAppartenenza().getNome());
+                    System.out.println("   ➤ 🏋️‍ Corso di Gruppo: " + l.getCorsoAppartenenza().getNome());
                 } else if (l.getTipoAttivita() == TipoAttivita.PRIVATA) {
                     System.out.println("   ➤ ⭐ Lezione Privata (Cliente: " + l.getInfoClientePrivata() + ")");
                     if (l.getNoteClientePrivata() != null && !l.getNoteClientePrivata().trim().isEmpty()) {

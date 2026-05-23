@@ -142,13 +142,6 @@ public class PrenotazioneController {
         }
     }
 
-    private void inviaNotificaIstruttore(Lezione lezione, Cliente cliente) {
-        Istruttore istruttore = lezione.getIstruttore();
-        String testo = "Il cliente " + cliente.getNome() + " ha richiesto una lezione privata per il " + lezione.getData();
-
-        Notifica nuovaNotifica = new Notifica(testo, istruttore);
-        istruttore.riceviNotifica(nuovaNotifica);
-    }
 
     // ==========================================================
     // FASE 2: L'ISTRUTTORE RISPONDE (Solo per le Private)
