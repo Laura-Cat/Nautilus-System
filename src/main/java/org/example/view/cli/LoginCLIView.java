@@ -1,8 +1,9 @@
-package org.example.view.CLI;
+package org.example.view.cli;
 
 import org.example.controller.LoginController;
 import org.example.model.bean.LoginBean;
 import org.example.model.domain.User;
+
 import java.util.Scanner;
 
 @SuppressWarnings("java:S106")

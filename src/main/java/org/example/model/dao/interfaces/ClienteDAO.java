@@ -1,4 +1,4 @@
-package org.example.model.dao.Interface;
+package org.example.model.dao.interfaces;
 
 import org.example.model.domain.Cliente;
 

@@ -1,13 +1,14 @@
 package org.example.controller;
 
+import org.example.model.bean.LoginBean;
 import org.example.model.dao.DAOFactory;
+import org.example.model.dao.interfaces.LoginDAO;
 import org.example.model.dao.db.DBConnectionFactory;
-import org.example.model.dao.Interface.LoginDAO;
 import org.example.model.domain.Cliente;
 import org.example.model.domain.Istruttore;
 import org.example.model.domain.Ruolo;
 import org.example.model.domain.User;
-import org.example.model.bean.LoginBean;
+
 import java.util.logging.Logger;
 
 public class LoginController {

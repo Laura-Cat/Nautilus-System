@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Circle?>
-
-<BorderPane fx:id="mainPane" stylesheets="@../style/styleCliente.css" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.JavaFX.IstruttoreView">
+<BorderPane fx:id="mainPane" stylesheets="@../style/styleCliente.css" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.javafx.IstruttoreView">
 
     <left>
         <VBox spacing="10" styleClass="sidebar">

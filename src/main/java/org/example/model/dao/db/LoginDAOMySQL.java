@@ -1,15 +1,14 @@
 package org.example.model.dao.db;
 
 import org.example.model.dao.DAOFactory;
-import org.example.model.dao.Interface.LoginDAO;
-import org.example.model.domain.*;
+import org.example.model.dao.interfaces.LoginDAO;
+import org.example.model.domain.Ruolo;
+import org.example.model.domain.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 public class LoginDAOMySQL implements LoginDAO {

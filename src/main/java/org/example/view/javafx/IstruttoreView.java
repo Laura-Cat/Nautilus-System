@@ -1,4 +1,4 @@
-package org.example.view.JavaFX;
+package org.example.view.javafx;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

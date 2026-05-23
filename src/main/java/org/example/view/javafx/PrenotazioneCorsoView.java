@@ -1,15 +1,19 @@
-package org.example.view.JavaFX;
+package org.example.view.javafx;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import org.example.controller.LoginController;
 import org.example.controller.PrenotazioneController;
+import org.example.exception.CreditiInsufficientiException;
 import org.example.model.bean.LezioneBean;
 import org.example.model.dao.DAOFactory;
 import org.example.model.domain.*;
-import org.example.exception.CreditiInsufficientiException;
+
 import java.time.LocalDate;
 import java.util.List;
 

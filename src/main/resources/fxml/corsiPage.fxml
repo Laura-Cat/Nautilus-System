@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <VBox spacing="20" alignment="TOP_CENTER" stylesheets="@/style/styleCorso.css"
       styleClass="main-container" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="org.example.view.JavaFX.PrenotazioneCorsoView">
+      fx:controller="org.example.view.javafx.PrenotazioneCorsoView">
 
     <Label text="Prenotazione Corsi di Gruppo 🏊‍♀️" styleClass="titolo-pagina"/>
 

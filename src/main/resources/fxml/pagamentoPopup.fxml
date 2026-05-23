@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.geometry.Insets?>
+
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
-
-<VBox alignment="CENTER" spacing="20.0" style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.JavaFX.PagamentoPopupView">
+<VBox alignment="CENTER" spacing="20.0" style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.javafx.PagamentoPopupView">
     <children>
         <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Scegli il metodo di pagamento" />
         <Label fx:id="labelImporto" style="-fx-font-size: 16px; -fx-text-fill: #10b981;" text="Importo da pagare: € 0.00" />

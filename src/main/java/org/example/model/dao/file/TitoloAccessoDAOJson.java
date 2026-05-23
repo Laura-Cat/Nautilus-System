@@ -1,7 +1,7 @@
 package org.example.model.dao.file;
 
 import com.google.gson.reflect.TypeToken;
-import org.example.model.dao.Interface.TitoloAccessoDAO;
+import org.example.model.dao.interfaces.TitoloAccessoDAO;
 import org.example.model.domain.AbbonamentoPeriodico;
 import org.example.model.domain.Cliente;
 import org.example.model.domain.PacchettoCrediti;

@@ -51,7 +51,7 @@ public class Main {
         } else {
             logger.info("Avvio Interfaccia da Terminale in corso...");
             // 🌟 AVVIA IL ROUTER PRINCIPALE!
-            new org.example.view.CLI.MainCLIView().start();
+            new org.example.view.cli.MainCLIView().start();
         }
     }
 }

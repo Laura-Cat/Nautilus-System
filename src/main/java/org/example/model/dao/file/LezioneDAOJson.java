@@ -1,7 +1,7 @@
 package org.example.model.dao.file;
 
 import com.google.gson.reflect.TypeToken;
-import org.example.model.dao.Interface.LezioneDAO;
+import org.example.model.dao.interfaces.LezioneDAO;
 import org.example.model.domain.Lezione;
 import org.example.model.domain.TipoAttivita;
 import org.example.model.domain.TipoCorso;

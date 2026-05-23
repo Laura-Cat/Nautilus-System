@@ -1,8 +1,8 @@
-package org.example.model.dao.Interface;
+package org.example.model.dao.interfaces;
 
-import org.example.model.domain.TitoloAccesso;
-import org.example.model.domain.PacchettoCrediti;
 import org.example.model.domain.AbbonamentoPeriodico;
+import org.example.model.domain.PacchettoCrediti;
+import org.example.model.domain.TitoloAccesso;
 
 public interface TitoloAccessoDAO {
     // 1. Salva un nuovo titolo appena comprato nel DB

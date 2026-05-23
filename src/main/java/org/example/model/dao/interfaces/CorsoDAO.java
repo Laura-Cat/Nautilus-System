@@ -1,6 +1,7 @@
-package org.example.model.dao.Interface;
+package org.example.model.dao.interfaces;
 
 import org.example.model.domain.Corso;
+
 import java.util.List;
 
 public interface CorsoDAO {

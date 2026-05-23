@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.control.ScrollPane?>
-<BorderPane stylesheets="@../style/stylePrivate.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.JavaFX.PrenotazionePrivateView">
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+<BorderPane stylesheets="@../style/stylePrivate.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.javafx.PrenotazionePrivateView">
 
     <top>
         <VBox alignment="CENTER" spacing="10" BorderPane.alignment="CENTER">

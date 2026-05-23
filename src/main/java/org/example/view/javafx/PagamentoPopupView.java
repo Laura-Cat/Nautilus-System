@@ -1,13 +1,13 @@
-package org.example.view.JavaFX;
+package org.example.view.javafx;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.example.controller.PagamentoController;
-import org.example.model.domain.Notifica;
 import org.example.controller.strategy.CartaStrategy;
 import org.example.controller.strategy.PayPalStrategy;
+import org.example.model.domain.Notifica;
 
 public class PagamentoPopupView {
 

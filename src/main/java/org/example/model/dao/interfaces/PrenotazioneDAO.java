@@ -1,7 +1,6 @@
-package org.example.model.dao.Interface;
+package org.example.model.dao.interfaces;
 
 import org.example.model.domain.Prenotazione;
-import org.example.model.domain.Cliente;
 
 import java.time.LocalDate;
 import java.util.List;

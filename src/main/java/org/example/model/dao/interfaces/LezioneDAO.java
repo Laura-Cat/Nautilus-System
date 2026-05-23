@@ -1,11 +1,10 @@
-package org.example.model.dao.Interface;
+package org.example.model.dao.interfaces;
 
 import org.example.model.domain.Lezione;
 import org.example.model.domain.TipoAttivita;
 import org.example.model.domain.TipoCorso;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 public interface LezioneDAO {

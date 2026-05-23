@@ -1,15 +1,17 @@
 package org.example.controller;
 
 
-import org.example.controller.strategy.*;
-import org.example.model.bean.LezioneBean;
-import org.example.model.dao.Interface.PrenotazioneDAO;
-import org.example.model.domain.*;
-import org.example.model.dao.*; // Assicurati che i tuoi DAO siano importati correttamente
+import org.example.controller.strategy.PrenotazioneCorsoStrategy;
+import org.example.controller.strategy.PrenotazioneNuotoLiberoStrategy;
+import org.example.controller.strategy.PrenotazionePrivataStrategy;
+import org.example.controller.strategy.PrenotazioneStrategy;
 import org.example.exception.CreditiInsufficientiException;
+import org.example.model.bean.LezioneBean;
+import org.example.model.dao.DAOFactory;
+import org.example.model.dao.interfaces.PrenotazioneDAO;
+import org.example.model.domain.*;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;

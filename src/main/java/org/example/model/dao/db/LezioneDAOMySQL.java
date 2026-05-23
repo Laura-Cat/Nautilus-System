@@ -1,9 +1,12 @@
 package org.example.model.dao.db;
 
-import org.example.model.dao.Interface.LezioneDAO;
+import org.example.model.dao.interfaces.LezioneDAO;
 import org.example.model.domain.*;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;

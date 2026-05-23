@@ -1,12 +1,11 @@
 package org.example.controller.strategy;
 
-import org.example.controller.LoginController;
 import org.example.exception.CreditiInsufficientiException;
 import org.example.model.dao.DAOFactory;
-import org.example.model.domain.AbbonamentoPeriodico;
 import org.example.model.domain.Cliente;
 import org.example.model.domain.Lezione;
 import org.example.model.domain.TitoloAccesso;
+
 import java.util.logging.Logger;
 
 public class PrenotazioneCorsoStrategy implements PrenotazioneStrategy {

@@ -3,6 +3,7 @@ package org.example.model.dao.file;
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import org.example.model.domain.*;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -12,15 +13,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
-import com.google.gson.InstanceCreator;
-import org.example.model.domain.User;
-import org.example.model.domain.Cliente;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonObject;
-import org.example.model.domain.TitoloAccesso;
-import org.example.model.domain.PacchettoCrediti;
-import org.example.model.domain.AbbonamentoPeriodico;
 
 public class JsonUtility {
     private static final Logger logger = Logger.getLogger(JsonUtility.class.getName());

@@ -1,4 +1,4 @@
-package org.example.view.CLI;
+package org.example.view.cli;
 
 import org.example.controller.LoginController;
 import org.example.controller.PagamentoController;

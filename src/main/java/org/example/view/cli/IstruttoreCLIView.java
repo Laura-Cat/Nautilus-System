@@ -1,4 +1,4 @@
-package org.example.view.CLI;
+package org.example.view.cli;
 
 import org.example.controller.LoginController;
 import org.example.controller.NotificaController;
@@ -75,7 +75,7 @@ public class IstruttoreCLIView {
                 System.out.println("🗓️ " + l.getData() + " | 🕒 " + l.getOraInizio() + " - " + l.getOraFine());
 
                 if (l.getTipoAttivita() == TipoAttivita.CORSO_GRUPPO && l.getCorsoAppartenenza() != null) {
-                    System.out.println("   ➤ 🏋️‍ Corso di Gruppo: " + l.getCorsoAppartenenza().getNome());
+                    System.out.println("   ➤ Corso di Gruppo: " + l.getCorsoAppartenenza().getNome());
                 } else if (l.getTipoAttivita() == TipoAttivita.PRIVATA) {
                     System.out.println("   ➤ ⭐ Lezione Privata (Cliente: " + l.getInfoClientePrivata() + ")");
                     if (l.getNoteClientePrivata() != null && !l.getNoteClientePrivata().trim().isEmpty()) {

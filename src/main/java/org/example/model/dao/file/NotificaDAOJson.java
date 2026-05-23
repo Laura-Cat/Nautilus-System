@@ -1,7 +1,7 @@
 package org.example.model.dao.file;
 
 import com.google.gson.reflect.TypeToken;
-import org.example.model.dao.Interface.NotificaDAO;
+import org.example.model.dao.interfaces.NotificaDAO;
 import org.example.model.domain.Cliente;
 import org.example.model.domain.Notifica;
 import org.example.model.domain.User;

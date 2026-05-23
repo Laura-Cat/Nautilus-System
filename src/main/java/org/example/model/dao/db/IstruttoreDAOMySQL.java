@@ -1,9 +1,8 @@
 package org.example.model.dao.db;
 
-import org.example.model.dao.Interface.IstruttoreDAO;
-
-// L'implementazione si trova nella cartella "db
+import org.example.model.dao.interfaces.IstruttoreDAO;
 import org.example.model.domain.Istruttore;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

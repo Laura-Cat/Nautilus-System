@@ -1,7 +1,6 @@
 package org.example.model.dao.db;
 
-import org.example.model.dao.Interface.NotificaDAO;
-import org.example.model.dao.db.DBConnectionFactory;
+import org.example.model.dao.interfaces.NotificaDAO;
 import org.example.model.domain.Notifica;
 import org.example.model.domain.User;
 

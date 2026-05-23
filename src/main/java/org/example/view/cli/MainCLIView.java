@@ -1,9 +1,8 @@
-package org.example.view.CLI;
+package org.example.view.cli;
 
 import org.example.model.domain.Cliente;
 import org.example.model.domain.Istruttore;
 import org.example.model.domain.User;
-
 
 import java.util.Scanner;
 

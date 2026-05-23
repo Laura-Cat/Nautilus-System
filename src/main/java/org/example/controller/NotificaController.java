@@ -1,7 +1,10 @@
 package org.example.controller;
 
 import org.example.model.dao.DAOFactory;
-import org.example.model.domain.*;
+import org.example.model.domain.Cliente;
+import org.example.model.domain.Istruttore;
+import org.example.model.domain.Lezione;
+import org.example.model.domain.Notifica;
 
 import java.util.List;
 

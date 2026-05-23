@@ -1,7 +1,7 @@
 package org.example.model.dao.file;
 
 import com.google.gson.reflect.TypeToken;
-import org.example.model.dao.Interface.CorsoDAO;
+import org.example.model.dao.interfaces.CorsoDAO;
 import org.example.model.domain.Corso;
 
 import java.lang.reflect.Type;

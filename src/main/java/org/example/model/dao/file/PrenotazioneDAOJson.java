@@ -1,7 +1,7 @@
 package org.example.model.dao.file;
 
 import com.google.gson.reflect.TypeToken;
-import org.example.model.dao.Interface.PrenotazioneDAO;
+import org.example.model.dao.interfaces.PrenotazioneDAO;
 import org.example.model.domain.Prenotazione;
 
 import java.lang.reflect.Type;

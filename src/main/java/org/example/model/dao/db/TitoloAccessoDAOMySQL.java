@@ -1,10 +1,10 @@
 package org.example.model.dao.db;
 
-import org.example.model.dao.Interface.TitoloAccessoDAO;
+import org.example.model.dao.interfaces.TitoloAccessoDAO;
+import org.example.model.domain.AbbonamentoPeriodico;
+import org.example.model.domain.PacchettoCrediti;
 import org.example.model.domain.TipoCorso;
 import org.example.model.domain.TitoloAccesso;
-import org.example.model.domain.PacchettoCrediti;
-import org.example.model.domain.AbbonamentoPeriodico;
 
 import java.sql.*;
 import java.util.ArrayList;

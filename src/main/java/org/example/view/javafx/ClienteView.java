@@ -1,5 +1,6 @@
-package org.example.view.JavaFX;
+package org.example.view.javafx;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -15,7 +16,6 @@ import org.example.model.domain.Cliente;
 import org.example.model.domain.Notifica;
 import org.example.model.domain.User;
 
-import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;

@@ -1,9 +1,12 @@
 package org.example.model.dao.db;
 
-import org.example.model.dao.Interface.ClienteDAO;
+import org.example.model.dao.interfaces.ClienteDAO;
 import org.example.model.domain.Cliente;
-// Importa anche le classi del tuo DBConnectionFactory ecc.
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.logging.Logger;
 

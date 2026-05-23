@@ -1,6 +1,6 @@
 package org.example.model.dao;
 
-import org.example.model.dao.Interface.*;
+import org.example.model.dao.interfaces.*;
 import org.example.model.dao.db.*;
 import org.example.model.dao.file.*;
 

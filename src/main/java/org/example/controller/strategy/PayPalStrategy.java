@@ -1,7 +1,7 @@
 package org.example.controller.strategy; // Controlla che il package sia quello giusto!
 
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PayPalStrategy implements MetodoPagamentoStrategy {
 

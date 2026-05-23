@@ -1,10 +1,8 @@
-package org.example.model.dao.Interface;
+package org.example.model.dao.interfaces;
 
 import org.example.model.domain.Notifica;
 import org.example.model.domain.User;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 public interface NotificaDAO {
