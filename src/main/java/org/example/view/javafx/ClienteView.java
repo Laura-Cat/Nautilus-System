@@ -138,7 +138,7 @@ public class ClienteView {
         if (this.contentArea != null) {
             this.contentArea.getChildren().setAll(nuovoNodo);
         } else {
-            System.err.println("Errore: contentArea è null in ClienteView!");
+            logger.severe("Errore: contentArea è null in ClienteView!");
         }
     }
 }

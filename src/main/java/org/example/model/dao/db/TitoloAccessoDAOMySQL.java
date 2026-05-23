@@ -9,6 +9,7 @@ import org.example.model.domain.TitoloAccesso;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TitoloAccessoDAOMySQL implements TitoloAccessoDAO {
@@ -125,7 +126,7 @@ public class TitoloAccessoDAOMySQL implements TitoloAccessoDAO {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("❌ Errore nel recupero del titolo d'accesso: " + e.getMessage());
+            logger.log(Level.SEVERE, "❌ Errore nel recupero del titolo d'accesso", e);
         }
 
         return titolo;

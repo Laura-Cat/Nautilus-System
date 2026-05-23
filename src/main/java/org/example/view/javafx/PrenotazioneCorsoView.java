@@ -16,9 +16,12 @@ import org.example.model.domain.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PrenotazioneCorsoView {
 
+    private static final Logger logger = Logger.getLogger(PrenotazioneCorsoView.class.getName());
     @FXML private DatePicker dataPicker;
     @FXML private ComboBox<TipoCorso> corsoComboBox;
     @FXML private VBox corsiContainer;
@@ -32,7 +35,7 @@ public class PrenotazioneCorsoView {
         if (utenteCorrente instanceof Cliente) {
             this.clienteLoggato = (Cliente) utenteCorrente;
         } else {
-            System.out.println("⚠️ Attenzione: l'utente loggato non è un Cliente!");
+            logger.log(Level.WARNING, "⚠️ Attenzione: l'utente loggato non è un Cliente!");
         }
         corsoComboBox.getItems().setAll(TipoCorso.values());
         dataPicker.setValue(LocalDate.now());

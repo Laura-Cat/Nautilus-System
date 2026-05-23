@@ -11,6 +11,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
@@ -168,7 +169,7 @@ public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Errore durante il controllo doppioni: " + e.getMessage());
+            logger.log(Level.SEVERE, "Errore durante il controllo doppioni", e);
         }
         return false;
     }

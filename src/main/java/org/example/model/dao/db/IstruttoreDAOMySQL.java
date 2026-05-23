@@ -53,7 +53,7 @@ public class IstruttoreDAOMySQL implements IstruttoreDAO{
                 lista.add(ist);
             }
         } catch (SQLException e) {
-            System.out.println("❌ Errore nel recupero degli istruttori: " + e.getMessage());
+            logger.log(Level.SEVERE, "❌ Errore nel recupero degli istruttori", e);
         }
 
         return lista;
