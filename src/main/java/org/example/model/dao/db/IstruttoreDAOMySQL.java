@@ -18,7 +18,7 @@ public class IstruttoreDAOMySQL implements IstruttoreDAO{
     private static final Logger logger = Logger.getLogger(IstruttoreDAOMySQL.class.getName());
 
 
-    private static final String data_nascita = "data_nascita";
+    private static final String DATA_NASCITA = "data_nascita";
     
     @Override
     public List<Istruttore> recuperaTutti() {
@@ -39,8 +39,8 @@ public class IstruttoreDAOMySQL implements IstruttoreDAO{
                 ist.setCf(rs.getString("cf"));
                 ist.setNome(rs.getString("nome"));
                 ist.setCognome(rs.getString("cognome"));
-                if (rs.getDate(data_nascita) != null) {
-                    ist.setDataNascita(rs.getDate(data_nascita).toLocalDate());
+                if (rs.getDate(DATA_NASCITA) != null) {
+                    ist.setDataNascita(rs.getDate(DATA_NASCITA).toLocalDate());
                 }
                 ist.setLuogoNascita(rs.getString("luogo_nascita"));
                 ist.setIndirizzo(rs.getString("indirizzo"));
@@ -80,8 +80,8 @@ public class IstruttoreDAOMySQL implements IstruttoreDAO{
                     ist.setNome(rs.getString("nome"));
                     ist.setCognome(rs.getString("cognome"));
 
-                    if (rs.getDate(data_nascita) != null) {
-                        ist.setDataNascita(rs.getDate(data_nascita).toLocalDate());
+                    if (rs.getDate(DATA_NASCITA) != null) {
+                        ist.setDataNascita(rs.getDate(DATA_NASCITA).toLocalDate());
                     }
 
                     ist.setLuogoNascita(rs.getString("luogo_nascita"));

@@ -4,19 +4,17 @@ import org.example.model.dao.Interface.LezioneDAO;
 import org.example.model.domain.*;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LezioneDAOMySQL implements LezioneDAO {
     private static final Logger logger = Logger.getLogger(LezioneDAOMySQL.class.getName());
-    private static final String tipo_corso = "tipo_corso";
-    private static final String ora_inizio = "ora_inizio";
-    private static final String ora_fine =  "ora_fine";
-    private static final String num_posti_prenotati = "num_posti_prenotati";
-    private static final String tipo_attivita = "tipo_attivita";
+    private static final String TIPO_CORSO = "tipo_corso";
+    private static final String ORA_INIZIO = "ora_inizio";
+    private static final String ORA_FINE =  "ora_fine";
+    private static final String NUM_POSTI_PRENOTATI = "num_posti_prenotati";
+    private static final String TIPO_ATTIVITA = "tipo_attivita";
     
     @Override
     public List<Lezione> trovaPerTipoEData(TipoAttivita tipo, java.time.LocalDate data) {
@@ -40,7 +38,7 @@ public class LezioneDAOMySQL implements LezioneDAO {
 
                     // 1. Capiamo quanti posti totali ci sono (da corsi o da corsie)
                     int postiTotali = 0;
-                    String tipoCorsoTrovato = rs.getString(tipo_corso);
+                    String tipoCorsoTrovato = rs.getString(TIPO_CORSO);
 
                     if (tipoCorsoTrovato != null) {
                         postiTotali = rs.getInt("posti_corso");
@@ -52,9 +50,9 @@ public class LezioneDAOMySQL implements LezioneDAO {
                     Lezione l = new Lezione(
                             rs.getInt("id"),
                             rs.getDate("data").toLocalDate(),
-                            rs.getTime(ora_inizio).toLocalTime(),
-                            rs.getTime( ora_fine).toLocalTime(),
-                            rs.getInt(num_posti_prenotati),
+                            rs.getTime(ORA_INIZIO).toLocalTime(),
+                            rs.getTime(ORA_FINE).toLocalTime(),
+                            rs.getInt(NUM_POSTI_PRENOTATI),
                             postiTotali, // Usiamo la variabile calcolata
                             tipo
                     );
@@ -120,7 +118,7 @@ public class LezioneDAOMySQL implements LezioneDAO {
                 if (rs.next()) {
 
                     int postiTotali = 0;
-                    String tipoCorsoTrovato = rs.getString(tipo_corso);
+                    String tipoCorsoTrovato = rs.getString(TIPO_CORSO);
 
                     if (tipoCorsoTrovato != null) {
                         postiTotali = rs.getInt("posti_corso");
@@ -131,11 +129,11 @@ public class LezioneDAOMySQL implements LezioneDAO {
                     l = new Lezione(
                             rs.getInt("id"),
                             rs.getDate("data").toLocalDate(),
-                            rs.getTime(ora_inizio).toLocalTime(),
-                            rs.getTime( ora_fine).toLocalTime(),
-                            rs.getInt(num_posti_prenotati),
+                            rs.getTime(ORA_INIZIO).toLocalTime(),
+                            rs.getTime(ORA_FINE).toLocalTime(),
+                            rs.getInt(NUM_POSTI_PRENOTATI),
                             postiTotali,
-                            TipoAttivita.valueOf(rs.getString(tipo_attivita))
+                            TipoAttivita.valueOf(rs.getString(TIPO_ATTIVITA))
                     );
 
                     if (tipoCorsoTrovato != null) {
@@ -187,13 +185,13 @@ public class LezioneDAOMySQL implements LezioneDAO {
                     Lezione l = new Lezione();
                     l.setIdLezione(rs.getInt("id"));
                     l.setData(rs.getDate("data").toLocalDate());
-                    l.setOraInizio(rs.getTime(ora_inizio).toLocalTime());
-                    l.setOraFine(rs.getTime( ora_fine).toLocalTime());
+                    l.setOraInizio(rs.getTime(ORA_INIZIO).toLocalTime());
+                    l.setOraFine(rs.getTime(ORA_FINE).toLocalTime());
 
                     // ORA USIAMO IL SOPRANNOME ESATTO CHE ABBIAMO DATO NELLA QUERY
                     l.setNumPostiTotali(rs.getInt("posti_totali"));
 
-                    l.setNumPostiPrenotati(rs.getInt(num_posti_prenotati));
+                    l.setNumPostiPrenotati(rs.getInt(NUM_POSTI_PRENOTATI));
 
                     Corso corsoDellaLezione = new Corso();
                     corsoDellaLezione.setNome(tipoCorso);
@@ -232,14 +230,14 @@ public class LezioneDAOMySQL implements LezioneDAO {
                     l.setIdLezione(rs.getInt("id"));
 
                     if (rs.getDate("data") != null) l.setData(rs.getDate("data").toLocalDate());
-                    if (rs.getTime(ora_inizio) != null) l.setOraInizio(rs.getTime(ora_inizio).toLocalTime());
-                    if (rs.getTime( ora_fine) != null) l.setOraFine(rs.getTime( ora_fine).toLocalTime());
+                    if (rs.getTime(ORA_INIZIO) != null) l.setOraInizio(rs.getTime(ORA_INIZIO).toLocalTime());
+                    if (rs.getTime(ORA_FINE) != null) l.setOraFine(rs.getTime(ORA_FINE).toLocalTime());
 
                     // Impostiamo a 1 di default per le private
                     l.setNumPostiTotali(1);
-                    l.setNumPostiPrenotati(rs.getInt(num_posti_prenotati));
+                    l.setNumPostiPrenotati(rs.getInt(NUM_POSTI_PRENOTATI));
 
-                    String tipo = rs.getString(tipo_attivita);
+                    String tipo = rs.getString(TIPO_ATTIVITA);
                     if (tipo != null) l.setTipoAttivita(TipoAttivita.valueOf(tipo));
 
                     Istruttore istr = new Istruttore();
@@ -283,11 +281,11 @@ public class LezioneDAOMySQL implements LezioneDAO {
                     Lezione l = new Lezione();
                     l.setIdLezione(rs.getInt("id"));
                     l.setData(rs.getDate("data").toLocalDate());
-                    l.setOraInizio(rs.getTime(ora_inizio).toLocalTime());
-                    l.setOraFine(rs.getTime( ora_fine).toLocalTime());
-                    l.setTipoAttivita(TipoAttivita.valueOf(rs.getString(tipo_attivita)));
+                    l.setOraInizio(rs.getTime(ORA_INIZIO).toLocalTime());
+                    l.setOraFine(rs.getTime(ORA_FINE).toLocalTime());
+                    l.setTipoAttivita(TipoAttivita.valueOf(rs.getString(TIPO_ATTIVITA)));
 
-                    String tipoCorso = rs.getString(tipo_corso);
+                    String tipoCorso = rs.getString(TIPO_CORSO);
                     if (tipoCorso != null) {
                         Corso corso = new Corso();
                         corso.setNome(TipoCorso.valueOf(tipoCorso));
