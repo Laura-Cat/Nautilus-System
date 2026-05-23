@@ -16,6 +16,8 @@ public class ClienteCLIView {
 
     private final Scanner scanner;
     private final Cliente cliente;
+    private static final String TESTO_SCELTA = "Scegli un'opzione: ";
+    private static final String TESTO_ERRORE_INPUT = "❌ Input non valido.";
 
     public ClienteCLIView(Scanner scanner, Cliente cliente) {
         this.scanner = scanner;
@@ -31,7 +33,8 @@ public class ClienteCLIView {
             System.out.println("2. Prenota Nuova Lezione");
             System.out.println("3. Visualizza Notifiche");
             System.out.println("0. Logout");
-            System.out.print("Scegli un'opzione: ");
+            System.out.print(TESTO_SCELTA);
+
 
             String scelta = scanner.nextLine();
 
@@ -94,11 +97,10 @@ public class ClienteCLIView {
         System.out.println("1. Corso di Gruppo");
         System.out.println("2. Nuoto Libero");
         System.out.println("3. Lezione Privata");
-        System.out.print("Scegli un'opzione: ");
+        System.out.print(TESTO_SCELTA);
 
         String sceltaTipo = scanner.nextLine();
         TipoAttivita tipoScelto;
-        Istruttore istruttoreSelezionato = null;
 
         switch (sceltaTipo) {
             case "1": tipoScelto = TipoAttivita.CORSO_GRUPPO; break;
@@ -111,53 +113,8 @@ public class ClienteCLIView {
 
         List<Lezione> disponibili; // La lista che conterrà i risultati
 
-        // ==========================================================
-        // FLUSSO LEZIONE PRIVATA
-        // ==========================================================
         if (tipoScelto == TipoAttivita.PRIVATA) {
-            System.out.println("\n--- SCEGLI L'ISTRUTTORE ---");
-            List<Istruttore> istruttori = org.example.model.dao.DAOFactory.getInstance()
-                    .getIstruttoreDAO().recuperaTutti();
-
-            if (istruttori == null || istruttori.isEmpty()) {
-                System.out.println("❌ Nessun istruttore disponibile al momento.");
-                return;
-            }
-
-            for (int i = 0; i < istruttori.size(); i++) {
-                System.out.println((i + 1) + ". Prof. " + istruttori.get(i).getNomeCompleto());
-            }
-            System.out.println("0. Torna al menu principale");
-
-            System.out.print("\nSeleziona il numero dell'istruttore: ");
-            try {
-                int indiceIstr = Integer.parseInt(scanner.nextLine());
-                if (indiceIstr == 0) return;
-                if (indiceIstr < 1 || indiceIstr > istruttori.size()) {
-                    System.out.println("❌ Scelta non valida.");
-                    return;
-                }
-                istruttoreSelezionato = istruttori.get(indiceIstr - 1);
-            } catch (NumberFormatException e) {
-                System.out.println("❌ Input non valido.");
-                return;
-            }
-
-            System.out.println("\n--- 👤 Profilo: Prof. " + istruttoreSelezionato.getCognome() + " ---");
-            System.out.println("1. Vedi lezioni private disponibili e prenota");
-            System.out.println("0. Torna indietro");
-            System.out.print("Scegli un'opzione: ");
-            String subScelta = scanner.nextLine();
-
-            if (!subScelta.equals("1")) {
-                System.out.println("Operazione annullata.");
-                return;
-            }
-
-            // 🌟 MAGIA QUI: Peschiamo tutte le disponibilità future del prof, senza chiedere la data!
-            disponibili = org.example.model.dao.DAOFactory.getInstance()
-                    .getLezioneDAO().trovaPrivateDisponibiliPerIstruttore(istruttoreSelezionato.getId());
-
+            disponibili = gestisciPrenotazionePrivata();
         } else {
             // ==========================================================
             // FLUSSO CORSI E NUOTO LIBERO (Chiediamo la data)
@@ -211,7 +168,7 @@ public class ClienteCLIView {
         try {
             indiceScelto = Integer.parseInt(scanner.nextLine());
         } catch (NumberFormatException e) {
-            System.out.println("❌ Input non valido.");
+            System.out.println(TESTO_ERRORE_INPUT);
             return;
         }
 
@@ -243,9 +200,56 @@ public class ClienteCLIView {
             }
 
         } else {
-            System.out.println("❌ Scelta non valida.");
+            System.out.println(TESTO_ERRORE_INPUT);
         }
     }
+
+    private List<Lezione> gestisciPrenotazionePrivata() {
+        List<Lezione> disponibili;
+        Istruttore istruttoreSelezionato;
+        System.out.println("\n--- SCEGLI L'ISTRUTTORE ---");
+        List<Istruttore> istruttori = DAOFactory.getInstance().getIstruttoreDAO().recuperaTutti();
+
+        if (istruttori == null || istruttori.isEmpty()) {
+            System.out.println("❌ Nessun istruttore disponibile al momento.");
+            return null;
+        }
+
+        for (int i = 0; i < istruttori.size(); i++) {
+            System.out.println((i + 1) + ". Prof. " + istruttori.get(i).getNomeCompleto());
+        }
+        System.out.println("0. Torna al menu principale");
+
+        System.out.print("\nSeleziona il numero dell'istruttore: ");
+        try {
+            int indiceIstr = Integer.parseInt(scanner.nextLine());
+            if (indiceIstr == 0) return null;
+            if (indiceIstr < 1 || indiceIstr > istruttori.size()) {
+                System.out.println("❌ Scelta non valida.");
+                return null;
+            }
+            istruttoreSelezionato = istruttori.get(indiceIstr - 1);
+        } catch (NumberFormatException e) {
+            System.out.println(TESTO_ERRORE_INPUT);
+            return null;
+        }
+
+        System.out.println("\n--- 👤 Profilo: Prof. " + istruttoreSelezionato.getCognome() + " ---");
+        System.out.println("1. Vedi lezioni private disponibili e prenota");
+        System.out.println("0. Torna indietro");
+        System.out.print(TESTO_SCELTA);
+        String subScelta = scanner.nextLine();
+
+        if (!subScelta.equals("1")) {
+            System.out.println("Operazione annullata.");
+            return null;
+        }
+
+
+        disponibili = DAOFactory.getInstance().getLezioneDAO().trovaPrivateDisponibiliPerIstruttore(istruttoreSelezionato.getId());
+        return disponibili;
+    }
+
 
     private void visualizzaNotifiche() {
         System.out.println("\n=== 🔔 LE TUE NOTIFICHE ===");
@@ -285,51 +289,53 @@ public class ClienteCLIView {
                 }
             }
 
-            // ==============================================================================
-            // 🌟 FLUSSO DI PAGAMENTO (Molto più semplice e diretto!)
-            // ==============================================================================
-            if (!notificheDaPagare.isEmpty()) {
-                System.out.print("\n💳 Hai " + notificheDaPagare.size() + " pagamento/i in sospeso! Vuoi procedere adesso? (S/N): ");
-                String risposta = scanner.nextLine();
 
-                if (risposta.equalsIgnoreCase("S")) {
-                    System.out.println("\n--- SELEZIONA LA RICHIESTA DA PAGARE ---");
-                    for (int i = 0; i < notificheDaPagare.size(); i++) {
-                        Notifica n = notificheDaPagare.get(i);
-                        System.out.println((i + 1) + ". 🗓️ Del " + n.getDataInvio() + " -> " + n.getMessaggio());
-                    }
-                    System.out.print("Inserisci il numero (oppure 0 per annullare): ");
-
-                    try {
-                        int scelta = Integer.parseInt(scanner.nextLine());
-                        if (scelta > 0 && scelta <= notificheDaPagare.size()) {
-                            Notifica notificaScelta = notificheDaPagare.get(scelta - 1);
-
-                            System.out.println("\nSimulazione transazione in corso... 💸");
-
-                            org.example.controller.PagamentoController pagController = new org.example.controller.PagamentoController();
-                            pagController.setStrategiaPagamento(new org.example.controller.strategy.PayPalStrategy());
-
-                            // Usiamo direttamente l'ID riferimento della notifica
-                            boolean esito = pagController.pagaLezionePrivata(notificaScelta.getIdRiferimento(), 25.00, notificaScelta);
-
-                            if (esito) {
-                                System.out.println("✅ PAGAMENTO RIUSCITO! La lezione è stata confermata.");
-                            } else {
-                                System.out.println("❌ Errore durante il pagamento.");
-                            }
-                        }
-                    } catch (Exception e) {
-                        System.out.println("❌ Input non valido.");
-                    }
-                }
-            } else {
-                System.out.print("\nPremi INVIO per tornare al menu principale...");
-                scanner.nextLine();
-            }
+            gestisciPagamentiPendenti(notificheDaPagare);
 
         } catch (Exception e) {
             System.out.println("❌ Errore nel caricamento delle notifiche: " + e.getMessage());
+        }
+    }
+
+    private void gestisciPagamentiPendenti(List<Notifica> notificheDaPagare) {
+        if (!notificheDaPagare.isEmpty()) {
+            System.out.print("\n💳 Hai " + notificheDaPagare.size() + " pagamento/i in sospeso! Vuoi procedere adesso? (S/N): ");
+            String risposta = scanner.nextLine();
+
+            if (risposta.equalsIgnoreCase("S")) {
+                System.out.println("\n--- SELEZIONA LA RICHIESTA DA PAGARE ---");
+                for (int i = 0; i < notificheDaPagare.size(); i++) {
+                    Notifica n = notificheDaPagare.get(i);
+                    System.out.println((i + 1) + ". 🗓️ Del " + n.getDataInvio() + " -> " + n.getMessaggio());
+                }
+                System.out.print("Inserisci il numero (oppure 0 per annullare): ");
+
+                try {
+                    int scelta = Integer.parseInt(scanner.nextLine());
+                    if (scelta > 0 && scelta <= notificheDaPagare.size()) {
+                        Notifica notificaScelta = notificheDaPagare.get(scelta - 1);
+
+                        System.out.println("\nSimulazione transazione in corso... 💸");
+
+                        PagamentoController pagController = new PagamentoController();
+                        pagController.setStrategiaPagamento(new org.example.controller.strategy.PayPalStrategy());
+
+                        // Usiamo direttamente l'ID riferimento della notifica
+                        boolean esito = pagController.pagaLezionePrivata(notificaScelta.getIdRiferimento(), 25.00, notificaScelta);
+
+                        if (esito) {
+                            System.out.println("✅ PAGAMENTO RIUSCITO! La lezione è stata confermata.");
+                        } else {
+                            System.out.println("❌ Errore durante il pagamento.");
+                        }
+                    }
+                } catch (Exception e) {
+                    System.out.println(TESTO_ERRORE_INPUT);
+                }
+            }
+        } else {
+            System.out.print("\nPremi INVIO per tornare al menu principale...");
+            scanner.nextLine();
         }
     }
 }

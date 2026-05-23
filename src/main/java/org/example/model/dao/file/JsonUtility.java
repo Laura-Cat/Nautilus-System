@@ -11,18 +11,19 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
+
 import com.google.gson.InstanceCreator;
 import org.example.model.domain.User;
 import org.example.model.domain.Cliente;
 import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.example.model.domain.TitoloAccesso;
 import org.example.model.domain.PacchettoCrediti;
 import org.example.model.domain.AbbonamentoPeriodico;
 
 public class JsonUtility {
-
+    private static final Logger logger = Logger.getLogger(JsonUtility.class.getName());
     // 1. Adattatore per le date semplici (es. Data di Nascita)
     private static final TypeAdapter<LocalDate> localDateTypeAdapter = new TypeAdapter<LocalDate>() {
         private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -99,7 +100,7 @@ public class JsonUtility {
             List<T> lista = gson.fromJson(reader, typeToken);
             return lista != null ? lista : new ArrayList<>();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.severe("Errore: " + e.getMessage());
             return new ArrayList<>();
         }
     }
@@ -108,7 +109,7 @@ public class JsonUtility {
         try (Writer writer = new FileWriter(percorsoFile)) {
             gson.toJson(lista, writer);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.severe("Errore: " + e.getMessage());
         }
     }
 

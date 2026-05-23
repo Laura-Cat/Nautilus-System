@@ -16,8 +16,11 @@ import org.example.model.domain.User;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class NotificheView {
+
+    private static final Logger logger = Logger.getLogger(NotificheView.class.getName());
 
     @FXML
     private VBox contenitoreNotifiche;
@@ -134,7 +137,7 @@ public class NotificheView {
                     stage.show();
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logger.severe("Errore: " + e.getMessage());
                 }
             }
         } else if ("DA_ACCETTARE".equals(n.getTipo())) {

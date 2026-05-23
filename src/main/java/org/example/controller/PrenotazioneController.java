@@ -128,7 +128,7 @@ public class PrenotazioneController {
         } catch (Exception e) {
             // CATTURA GLI ERRORI VERI (es. database offline, null pointer)
             logger.severe("Errore durante l'esecuzione della strategia o durante il salvataggio");
-            e.printStackTrace();
+            logger.severe("Errore: " + e.getMessage());
             return false;
         }
     }

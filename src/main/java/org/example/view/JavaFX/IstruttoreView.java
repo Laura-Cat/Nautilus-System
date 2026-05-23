@@ -67,7 +67,7 @@ public class IstruttoreView {
 
             impostaSchermataCentrale(root);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.severe("Errore: " + e.getMessage());
         }
     }
     @FXML
