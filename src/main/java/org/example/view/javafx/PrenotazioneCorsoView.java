@@ -9,6 +9,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import org.example.controller.LoginController;
 import org.example.controller.PrenotazioneController;
+import org.example.controller.SessionManager;
 import org.example.exception.CreditiInsufficientiException;
 import org.example.model.bean.LezioneBean;
 import org.example.model.dao.DAOFactory;
@@ -30,7 +31,7 @@ public class PrenotazioneCorsoView {
 
     @FXML
     public void initialize() {
-        User utenteCorrente = LoginController.getInstance().getUtenteAttivo();
+        User utenteCorrente = SessionManager.getInstance().getUtenteAttivo();
 
         if (utenteCorrente instanceof Cliente) {
             this.clienteLoggato = (Cliente) utenteCorrente;
@@ -117,7 +118,7 @@ public class PrenotazioneCorsoView {
         } catch (CreditiInsufficientiException ex) {
             mostraPopup("Attenzione", ex.getMessage(), Alert.AlertType.WARNING);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.log(Level.SEVERE, "Errore di sistema imprevisto durante l'operazione", ex);
             mostraPopup("Errore di Sistema", "Si è verificato un errore: " + ex.getMessage(), Alert.AlertType.ERROR);
         }
     }

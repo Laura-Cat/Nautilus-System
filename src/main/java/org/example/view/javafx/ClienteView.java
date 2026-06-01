@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import org.example.controller.LoginController;
+import org.example.controller.SessionManager;
 import org.example.model.domain.Cliente;
 import org.example.model.domain.Notifica;
 import org.example.model.domain.User;
@@ -31,7 +32,7 @@ public class ClienteView {
 
     @FXML
     public void initialize() {
-        User utente = LoginController.getInstance().getUtenteAttivo();
+        User utente = SessionManager.getInstance().getUtenteAttivo();
         if (utente instanceof Cliente) {
             Cliente c = (Cliente) utente;
             labelNomeCliente.setText("Ciao, " + c.getNome());
@@ -61,7 +62,7 @@ public class ClienteView {
     }
 
     public void aggiornaPallinoNotifiche() {
-        User utenteCorrente = LoginController.getInstance().getUtenteAttivo();
+        User utenteCorrente = SessionManager.getInstance().getUtenteAttivo();
         Integer idCliente = utenteCorrente.getId();
 
         List<Notifica> notificheNonLette = org.example.model.dao.DAOFactory.getInstance()

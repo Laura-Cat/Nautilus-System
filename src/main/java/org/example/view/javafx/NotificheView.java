@@ -9,6 +9,7 @@ import javafx.scene.layout.VBox;
 import org.example.controller.LoginController;
 import org.example.controller.NotificaController;
 import org.example.controller.PrenotazioneController;
+import org.example.controller.SessionManager;
 import org.example.model.dao.DAOFactory;
 import org.example.model.domain.Notifica;
 import org.example.model.domain.Prenotazione;
@@ -39,7 +40,7 @@ public class NotificheView {
 
     private void caricaNotifiche() {
         contenitoreNotifiche.getChildren().clear();
-        User utenteCorrente = LoginController.getInstance().getUtenteAttivo();
+        User utenteCorrente = SessionManager.getInstance().getUtenteAttivo();
         NotificaController backendController = new NotificaController();
 
         // 1. 🌟 Cambiato: recuperiamo TUTTE le notifiche dello storico

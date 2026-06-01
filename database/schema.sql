@@ -9,7 +9,6 @@ USE nautilus_db;
 -- ==============================================================================
 /*
 SET FOREIGN_KEY_CHECKS = 0; -- Disabilita il controllo delle chiavi esterne per fare i DROP sicuri
-
 DROP TABLE IF EXISTS pagamenti;
 DROP TABLE IF EXISTS notifiche;
 DROP TABLE IF EXISTS prenotazioni;

@@ -60,13 +60,6 @@ public class DAOFactory {
         return new TitoloAccessoDAOMySQL();
     }
 
-    public CorsoDAO getCorsoDAO() {
-        if (tipoCorrente == PersistenceType.FILE) {
-            return new CorsoDAOJson();
-        }
-        return new CorsoDAOMySQL();
-    }
-
     public ClienteDAO getClienteDAO() {
         if (tipoCorrente == PersistenceType.FILE) {
             return new ClienteDAOJson();

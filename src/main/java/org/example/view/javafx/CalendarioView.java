@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.example.controller.LoginController;
+import org.example.controller.SessionManager;
 import org.example.model.dao.DAOFactory;
 import org.example.model.domain.*;
 
@@ -25,7 +26,7 @@ public class CalendarioView {
 
     @FXML
     public void initialize() {
-        User utenteLoggato = LoginController.getInstance().getUtenteAttivo();
+        User utenteLoggato = SessionManager.getInstance().getUtenteAttivo();
         lblTitoloCalendario.setText("Agenda Settimanale - " + utenteLoggato.getNome() + " " + utenteLoggato.getCognome());
 
         LocalDate oggi = LocalDate.now();
@@ -133,7 +134,7 @@ public class CalendarioView {
     // METODI UTILITY GRAFICI
     // ==============================================================================
     private String recuperaTitoloAttivita(Lezione l) {
-        User utenteLoggato = LoginController.getInstance().getUtenteAttivo();
+        User utenteLoggato = SessionManager.getInstance().getUtenteAttivo();
 
         if (l.getTipoAttivita() == TipoAttivita.CORSO_GRUPPO && l.getCorsoAppartenenza() != null) {
             return "Corso: " + l.getCorsoAppartenenza().getNome();

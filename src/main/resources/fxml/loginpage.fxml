@@ -44,8 +44,6 @@
                                     </image>
                                 </ImageView>
 
-                                <Label styleClass="sottotitolo" text="Gestionale Piscina" />
-
                                 <VBox spacing="10.0">
                                     <children>
                                         <TextField fx:id="emailField" promptText="Email" styleClass="campo-testo" />

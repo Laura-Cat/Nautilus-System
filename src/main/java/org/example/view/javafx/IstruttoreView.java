@@ -11,6 +11,7 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import org.example.controller.LoginController;
 import org.example.controller.NotificaController;
+import org.example.controller.SessionManager;
 import org.example.model.domain.Istruttore;
 import org.example.model.domain.Notifica;
 import org.example.model.domain.User;
@@ -32,7 +33,7 @@ public class IstruttoreView {
 
     @FXML
     public void initialize() {
-        User utente = LoginController.getInstance().getUtenteAttivo();
+        User utente = SessionManager.getInstance().getUtenteAttivo();
         if (utente instanceof Istruttore) {
             Istruttore istruttore = (Istruttore) utente;
             labelNomeIstruttore.setText("Ciao, Prof. " + istruttore.getCognome());
@@ -46,7 +47,7 @@ public class IstruttoreView {
     }
 
     public void aggiornaPallinoNotifiche() {
-        User utenteCorrente = LoginController.getInstance().getUtenteAttivo();
+        User utenteCorrente = SessionManager.getInstance().getUtenteAttivo();
         List<Notifica> notificheNonLette = notificaController.recuperaNonLettePerUtente(utenteCorrente, utenteCorrente.getId());
 
         if (notificheNonLette != null && !notificheNonLette.isEmpty()) {

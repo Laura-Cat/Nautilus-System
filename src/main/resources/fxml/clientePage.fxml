@@ -7,16 +7,21 @@
 <?import javafx.scene.shape.Circle?>
 <BorderPane fx:id="mainPane" stylesheets="@../style/styleCliente.css" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.javafx.ClienteView">
     <left>
-        <VBox spacing="10" styleClass="sidebar">
+        <VBox spacing="5" styleClass="sidebar">
             <children>
-                <Label fx:id="labelNomeCliente" styleClass="testo-benvenuto" text="Benvenuto!" />
-                <Separator />
+                <Label fx:id="labelNomeCliente" styleClass="testo-benvenuto" text="👋 Ciao, Gianluca!">
+                    <VBox.margin>
+                        <Insets top="10.0" bottom="5.0" />
+                    </VBox.margin>
+                </Label>
 
-                <Button fx:id="btnPrenotaLezione" maxWidth="Infinity" onAction="#cliccaPrenotaLezione" text="Prenota Lezione" />
+                <Separator styleClass="separatore-menu" />
 
-                <VBox fx:id="sottoMenuPrenotazioni" visible="false" managed="false" spacing="5">
+                <Button fx:id="btnPrenotaLezione" styleClass="bottone-menu-laterale" maxWidth="Infinity" onAction="#cliccaPrenotaLezione" text="➕ Prenota Lezione" />
+
+                <VBox fx:id="sottoMenuPrenotazioni" visible="false" managed="false" spacing="2">
                     <padding>
-                        <Insets left="15.0" />
+                        <Insets left="30.0" />
                     </padding>
                     <children>
                         <Button maxWidth="Infinity" onAction="#sceltaNuotoLibero" styleClass="bottone-sottomenu" text="🏊 Nuoto Libero" />
@@ -25,16 +30,17 @@
                     </children>
                 </VBox>
 
-                <Button fx:id="btnAbbonamenti" maxWidth="Infinity" text="Miei Abbonamenti" />
-                <Button text="📅 Il mio Calendario" onAction="#apriCalendario" styleClass="bottone-menu-laterale" />
+                <Button fx:id="btnAbbonamenti" styleClass="bottone-menu-laterale" maxWidth="Infinity" text="🎟️ Miei Abbonamenti" />
 
-                <StackPane alignment="TOP_RIGHT">
+                <Button text="📅 Il mio Calendario" onAction="#apriCalendario" styleClass="bottone-menu-laterale" maxWidth="Infinity" />
+
+                <StackPane alignment="CENTER_LEFT">
                     <children>
-                        <Button fx:id="btnNotifiche" maxWidth="Infinity" onAction="#apriNotifiche" text="🔔 Notifiche" />
+                        <Button fx:id="btnNotifiche" styleClass="bottone-menu-laterale" maxWidth="Infinity" onAction="#apriNotifiche" text="🔔 Notifiche" />
 
-                        <Circle fx:id="pallinoRosso" radius="5.0" fill="#ef4444" visible="false">
+                        <Circle fx:id="pallinoRosso" radius="4.0" fill="#ef4444" visible="true">
                             <StackPane.margin>
-                                <Insets top="5.0" right="10.0" />
+                                <Insets left="25.0" bottom="10.0" />
                             </StackPane.margin>
                         </Circle>
                     </children>
@@ -42,14 +48,57 @@
 
                 <Region VBox.vgrow="ALWAYS" />
 
-                <Button fx:id="btnLogout" maxWidth="Infinity" onAction="#logout" text="Logout" />
+                <Button fx:id="btnLogout" styleClass="bottone-logout-flat" maxWidth="Infinity" onAction="#logout" text="🚪 Esci" />
             </children>
         </VBox>
     </left>
     <center>
         <StackPane fx:id="contentArea">
             <children>
-                <Label text="Seleziona un'operazione dal menu a sinistra" />
+                <ScrollPane fitToWidth="true" style="-fx-background-color: #f8fafc; -fx-background: #f8fafc;">
+                    <content>
+                        <VBox spacing="25" styleClass="dashboard-container">
+                            <padding>
+                                <Insets top="30" right="40" bottom="30" left="40"/>
+                            </padding>
+                            <children>
+                                <VBox spacing="5">
+                                    <Label text="Pannello di Controllo" styleClass="dashboard-titolo"/>
+                                    <Label text="Ecco il riepilogo della tua situazione attuale in piscina." styleClass="dashboard-sottotitolo"/>
+                                </VBox>
+
+                                <HBox spacing="20">
+                                    <children>
+                                        <VBox styleClass="card" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Label text="🎟️ Stato Abbonamento" styleClass="card-titolo"/>
+                                                <Label text="ATTIVO" styleClass="card-valore-positivo"/>
+                                                <Label text="Scadenza: 31/12/2026" styleClass="card-dettaglio"/>
+                                            </children>
+                                        </VBox>
+
+                                        <VBox styleClass="card" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Label text="🏊 Prossima Prenotazione" styleClass="card-titolo"/>
+                                                <Label text="Domani, ore 18:30" styleClass="card-valore"/>
+                                                <Label text="Attività: Nuoto Libero" styleClass="card-dettaglio"/>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+
+                                <VBox spacing="12" styleClass="card">
+                                    <children>
+                                        <Label text="📢 Avvisi importanti dalla segreteria" styleClass="card-titolo"/>
+                                        <Separator />
+                                        <Label text="• La piscina rimarrà chiusa il 2 Giugno per la Festa della Repubblica." styleClass="testo-avviso"/>
+                                        <Label text="• Dal 1° Giugno entra in vigore l'orario estivo. Controlla i nuovi turni sul sito!" styleClass="testo-avviso"/>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+                    </content>
+                </ScrollPane>
             </children>
         </StackPane>
     </center>

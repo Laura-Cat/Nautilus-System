@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 import javafx.util.StringConverter;
 import org.example.controller.LoginController;
 import org.example.controller.PrenotazioneController;
+import org.example.controller.SessionManager;
 import org.example.model.domain.Cliente;
 import org.example.model.domain.Istruttore;
 import org.example.model.domain.Lezione;
@@ -102,7 +103,7 @@ public class DettagliIstruttoreView {
             return;
         }
 
-        User utenteLoggato = LoginController.getInstance().getUtenteAttivo();
+        User utenteLoggato = SessionManager.getInstance().getUtenteAttivo();
         if (!(utenteLoggato instanceof Cliente cliente)) {
             mostraMessaggio("Errore: Solo i clienti possono effettuare prenotazioni.", true);
             return;

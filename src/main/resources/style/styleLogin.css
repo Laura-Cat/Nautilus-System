@@ -1,4 +1,4 @@
-/* Sfondo base elegante e pulito */
+/* Sfondo base elegante e pulito
 .sfondo-pulito {
     -fx-background-color: linear-gradient(to bottom right, #f8fafc, #e0f2fe);
 }
@@ -27,12 +27,6 @@
     -fx-text-fill: #005A9E; /* Blu scuro marino */
 }
 
-/* Sottotitolo grigio */
-.sottotitolo {
-    -fx-font-size: 14px;
-    -fx-text-fill: #7F8C8D;
-    -fx-padding: 0 0 20 0; /* Un po' di spazio sotto prima delle caselle */
-}
 
 /* Come devono essere le caselle di testo Email e Password */
 .campo-testo {
@@ -86,7 +80,7 @@
 /* --- BOTTONI SOCIAL --- */
 .bottone-google {
     -fx-background-color: white;
-    -fx-text-fill: #475569;
+    -fx-text-fill: #DB4437;
     -fx-border-color: #cbd5e1;
     -fx-border-radius: 8;
     -fx-background-radius: 8;
@@ -99,9 +93,11 @@
     -fx-background-color: #f1f5f9;
 }
 
+
 .bottone-facebook {
-    -fx-background-color: #1877f2;
-    -fx-text-fill: white;
+    -fx-background-color: white;
+    -fx-text-fill: #1877f2;
+    -fx-border-color: #cbd5e1;
     -fx-border-radius: 8;
     -fx-background-radius: 8;
     -fx-font-weight: bold;
@@ -109,6 +105,9 @@
     -fx-cursor: hand;
 }
 
+
 .bottone-facebook:hover {
-    -fx-background-color: #166fe5;
+    -fx-background-color: #f1f5f9;
 }
+
+

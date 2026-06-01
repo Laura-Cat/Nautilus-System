@@ -13,16 +13,14 @@ import java.util.logging.Logger;
 
 public class LoginController {
     private static final Logger logger = Logger.getLogger(LoginController.class.getName());
-    private static  LoginController instance;
-    private User utenteAttivo;
-    private  LoginController() {
-        this.utenteAttivo = null;
+    private static LoginController instance;
+
+    private LoginController() {
     }
 
-    // utilizzo la parola chiave synchronized per rendere il Singleton thread-safe
     public static synchronized LoginController getInstance() {
         if (instance == null) {
-            instance = new  LoginController();
+            instance = new LoginController();
         }
         return instance;
     }
@@ -31,7 +29,6 @@ public class LoginController {
     public Boolean autenticaUtente(LoginBean credenziali) {
         logger.info(() ->"Cerco nel DB: Email=" + credenziali.email() + " | Pass=" + credenziali.password());
 
-        // Chiediamo alla Factory il DAO corretto in base alla configurazione
         LoginDAO dao = DAOFactory.getInstance().getLoginDAO();
         User utenteTrovato = dao.trovaPerCredenziali(credenziali.email(), credenziali.password());
 
@@ -40,8 +37,8 @@ public class LoginController {
         if (utenteTrovato == null) {
             return false;
         }
+        SessionManager.getInstance().setUtenteAttivo(utenteTrovato);
 
-        this.utenteAttivo = utenteTrovato;
         if (utenteTrovato instanceof Istruttore) {
             DBConnectionFactory.getInstance().changeRole(Ruolo.ISTRUTTORE);
         } else if (utenteTrovato instanceof Cliente) {
@@ -54,16 +51,9 @@ public class LoginController {
     }
 
     public void effettuaLogout() {
-        this.utenteAttivo = null;
+
+        SessionManager.getInstance().chiudiSessione();
         DBConnectionFactory.getInstance().changeRole(Ruolo.LOGIN);
     }
-
-    // Getter
-    public User getUtenteAttivo() {
-        return utenteAttivo;
-    }
-
-
 }
-
 

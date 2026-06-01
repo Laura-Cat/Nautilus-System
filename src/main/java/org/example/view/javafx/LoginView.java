@@ -14,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.example.controller.LoginController;
+import org.example.controller.SessionManager;
 import org.example.model.bean.LoginBean;
 import org.example.model.domain.Cliente;
 import org.example.model.domain.Istruttore;
@@ -100,7 +101,7 @@ public class LoginView {
         if (successo) {
             mostraPopupSuccesso("Accesso Consentito", "Login effettuato! Benvenuto in Nautilus.");
             try {
-                User utenteLoggato = backendController.getUtenteAttivo(); // Assicurati che il getter sia corretto
+                User utenteLoggato = SessionManager.getInstance().getUtenteAttivo(); // Assicurati che il getter sia corretto
 
                 String fileFxmlDaCaricare = "";
 

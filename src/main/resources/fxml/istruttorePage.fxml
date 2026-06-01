@@ -1,25 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?language java?>
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Circle?>
-<BorderPane fx:id="mainPane" stylesheets="@../style/styleCliente.css" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.javafx.IstruttoreView">
 
+<BorderPane fx:id="mainPane" stylesheets="@../style/styleIstruttore.css" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.view.javafx.IstruttoreView">
     <left>
-        <VBox spacing="10" styleClass="sidebar">
+        <VBox fx:id="sidebar" spacing="5">
             <children>
-                <Label fx:id="labelNomeIstruttore" styleClass="testo-benvenuto" text="Benvenuto, Istruttore!" />
-                <Separator />
+                <Label fx:id="labelNomeIstruttore" text="👋 Ciao, Istruttore!">
+                    <VBox.margin>
+                        <Insets top="10.0" bottom="5.0" />
+                    </VBox.margin>
+                </Label>
 
-                <Button text="📅 Agenda Settimanale" onAction="#apriCalendario" styleClass="bottone-menu-laterale" />
+                <Separator fx:id="separatoreMenu" />
 
-                <StackPane alignment="TOP_RIGHT">
+                <Button fx:id="btnCalendario" text="📅 Agenda Settimanale" onAction="#apriCalendario" maxWidth="Infinity" />
+                <Button fx:id="btnListaPrenotati" text="📋 Lista Prenotati" maxWidth="Infinity" />
+                <Button fx:id="btnSchede" text="📝 Schede Allenamento"  maxWidth="Infinity" />
+
+                <StackPane alignment="CENTER_LEFT">
                     <children>
-                        <Button fx:id="btnNotifiche" maxWidth="Infinity" text="🔔 Notifiche" onAction="#apriGestioneRichieste" />
-                        <Circle fx:id="pallinoRosso" fill="#ef4444" radius="5.0" visible="false">
+                        <Button fx:id="btnNotifiche" maxWidth="Infinity" onAction="#apriGestioneRichieste" text="🔔 Notifiche" />
+                        <Circle fx:id="pallinoRosso" radius="4.0" visible="true">
                             <StackPane.margin>
-                                <Insets right="10.0" top="5.0" />
+                                <Insets left="25.0" bottom="10.0" />
                             </StackPane.margin>
                         </Circle>
                     </children>
@@ -27,7 +35,7 @@
 
                 <Region VBox.vgrow="ALWAYS" />
 
-                <Button fx:id="btnLogout" maxWidth="Infinity" onAction="#logout" text="Logout" style="-fx-text-fill: #ef4444;" />
+                <Button fx:id="btnLogout" maxWidth="Infinity" onAction="#logout" text="🚪 Esci" />
             </children>
         </VBox>
     </left>
@@ -35,7 +43,52 @@
     <center>
         <StackPane fx:id="contentArea">
             <children>
-                <Label text="Seleziona un'operazione dal menu a sinistra" style="-fx-text-fill: #64748b; -fx-font-size: 16px;" />
+                <ScrollPane fx:id="dashboardScroll" fitToWidth="true">
+                    <content>
+                        <VBox fx:id="dashboardContainer" spacing="25">
+                            <padding>
+                                <Insets top="30" right="40" bottom="30" left="40"/>
+                            </padding>
+                            <children>
+
+                                <VBox spacing="5">
+                                    <Label fx:id="dashboardTitolo" text="Pannello Istruttore" />
+                                    <Label fx:id="dashboardSottotitolo" text="Ecco il riepilogo dei tuoi turni e le comunicazioni di oggi." />
+                                </VBox>
+
+                                <HBox spacing="20">
+                                    <children>
+                                        <VBox fx:id="cardLezione" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Label fx:id="titoloCardLezione" text="⏱️ Prossima Lezione" />
+                                                <Label fx:id="valoreCardLezione" text="Oggi, ore 17:30" />
+                                                <Label fx:id="dettaglioCardLezione" text="Corso: Acquagym Avanzato - Vasca B" />
+                                            </children>
+                                        </VBox>
+
+                                        <VBox fx:id="cardStatistica" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Label fx:id="titoloCardStatistica" text="👥 Allievi di Oggi" />
+                                                <Label fx:id="valoreCardStatistica" text="24 Iscritti" />
+                                                <Label fx:id="dettaglioCardStatistica" text="Distribuiti in 3 turni" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+
+                                <VBox fx:id="cardBacheca" spacing="12">
+                                    <children>
+                                        <Label fx:id="titoloCardBacheca" text="📢 Comunicazioni dalla Segreteria" />
+                                        <Separator />
+                                        <Label text="• Ricordarsi di far firmare il modulo privacy ai nuovi iscritti del turno 18:00." />
+                                        <Label text="• La corsia 4 della Vasca A è in manutenzione fino a giovedì." />
+                                    </children>
+                                </VBox>
+
+                            </children>
+                        </VBox>
+                    </content>
+                </ScrollPane>
             </children>
         </StackPane>
     </center>

@@ -1,6 +1,7 @@
 package org.example.view.cli;
 
 import org.example.controller.LoginController;
+import org.example.controller.SessionManager;
 import org.example.model.bean.LoginBean;
 import org.example.model.domain.User;
 
@@ -32,7 +33,7 @@ public class LoginCLIView {
         boolean successo = LoginController.getInstance().autenticaUtente(credenziali);
 
         if (successo) {
-            return LoginController.getInstance().getUtenteAttivo();
+            return SessionManager.getInstance().getUtenteAttivo();
         } else {
             System.out.println("❌ Errore: Credenziali non valide.");
             return null;
