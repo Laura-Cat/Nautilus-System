@@ -12,7 +12,9 @@ public class LezioneBean {
     private TipoCorso nomeCorso;
 
     // Costruttore vuoto
-    public LezioneBean() {}
+    public LezioneBean() {
+        // Intenzionalmente vuoto
+    }
 
 
 
