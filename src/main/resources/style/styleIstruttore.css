@@ -62,7 +62,6 @@
 /* Applica lo sfondo grigio chiaro a tutta la zona centrale */
 #dashboardScroll, #dashboardScroll > .viewport, #dashboardContainer {
     -fx-background-color: #f8fafc;
-    -fx-background: #f8fafc;
 }
 
 #dashboardTitolo {

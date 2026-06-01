@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+
+@SuppressWarnings( "java:S6905")
 public class LezioneDAOMySQL implements LezioneDAO {
     private static final Logger logger = Logger.getLogger(LezioneDAOMySQL.class.getName());
     private static final String TIPO_CORSO = "tipo_corso";

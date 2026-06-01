@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
+@SuppressWarnings( "java:S6905")
 public class NotificaDAOMySQL implements  NotificaDAO{
 
     private static final Logger logger = Logger.getLogger(NotificaDAO.class.getName());

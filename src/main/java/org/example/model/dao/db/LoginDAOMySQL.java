@@ -11,6 +11,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
+
+@SuppressWarnings( "java:S6905")
+
 public class LoginDAOMySQL implements LoginDAO {
     private static final Logger logger = Logger.getLogger(LoginDAOMySQL.class.getName());
     @Override

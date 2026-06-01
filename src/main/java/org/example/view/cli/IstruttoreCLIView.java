@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-@SuppressWarnings("java:S106")
+@SuppressWarnings({"java:S106", "java:S3776"})
 public class IstruttoreCLIView {
     private Istruttore istruttore;
     private Scanner scanner;

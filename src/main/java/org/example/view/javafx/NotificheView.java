@@ -6,7 +6,6 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import org.example.controller.LoginController;
 import org.example.controller.NotificaController;
 import org.example.controller.PrenotazioneController;
 import org.example.controller.SessionManager;
@@ -19,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+@SuppressWarnings({"java:S106", "java:S3776"})
 public class NotificheView {
 
     private static final Logger logger = Logger.getLogger(NotificheView.class.getName());

@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
+@SuppressWarnings( "java:S6905")
 public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
     private static final Logger logger = Logger.getLogger(PrenotazioneDAOMySQL.class.getName());
 

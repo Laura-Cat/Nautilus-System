@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
+@SuppressWarnings( "java:S6905")
 public class TitoloAccessoDAOMySQL implements TitoloAccessoDAO {
     private static final Logger logger = Logger.getLogger(TitoloAccessoDAOMySQL.class.getName());
     @Override

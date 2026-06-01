@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import org.example.controller.LoginController;
 import org.example.controller.SessionManager;
 import org.example.model.dao.DAOFactory;
 import org.example.model.domain.*;
@@ -21,7 +20,6 @@ public class CalendarioView {
     @FXML private Label lblTitoloCalendario;
     @FXML private HBox contenitoreSettimana;
 
-    // Mappa utile per rintracciare al volo i VBox dei giorni tramite la data come stringa
     private final Map<String, VBox> mappaContenitoriGiorni = new HashMap<>();
 
     @FXML
@@ -32,10 +30,8 @@ public class CalendarioView {
         LocalDate oggi = LocalDate.now();
         LocalDate fineSettimana = oggi.plusDays(6);
 
-        // 1. Prepariamo lo scheletro grafico dei 7 giorni
         costruisciColonneSettimana(oggi);
 
-        // 2. Bivio logico: popoliamo con dati reali in base al ruolo dell'utente loggato
         if (utenteLoggato instanceof Cliente) {
             popolaCalendarioCliente(utenteLoggato.getId(), oggi, fineSettimana);
         } else if (utenteLoggato instanceof Istruttore) {

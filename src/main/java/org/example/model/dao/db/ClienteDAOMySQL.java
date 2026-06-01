@@ -10,6 +10,9 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.logging.Logger;
 
+
+@SuppressWarnings( "java:S6905")
+
 public class ClienteDAOMySQL implements ClienteDAO {
     private static final Logger logger = Logger.getLogger(ClienteDAOMySQL.class.getName());
     @Override
