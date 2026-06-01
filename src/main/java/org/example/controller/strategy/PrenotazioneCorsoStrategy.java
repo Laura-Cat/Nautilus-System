@@ -19,13 +19,13 @@ public class PrenotazioneCorsoStrategy implements PrenotazioneStrategy {
 
 
         if (titolo == null) {
-            logger.info("Titolo non presente in memoria. Ricerca nel DB in corso per il cliente ID: " + cliente.getId());
+            logger.info(() ->"Titolo non presente in memoria. Ricerca nel DB in corso per il cliente ID: " + cliente.getId());
             titolo = DAOFactory.getInstance().getTitoloAccessoDAO().trovaPerCliente(cliente.getId());
             cliente.setTitoloAccesso(titolo);
         }
 
         if (titolo == null) {
-            logger.warning("Fallimento prenotazione: Nessun titolo di accesso trovato per il cliente ID: " + cliente.getId());
+            logger.warning(() ->"Fallimento prenotazione: Nessun titolo di accesso trovato per il cliente ID: " + cliente.getId());
             throw new CreditiInsufficientiException("Non hai nessun titolo di accesso valido!");
         }
 
@@ -38,18 +38,18 @@ public class PrenotazioneCorsoStrategy implements PrenotazioneStrategy {
 
         // Controllo date di validità
         if (abbonamento.getDataFine() != null && abbonamento.getDataFine().isBefore(java.time.LocalDate.now())) {
-            logger.info("Fallimento prenotazione: L'abbonamento del cliente ID " + cliente.getId() + " è scaduto in data " + abbonamento.getDataFine());
+            logger.info(() ->"Fallimento prenotazione: L'abbonamento del cliente ID " + cliente.getId() + " è scaduto in data " + abbonamento.getDataFine());
             throw new CreditiInsufficientiException("Il tuo abbonamento è scaduto!");
         }
 
         // Controllo se il corso è tra quelli inclusi nel suo abbonamento
         if (abbonamento.getCorsiInclusi() == null || !abbonamento.getCorsiInclusi().contains(lezione.getCorsoAppartenenza().getNome())) {
-            logger.info("Fallimento prenotazione: Il corso " + lezione.getCorsoAppartenenza().getNome() + " non è incluso nell'abbonamento.");
+            logger.info(() -> "Fallimento prenotazione: Il corso " + lezione.getCorsoAppartenenza().getNome() + " non è incluso nell'abbonamento.");
             throw new CreditiInsufficientiException("Questo specifico corso non è incluso nel tuo abbonamento!");
         }
 
         // Tutto perfetto
-        logger.info("Controlli di business superati con successo per il cliente ID: " + cliente.getId() + ". Autorizzazione alla prenotazione concessa.");
+        logger.info(() ->"Controlli di business superati con successo per il cliente ID: " + cliente.getId() + ". Autorizzazione alla prenotazione concessa.");
         return true;
     }
 }

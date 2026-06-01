@@ -54,7 +54,7 @@ public class LoginDAOMySQL implements LoginDAO {
                 }
             }
         } catch (SQLException e) {
-            logger.severe("Errore DAO: " + e.getMessage());
+            logger.severe(() ->"Errore DAO: " + e.getMessage());
         }
 
         return utente; // Ora non sarà più null (se le credenziali sono giuste)!

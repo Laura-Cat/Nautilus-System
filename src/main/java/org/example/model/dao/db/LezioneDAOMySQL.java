@@ -81,7 +81,7 @@ public class LezioneDAOMySQL implements LezioneDAO {
                 }
             }
         } catch (SQLException e) {
-            logger.severe("Errore recupero lezioni: " + e.getMessage());
+            logger.severe(() ->"Errore recupero lezioni: " + e.getMessage());
         }
         return lista;
     }
@@ -97,7 +97,7 @@ public class LezioneDAOMySQL implements LezioneDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            logger.severe("Errore aggiornamento posti lezione: " + e.getMessage());
+            logger.severe(() ->"Errore aggiornamento posti lezione: " + e.getMessage());
         }
     }
 
@@ -166,7 +166,7 @@ public class LezioneDAOMySQL implements LezioneDAO {
                 }
             }
         } catch (SQLException e) {
-            logger.severe("Errore nel recupero della lezione tramite ID: " + e.getMessage());
+            logger.severe(() ->"Errore nel recupero della lezione tramite ID: " + e.getMessage());
         }
         return l;
     }
@@ -206,7 +206,7 @@ public class LezioneDAOMySQL implements LezioneDAO {
                 }
             }
         } catch (SQLException e) {
-            logger.severe("Errore nel recupero lezioni per corso: " + e.getMessage());
+            logger.severe(() ->"Errore nel recupero lezioni per corso: " + e.getMessage());
         }
         return lista;
     }
@@ -307,7 +307,7 @@ public class LezioneDAOMySQL implements LezioneDAO {
                 }
             }
         } catch (java.sql.SQLException e) {
-            logger.severe("Errore: " + e.getMessage());
+            logger.severe(() ->"Errore: " + e.getMessage());
         }
         return lista;
     }

@@ -100,7 +100,7 @@ public class PrenotazioneController {
 
             // B. Se la strategia ha dato il via libera, facciamo le modifiche sul Database!
             if (esito) {
-                logger.info("La strategia ha approvato. Aggiorno i posti per la lezione ID: " + lezione.getIdLezione());
+                logger.info(() ->"La strategia ha approvato. Aggiorno i posti per la lezione ID: " + lezione.getIdLezione());
 
                 // 1. Aggiorniamo i posti della lezione (questo lo avevamo già fatto)
                 lezione.setNumPostiPrenotati(lezione.getNumPostiPrenotati() + 1);
@@ -130,7 +130,7 @@ public class PrenotazioneController {
         } catch (Exception e) {
             // CATTURA GLI ERRORI VERI (es. database offline, null pointer)
             logger.severe("Errore durante l'esecuzione della strategia o durante il salvataggio");
-            logger.severe("Errore: " + e.getMessage());
+            logger.severe(() ->"Errore: " + e.getMessage());
             return false;
         }
     }

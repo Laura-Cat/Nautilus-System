@@ -32,7 +32,7 @@ public class LoginController {
         LoginDAO dao = DAOFactory.getInstance().getLoginDAO();
         User utenteTrovato = dao.trovaPerCredenziali(credenziali.email(), credenziali.password());
 
-        logger.info("Risultato dal DAO: " + utenteTrovato);
+        logger.info(() ->"Risultato dal DAO: " + utenteTrovato);
 
         if (utenteTrovato == null) {
             return false;

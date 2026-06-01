@@ -45,7 +45,7 @@ public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
             }
 
         } catch (SQLException e) {
-            logger.severe("Errore salvataggio prenotazione: " + e.getMessage());
+            logger.severe(() ->"Errore salvataggio prenotazione: " + e.getMessage());
         }
     }
 
@@ -61,7 +61,7 @@ public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            logger.severe("Errore aggiornamento stato prenotazione: " + e.getMessage());
+            logger.severe(() ->"Errore aggiornamento stato prenotazione: " + e.getMessage());
         }
     }
 
@@ -96,7 +96,7 @@ public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
                 }
             }
         } catch (SQLException e) {
-            logger.severe("Errore nel recupero agenda cliente: " + e.getMessage());
+            logger.severe(() ->"Errore nel recupero agenda cliente: " + e.getMessage());
         }
         return lista;
     }
@@ -147,7 +147,7 @@ public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
                 }
             }
         } catch (SQLException e) {
-            logger.severe("Errore nel recupero della prenotazione tramite ID: " + e.getMessage());
+            logger.severe(() ->"Errore nel recupero della prenotazione tramite ID: " + e.getMessage());
         }
         return prenotazione;
     }
@@ -199,7 +199,7 @@ public class PrenotazioneDAOMySQL implements PrenotazioneDAO {
                 }
             }
         } catch (SQLException e) {
-            logger.severe("Errore recupero richieste per istruttore: " + e.getMessage());
+            logger.severe(() ->"Errore recupero richieste per istruttore: " + e.getMessage());
         }
         return lista;
     }
